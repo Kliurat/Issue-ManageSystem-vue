@@ -4,7 +4,7 @@
 
 <script>
 export default {
-    name: 'Home' //主界面
+    name: 'Create' //创建新Issue
 }
 </script>
 

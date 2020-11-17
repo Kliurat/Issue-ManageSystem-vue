@@ -4,7 +4,7 @@
 
 <script>
 export default {
-    name: 'Home' //主界面
+    name: 'Registered' //注册
 }
 </script>
 
