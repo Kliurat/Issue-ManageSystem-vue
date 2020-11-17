@@ -76,7 +76,7 @@ export default {
   padding-left: 50px;
 }
 #button{
-  margin: 20px;  text-align:center
+  margin-top: 20px;  text-align:center;
 }
 #button button{
   margin: 20px; 
