@@ -1,13 +1,19 @@
 <template>
     <div id="main">
-        <div id="Inquire"></div>
-        <div id="IssuesList"></div>
+        <Inquire/>
+        <IssuesList/>
     </div>
 </template>
 
 <script>
+import Inquire from '@/components/Inquire.vue'
+import IssuesList from '@/components/IssuesList.vue'
 export default {
-    name: 'Home' //主界面
+    name: 'Home', //主界面
+    components: {
+        Inquire,
+        IssuesList
+    }
 }
 </script>
 
