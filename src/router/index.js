@@ -1,19 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Create from '../views/Create.vue'
-import Home from '../views/Home.vue'
-import Login from '../views/Login.vue'
-import Modify from '../views/Modify.vue'
-import Registered from '../views/Registered.vue'
+
 
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '/*',
-    name: 'Home',
-    redirect: '/home'
-  },
   {
     path: '/create',
     name: 'Create',
@@ -34,6 +25,12 @@ const routes = [
     name: 'Registered',
     component: () => import(/* webpackChunkName: "about" */ '../views/Registered.vue')
   },
+  {
+    path: '/inquire',
+    name: 'Inquire',
+    component: () => import(/* webpackChunkName: "about" */ '../components/Inquire.vue')
+  },
+  
 ]
 
 const router = new VueRouter({

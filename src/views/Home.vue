@@ -1,5 +1,8 @@
 <template>
-    
+    <div id="main">
+        <div id="Inquire"></div>
+        <div id="IssuesList"></div>
+    </div>
 </template>
 
 <script>
