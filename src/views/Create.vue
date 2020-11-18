@@ -1,10 +1,8 @@
 <template>
   <div class="create">
     <form class="form">
-      
-        <span class="title">Issue题目</span>
-        <input type="text" class="tle" placeholder="" />
-      
+      <span class="title">Issue题目</span>
+      <input type="text" class="tle" placeholder="" />
 
       <h5>基本信息</h5>
       <hr />
@@ -71,7 +69,7 @@ export default {
 
 <style scoped>
 .form {
-padding-top: 50px;
+  padding-top: 50px;
   width: 50%;
   margin: auto;
 }
@@ -82,11 +80,17 @@ td {
   font-size: 50px;
   color: rgb(211, 35, 182);
 }
-.tle{
-    font-size: 50px;
+.tle {
+  outline: 0;
+  font-size: 50px;
 }
-h5{
-    padding-top: 50px;
-    font-weight: bold;
+.tie:focus {
+  border-style: solid;
+  border-color: #03a9f4;
+  box-shadow: 0 0 5px #03a9f4;
+}
+h5 {
+  padding-top: 50px;
+  font-weight: bold;
 }
 </style>
