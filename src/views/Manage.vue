@@ -30,34 +30,43 @@
         <td>操作</td>
       </tr>
       <tr v-for="(user, index) in users" :key="index">
-          <td>{{user.id}}</td>
-          <td>{{user.name}}</td>
+        <td>{{ user.sortID }}</td>
+        <td>{{ user.loginID }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.registerDate }}</td>
+        <td>{{ user.role }}</td>
+        <td>{{ user.status }}</td>
+        <td>
+          <button type="button" class="btn btn-default btn1">注销</button>
+          <button type="button" class="btn btn-default btn1">经理</button>
+        </td>
       </tr>
     </table>
-    
   </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "Manage",
   data() {
     return {
-      users: [
-        {
-            id:123,
-            name: "gry",
-        },
-        {
-            id:123,
-            name: "gry",
-        },
-        {
-            id:123,
-            name: "gry",
-        },
-      ],
+      users: [],
     };
+  },
+  created() {
+    const url = "/json/users.json";
+    axios({
+      method: "get",
+      url: url,
+    })
+      .then((data) => {
+        this.users = data.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
 };
 </script>
@@ -72,9 +81,16 @@ h5 {
   margin: auto;
 }
 .form-group {
-  padding-right: 20%;
+  padding-right: 10%;
 }
 .btn {
   margin: 20px 180px 0px auto;
+}
+.btn1 {
+  padding-left: 12px;
+  border-radius: 10px;
+  border: 1px solid rgb(58, 184, 241);
+  margin: 0;
+  margin-left: 10px;
 }
 </style>
