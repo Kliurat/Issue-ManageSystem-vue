@@ -1,5 +1,7 @@
 <template>
     <div id="main">
+        <h1>GBA Issue管理系统</h1>
+        <div><button type="button" class="btn btn-default">详情</button><button type="button" class="btn btn-default">修改</button></div>
         <Inquire/>
         <IssuesList/>
     </div>
@@ -18,5 +20,7 @@ export default {
 </script>
 
 <style scoped>
-
+h1{
+    text-align: center;
+}
 </style>

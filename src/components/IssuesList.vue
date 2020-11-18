@@ -17,10 +17,9 @@
             <th>计划完成时间</th>
             <th>实际完成时间</th>
             <th>操作</th>
-            
           </tr>
         </thead>
-        <tbody>
+        <tbody id="tbody">
           <tr>
             <th scope="row"><input type="checkbox" name="" id="" /></th>
             <th>1</th>
@@ -32,7 +31,7 @@
             <td>@xxx</td>
             <td>@xxx</td>
             <td>@xxx</td>
-            <td>@11</td>
+            <td><button type="button" class="btn btn-default">详情</button><button type="button" class="btn btn-default">修改</button></td>
           </tr>
           <tr>
             <th scope="row"><input type="checkbox" name="" id="" /></th>
@@ -45,7 +44,7 @@
             <td>@xxx</td>
             <td>@xxx</td>
             <td>@xxx</td>
-            <td>@xxx</td>
+            <td><button type="button" class="btn btn-default">详情</button><button type="button" class="btn btn-default">修改</button></td>
           </tr>
           <tr>
             <th scope="row"><input type="checkbox" name="" id="" /></th>
@@ -58,7 +57,7 @@
             <td>@xxx</td>
             <td>@xxx</td>
             <td>@xxx</td>
-            <td>@xxx</td>
+            <td><button type="button" class="btn btn-default">详情</button><button type="button" class="btn btn-default">修改</button></td>
           </tr>
           <tr>
             <th scope="row"><input type="checkbox" name="" id="" /></th>
@@ -71,7 +70,7 @@
             <td>@xxx</td>
             <td>@xxx</td>
             <td>@xxx</td>
-            <td>@xxx</td>
+            <td><button type="button" class="btn btn-default">详情</button><button type="button" class="btn btn-default">修改</button></td>
           </tr>
           <tr>
             <th scope="row"><input type="checkbox" name="" id="" /></th>
@@ -84,7 +83,7 @@
             <td>@xxx</td>
             <td>@xxx</td>
             <td>@xxx</td>
-            <td>@xxx</td>
+            <td><button type="button" class="btn btn-default">详情</button><button type="button" class="btn btn-default">修改</button></td>
           </tr>
           <tr>
             <th scope="row"><input type="checkbox" name="" id="" /></th>
@@ -97,12 +96,13 @@
             <td>@xxx</td>
             <td>@xxx</td>
             <td>@xxx</td>
-            <td>@xxx</td>
+            <td><button type="button" class="btn btn-default">详情</button><button type="button" class="btn btn-default">修改</button></td>
           </tr>
         </tbody>
       </table>
     </div>
     <div id="btn_body">  
+      <button class="btn btn-default glyphicon glyphicon-chevron-left"></button>
       <button type="button" class="btn btn-default">1</button>
       <button type="button" class="btn btn-default">2</button>
       <button type="button" class="btn btn-default">3</button>
@@ -112,9 +112,10 @@
       <button type="button" class="btn btn-default">7</button>
       <button type="button" class="btn btn-default">8</button>
       <button type="button" class="btn btn-default">9</button>
+      <button class="btn btn-default glyphicon glyphicon-chevron-right"></button>
       <button type="button" class="btn btn-default">20条/页</button>
       <span> 跳至 </span>
-      <button type="button" class="btn btn-default">5</button>
+      <input type="text" id="page">
       <span> 页 </span>
     </div>
   </div>
@@ -141,6 +142,7 @@ export default {
 #table_boay {
   margin: 50px;
   background-color: white;
+  text-align: center;
 }
 .link-top {
   width: 100%;
@@ -158,5 +160,20 @@ export default {
 }
 #btn_body {
   text-align: center;
+}
+#page {
+  width: 55.484px;
+  margin: 10px;
+  height: 38px;
+  border: 1px;
+  padding: 12px;
+  border-radius: 5px;
+}
+#tbody .btn-default {
+  padding-left: 12px;
+  border-radius: 10px;
+  border: 1px solid rgb(58, 184, 241);
+  margin: 0;
+  margin-left: 10px;
 }
 </style>

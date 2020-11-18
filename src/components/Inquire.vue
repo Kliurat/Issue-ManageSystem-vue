@@ -4,33 +4,36 @@
     <div class="link-top"></div>
     <br />
     <br />
-    <table class="table table-hover" >
-      <tbody class="table_boay">
-        <tr class="align">
-          <td scope="row">
-            Issue NO <input type="text" />
-          </td>
-          <td>
-            Issue 状态 
-              <select name="status" id="select">
-                <option class="form-control"></option>
-                <option class="form-control">待修改</option>
-                <option class="form-control">待验证</option>
-                <option class="form-control">已关闭</option>
-              </select>
-          </td>
-          <td>修改时间<input type="date"> 至 <input type="date" ></td>
-        </tr>
-        <tr class="align">
-          <td scope="row" id="create">
-            创建人 <input type="text" />
-          <td id="modify">
-            修改人 <input type="text" />
-          </td>
-          <td>修改时间<input type="date"> 至 <input type="date" ></td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table_all">
+      <table class="table table-hover" >
+        <tbody class="table_boay">
+          <tr class="align">
+            <td scope="row">
+              Issue NO <input type="text" />
+            </td>
+            <td>
+              Issue 状态 
+                <select name="status" id="select">
+                  <option class="form-control"></option>
+                  <option class="form-control">待修改</option>
+                  <option class="form-control">待验证</option>
+                  <option class="form-control">已关闭</option>
+                </select>
+            </td>
+            <td>修改时间<input type="date"> 至 <input type="date" ></td>
+          </tr>
+          <tr class="align">
+            <td scope="row" id="create">
+              创建人 <input type="text" />
+            <td id="modify">
+              修改人 <input type="text" />
+            </td>
+            <td>修改时间<input type="date"> 至 <input type="date" ></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
     <div id="button">
       <button type="button" class="btn btn-info">查询</button>
       <button type="button" class="btn btn-default">清空</button>
@@ -63,14 +66,14 @@ export default {
   position: relative;
 }
 #create {
-  padding-left: 135px;
+  padding-left: 28px;
 }
 #select{
-  width: 182px;
+  width: 174px;
   height: 30px;
 }
 #modify {
-  padding-left: 145px;
+  padding-left: 38px;
 }
 .align{
   padding-left: 50px;
@@ -92,7 +95,10 @@ export default {
   margin-bottom: 20px;
   margin-left: 20px;
 }
-td {
-  padding-left: 120px;
+.table_all{
+  margin: 20px;
+  margin-right: 60px;
+  padding-left: 100px;
 }
+
 </style>
