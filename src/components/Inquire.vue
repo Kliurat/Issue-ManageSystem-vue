@@ -1,6 +1,6 @@
 <template>
   <div id="Inquire_body">
-    <h2 id="head">Issue查询</h2>
+    <h3 id="head">Issue查询</h3>
     <div class="link-top"></div>
     <br />
     <br />
@@ -9,7 +9,7 @@
         <tbody class="table_boay">
           <tr class="align">
             <td scope="row">
-              Issue NO <input type="text" />
+              Issue NO <input type="number" maxlength="30" />
             </td>
             <td>
               Issue 状态 
@@ -20,13 +20,13 @@
                   <option class="form-control">已关闭</option>
                 </select>
             </td>
-            <td>修改时间<input type="date"> 至 <input type="date" ></td>
+            <td>创建时间<input type="date"> 至 <input type="date" ></td>
           </tr>
           <tr class="align">
             <td scope="row" id="create">
-              创建人 <input type="text" />
+              创建人 <input type="text" maxlength="30" :value="createName"/>
             <td id="modify">
-              修改人 <input type="text" />
+              修改人 <input type="text" maxlength="30" :placeholder="modifierName"/>
             </td>
             <td>修改时间<input type="date"> 至 <input type="date" ></td>
           </tr>
@@ -35,7 +35,7 @@
     </div>
     
     <div id="button">
-      <button type="button" class="btn btn-info">查询</button>
+      <button type="button" class="btn btn-info" @click="inquire">查询</button>
       <button type="button" class="btn btn-default">清空</button>
     </div>
     
@@ -43,12 +43,47 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: "Inquire", //查询
+  data(){
+    return {
+      issueID : '',
+      issueList: [],
+      createName: '',
+      modifierName: ''
+    }
+  },
+  created() {
+    const url = "/json/users.json";
+    axios({
+      method: "get",
+      url: url,
+    })
+      .then((data) => {
+        this.issueList = data.data
+        this.modifierName = this.issueList[1].username
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  methods: {
+    inquire: function(){
+      this.issueID = this.issueList[1].loginID
+      this.createName = this.issueList[1].role
+      this.modifierName = this.issueList[1].username
+    }
+  }
 };
 </script>
 
 <style scoped>
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0;
+}
 #Inquire_body {
   background-color: #E4C9E4;
   left: 0;
