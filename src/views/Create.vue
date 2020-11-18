@@ -1,7 +1,7 @@
 <template>
   <div class="create">
-    <form class="form">
-      <span class="title">Issue题目</span>
+    <form action="http://192.168.3.37:8081/issue" class="form">
+      <span class="title" ref="title">Issue题目</span>
       <input type="text" class="tle" placeholder="" />
 
       <h5>基本信息</h5>
@@ -15,21 +15,32 @@
         </tr>
         <tr>
           <td>
-            <input type="text" class="form-control" placeholder="" disabled />
+            <input
+              type="text"
+              class="form-control"
+              placeholder="系统自动生成"
+              disabled
+            />
           </td>
           <td>
             <input
               type="date"
               class="form-control"
               v-model="createDate"
+              ref="createDate"
               disabled
             />
           </td>
           <td>
-            <input type="text" class="form-control" placeholder="" />
+            <input
+              type="text"
+              class="form-control"
+              placeholder=""
+              ref="issueType"
+            />
           </td>
           <td>
-            <select class="form-control">
+            <select class="form-control" ref="priority">
               <option value="最高">最高</option>
               <option value="较高">较高</option>
               <option value="一般">一般</option>
@@ -45,13 +56,18 @@
         </tr>
         <tr>
           <td>
-            <input type="text" class="form-control" placeholder="" />
+            <input
+              type="text"
+              class="form-control"
+              placeholder=""
+              ref="influentVersion"
+            />
           </td>
           <td>
-            <input type="date" class="form-control" />
+            <input type="date" class="form-control" ref="planModifyTime" />
           </td>
           <td>
-            <input type="date" class="form-control" />
+            <input type="date" class="form-control" disabled />
           </td>
           <td></td>
         </tr>
@@ -59,14 +75,26 @@
       <h5>重现步骤</h5>
       <textarea class="form-control" rows="3"></textarea>
       <h5>指派修改人</h5>
-      <input id="modifyUser" type="text" list="userlist" />
+      <input
+        id="modifyUser"
+        type="text"
+        list="userlist"
+        ref="modifyUser"
+        @change="cheak($event)"
+      />
       <datalist id="userlist">
-        <option v-for="(user, index) in user" :key="index">
-          {{ user.loginID + user.username }}
-        </option>
+        <option
+          v-for="(user, index) in user"
+          :key="index"
+          :value="user.loginID"
+          v-text="'姓名:' + user.username"
+        ></option>
       </datalist>
+      <span v-show="visit">该修改人不存在</span>
       <br />
-      <button type="button" class="btn btn-default btn-lg">提交</button>
+      <button type="button" class="btn btn-default btn-lg" @click="submit()">
+        提交
+      </button>
     </form>
   </div>
 </template>
@@ -79,10 +107,20 @@ export default {
     return {
       createDate: new Date(),
       user: [],
+      visit: false,
     };
   },
 
   methods: {
+    cheak(event) {
+      let i;
+      for (i = 0; i < this.user.length; i++) {
+        if (event.target.value == this.user[i].loginID) break;
+        if (event.target.value == this.user[i].username) break;
+      }
+      if (i == this.user.length) this.visit = true;
+    },
+    submit() {},
     formatDate(val) {
       let date = new Date(val);
       let y = date.getFullYear();
@@ -94,7 +132,7 @@ export default {
     },
   },
   created() {
-    const url = "/json/modifyUser.json";
+    const url = "http://192.168.3.37:8081/selectAll/user";
     axios({
       method: "get",
       url: url,

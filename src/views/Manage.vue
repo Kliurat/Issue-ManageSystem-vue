@@ -2,14 +2,26 @@
   <div class="manage">
     <h5>查询</h5>
     <hr />
-    <form class="form-inline">
+    <form action="" class="form-inline">
       <div class="form-group">
         <label for="userId">用户ID</label>
-        <input type="text" class="form-control" id="userId" placeholder="" />
+        <input
+          type="text"
+          class="form-control"
+          id="userId"
+          placeholder=""
+          ref="loginID"
+        />
       </div>
       <div class="form-group">
         <label for="name">用户姓名</label>
-        <input type="text" class="form-control" id="name" placeholder="" />
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          placeholder=""
+          ref="username"
+        />
       </div>
       <div class="btn">
         <button class="btn btn-default" id="sub" type="submit">查询</button>
@@ -34,7 +46,7 @@
         <td>{{ user.loginID }}</td>
         <td>{{ user.username }}</td>
         <td>{{ user.email }}</td>
-        <td>{{ user.registerDate }}</td>
+        <td>{{ user.registeDate }}</td>
         <td>{{ user.role }}</td>
         <td>{{ user.status }}</td>
         <td>
@@ -56,7 +68,7 @@ export default {
     };
   },
   created() {
-    const url = "/json/users.json";
+    const url = "http://192.168.3.37:8081/selectAll/user";
     axios({
       method: "get",
       url: url,
