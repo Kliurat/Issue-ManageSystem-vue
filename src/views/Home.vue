@@ -3,14 +3,14 @@
         <h1>GBA Issue管理系统</h1>
         <div>
             <button type="button" class="btn btn-default">注册</button>
-            <button type="button" class="btn btn-default" @click="goToLogin">登陆</button>
+            <button type="button" class="btn btn-default" >登陆</button>
             <span id="username">/welcome ???</span>
             <button type="button" class="btn btn-default" id="btn3">修改个人信息</button>
         </div>
         <div id="btn_issue">
             <button type="button" class="btn btn-default" @click="goToCreate">创建新Issue</button>
             <button type="button" class="btn btn-default" @click="isShowDate">Issue 报表</button>
-            <button type="button" class="btn btn-default">账号管理</button>
+            <button type="button" class="btn btn-default" @click="goToManage">账号管理</button>
         </div>
         <br>
         <br>
@@ -42,6 +42,9 @@ export default {
         },
         goToLogin: function () {
             this.$router.replace('/login')
+        },
+        goToManage: function(){
+            this.$router.replace('/manage')
         }
     }
 }
