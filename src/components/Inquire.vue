@@ -1,6 +1,6 @@
 <template>
   <div id="Inquire_body">
-    <h2 id="head">Issue查询</h2>
+    <h3 id="head">Issue查询</h3>
     <div class="link-top"></div>
     <br />
     <br />
