@@ -1,8 +1,22 @@
 <template>
   <div class="create">
     <form action="http://192.168.3.115:8888/issue" method="post" class="form">
-      <span class="title">Issue题目</span>
-      <input type="text" class="tle" placeholder="" name="title" />
+      <div>
+        <img
+          src="/pic/return.gif"
+          title="点我返回主页"
+          alt="图片不存在"
+          class="return"
+          @click="regain()"
+        />
+        <span class="title">Issue题目</span>
+        <input
+          type="text"
+          class="form-control tle"
+          placeholder=""
+          name="title"
+        />
+      </div>
 
       <h5>基本信息</h5>
       <hr />
@@ -78,6 +92,7 @@
         id="modifyUser"
         type="text"
         list="userlist"
+        class="form-control"
         name="modifyPersonID"
         @change="cheak($event)"
       />
@@ -109,6 +124,9 @@ export default {
   },
 
   methods: {
+    regain() {
+      this.$router.replace("/");
+    },
     cheak(event) {
       let i;
       for (i = 0; i < this.user.length; i++) {
@@ -156,20 +174,30 @@ td {
   padding-right: 30px;
 }
 .title {
+  margin: 3%;
   font-size: 50px;
   color: rgb(211, 35, 182);
 }
 .tle {
+  padding-top: 0px;
+  display: inline;
   outline: 0;
   font-size: 50px;
+  width: 40%;
 }
-.tie:focus {
-  border-style: solid;
-  border-color: #03a9f4;
-  box-shadow: 0 0 5px #03a9f4;
-}
+
 h5 {
   padding-top: 50px;
   font-weight: bold;
+}
+.return {
+  float: left;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  cursor: pointer;
+}
+#modifyUser {
+  width: 30%;
 }
 </style>

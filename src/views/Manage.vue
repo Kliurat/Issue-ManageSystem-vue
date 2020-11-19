@@ -1,92 +1,111 @@
 <template>
   <div class="manage">
-    <h5>查询</h5>
-    <hr />
-    <form
-      action="http://192.168.3.115:8888/selectUser"
-      method="post"
-      class="form-inline"
-    >
-      <div class="form-group">
-        <label for="userId">用户ID</label>
-        <input
-          type="text"
-          class="form-control"
-          id="userId"
-          placeholder=""
-          ref="loginID"
-        />
-      </div>
-      <div class="form-group">
-        <label for="name">用户姓名</label>
-        <input
-          type="text"
-          class="form-control"
-          id="name"
-          placeholder=""
-          ref="username"
-        />
-      </div>
-      <div class="btn">
+    <img
+      src="/pic/issue.gif"
+      alt="图片不存在"
+      title="点我返回主页"
+      class="return"
+      @click="regain()"
+    />
+    <div class="manageform">
+      <h5>查询</h5>
+      <hr />
+      <form class="form-inline">
+        <div class="form-group">
+          <label for="userId">用户ID</label>
+          <input
+            type="text"
+            class="form-control"
+            id="userId"
+            placeholder=""
+            ref="loginID"
+          />
+        </div>
+        <div class="form-group">
+          <label for="name">用户姓名</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            placeholder=""
+            ref="username"
+          />
+        </div>
+        <div class="btn">
+          <button
+            class="btn btn-default btn1"
+            id="sub"
+            type="button"
+            @click="sub()"
+          >
+            查询
+          </button>
+          <button class="btn btn-default btn1" id="reset" type="reset">
+            清空
+          </button>
+        </div>
+      </form>
+      <h5>用户信息</h5>
+      <hr />
+      <table class="table table-bordered">
+        <tr>
+          <td>序号</td>
+          <td>用户ID</td>
+          <td>用户姓名</td>
+          <td>邮箱</td>
+          <td>注册时间</td>
+          <td>用户身份</td>
+          <td>账号状态</td>
+          <td>操作</td>
+        </tr>
+        <tr v-for="(user, index) in currentPageUsers" :key="index">
+          <td>{{ user.sortID }}</td>
+          <td>{{ user.loginID }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.registeDate }}</td>
+          <td>{{ changeRole(user) }}</td>
+          <td>{{ changeStatus(user) }}</td>
+          <td>
+            <button
+              type="button"
+              class="btn btn-default btn2"
+              @click="logoff(user.loginID)"
+              v-if="user.status"
+            >
+              注销
+            </button>
+            <button
+              type="button"
+              class="btn btn-default btn2"
+              @click="promotion(user.loginID)"
+              v-if="!user.role && user.status"
+            >
+              经理
+            </button>
+          </td>
+        </tr>
+      </table>
+      <div class="pageList">
+        <button type="button" class="btn btn-default" @click="prev()">
+          <b-icon icon="caret-left-fill"></b-icon>
+        </button>
         <button
-          class="btn btn-default btn1"
-          id="sub"
-          type="button"
-          @click="sub()"
+          class="btn btn-default btn2"
+          v-for="(page, num) in page"
+          :key="num"
+          @click="to(num + 1)"
         >
-          查询
+          {{ num + 1 }}
         </button>
-        <button class="btn btn-default btn1" id="reset" type="reset">
-          清空
+        <button type="button" class="btn btn-default" @click="next()">
+          <b-icon icon="caret-right-fill"></b-icon>
         </button>
+        <button class="btn btn-default">{{ amount }}条/页</button>
+        <span>跳至</span>
+        <input type="text" @change="goto($event)" class="goto" ref="pageTo" />
+        <span>页</span>
       </div>
-    </form>
-    <h5>用户信息</h5>
-    <hr />
-    <table class="table table-bordered">
-      <tr>
-        <td>序号</td>
-        <td>用户ID</td>
-        <td>用户姓名</td>
-        <td>邮箱</td>
-        <td>注册时间</td>
-        <td>用户身份</td>
-        <td>账号状态</td>
-        <td>操作</td>
-      </tr>
-      <tr v-for="(user, index) in currentPageUsers" :key="index">
-        <td>{{ user.sortID }}</td>
-        <td>{{ user.loginID }}</td>
-        <td>{{ user.username }}</td>
-        <td>{{ user.email }}</td>
-        <td>{{ user.registeDate }}</td>
-        <td>{{ user.role }}</td>
-        <td>{{ user.status }}</td>
-        <td>
-          <button type="button" class="btn btn-default btn2">注销</button>
-          <button type="button" class="btn btn-default btn2">经理</button>
-        </td>
-      </tr>
-    </table>
-    <div class="pageList">
-      <button type="button" class="btn btn-default" @click="prev()">
-        <b-icon icon="caret-left-fill"></b-icon>
-      </button>
-      <button
-        class="btn btn-default btn2"
-        v-for="(page, num) in page"
-        :key="num"
-        @click="to(num + 1)"
-      >
-        {{ num + 1 }}
-      </button>
-      <button type="button" class="btn btn-default" @click="next()">
-        <b-icon icon="caret-right-fill"></b-icon>
-      </button>
-      <button class="btn btn-default">{{ amount }}条/页</button>
-      <span>跳至</span>
-      <input type="text" @change="goto($event)" class="goto" ref="pageTo" />
-      <span>页</span>
     </div>
   </div>
 </template>
@@ -106,9 +125,65 @@ export default {
       currentPageUsers: [],
       page: [],
       globalHttpUrl: this.COMMON.httpUrl,
+      user: {
+        sortID: "",
+        loginID: "",
+        username: "",
+        email: "",
+        registeDate: "",
+        status: "",
+        role: "",
+      },
     };
   },
   methods: {
+    regain() {
+      this.$router.replace("/");
+    },
+    logoff(loginID) {
+      const url = this.globalHttpUrl + "update/statusAndrole";
+      axios({
+        method: "post",
+        url: url,
+        data: this.$qs.stringify({
+          loginID: loginID,
+          status: 0,
+        }),
+      })
+        .then((list) => {
+          this.users = [];
+          this.page = [];
+          this.users = list.data;
+          this.total = this.users.length;
+          this.pageList();
+          this.getPageUsers();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    promotion(loginID) {
+      const url = this.globalHttpUrl + "update/statusAndrole";
+      axios({
+        method: "post",
+        url: url,
+        data: this.$qs.stringify({
+          loginID: loginID,
+          role: 1,
+        }),
+      })
+        .then((list) => {
+          this.users = [];
+          this.page = [];
+          this.users = list.data;
+          this.total = this.users.length;
+          this.pageList();
+          this.getPageUsers();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     sub() {
       const url = this.globalHttpUrl + "selectUser";
       let str1 = this.$refs.loginID.value;
@@ -149,6 +224,18 @@ export default {
       if (this.currentPage != this.page.length) this.currentPage++;
       this.getPageUsers();
     },
+    changeRole(user) {
+      let str;
+      if (user.role) str = "经理";
+      else str = "普通用户";
+      return str;
+    },
+    changeStatus(user) {
+      let str;
+      if (user.status) str = "激活";
+      else str = "已注销";
+      return str;
+    },
     getPageUsers() {
       this.currentPageUsers = [];
       if (this.page.length != 0) {
@@ -156,14 +243,6 @@ export default {
           for (let i = 0; i < this.amount; i++) {
             let j = (this.currentPage - 1) * this.amount;
             this.currentPageUsers[i] = this.users[i + j];
-            if (this.currentPageUsers[i].status == 1)
-              this.currentPageUsers[i].status = "激活";
-            if (this.currentPageUsers[i].status == 0)
-              this.currentPageUsers[i].status = "已注销";
-            if (this.currentPageUsers[i].role == 1)
-              this.currentPageUsers[i].role = "经理";
-            if (this.currentPageUsers[i].role == 0)
-              this.currentPageUsers[i].role = "普通用户";
           }
         else
           for (
@@ -173,14 +252,6 @@ export default {
           ) {
             let j = (this.currentPage - 1) * this.amount;
             this.currentPageUsers[i] = this.users[i + j];
-            if (this.currentPageUsers[i].status == 1)
-              this.currentPageUsers[i].status = "激活";
-            if (this.currentPageUsers[i].status == 0)
-              this.currentPageUsers[i].status = "已注销";
-            if (this.currentPageUsers[i].role == 1)
-              this.currentPageUsers[i].role = "经理";
-            if (this.currentPageUsers[i].role == 0)
-              this.currentPageUsers[i].role = "普通用户";
           }
       }
     },
@@ -211,8 +282,19 @@ export default {
 </script>
 
 <style scoped>
-h5 {
+.manage .return {
+  margin: 0px 37%;
+  width: 20%;
+  height: 100px;
+  cursor: pointer;
+}
+.manageform {
   padding-top: 50px;
+  width: 80%;
+  margin: auto;
+}
+h5 {
+  padding-top: 2%;
 }
 .form-inline {
   padding-top: 50px;
@@ -230,9 +312,17 @@ h5 {
 }
 .btn2 {
   padding-left: 12px;
+
   border-radius: 10px;
   border: 1px solid rgb(58, 184, 241);
   margin: 0;
-  margin-left: 10px;
+  margin-left: 5px;
+  margin-bottom: 0px;
+}
+tr {
+  height: 65px;
+}
+.table {
+  text-align: center;
 }
 </style>
