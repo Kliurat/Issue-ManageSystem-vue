@@ -2,7 +2,11 @@
   <div class="manage">
     <h5>查询</h5>
     <hr />
-    <form action="" class="form-inline">
+    <form
+      action="http://192.168.3.115:8888/selectUser"
+      method="post"
+      class="form-inline"
+    >
       <div class="form-group">
         <label for="userId">用户ID</label>
         <input
@@ -24,7 +28,12 @@
         />
       </div>
       <div class="btn">
-        <button class="btn btn-default btn1" id="sub" type="submit">
+        <button
+          class="btn btn-default btn1"
+          id="sub"
+          type="button"
+          @click="sub()"
+        >
           查询
         </button>
         <button class="btn btn-default btn1" id="reset" type="reset">
@@ -60,19 +69,24 @@
       </tr>
     </table>
     <div class="pageList">
-      <button type="button" class="btn btn-default">
+      <button type="button" class="btn btn-default" @click="prev()">
         <b-icon icon="caret-left-fill"></b-icon>
       </button>
       <button
         class="btn btn-default btn2"
         v-for="(page, num) in page"
         :key="num"
+        @click="to(num + 1)"
       >
         {{ num + 1 }}
       </button>
-      <button type="button" class="btn btn-default">
+      <button type="button" class="btn btn-default" @click="next()">
         <b-icon icon="caret-right-fill"></b-icon>
       </button>
+      <button class="btn btn-default">{{ amount }}条/页</button>
+      <span>跳至</span>
+      <input type="text" @change="goto($event)" class="goto" ref="pageTo" />
+      <span>页</span>
     </div>
   </div>
 </template>
@@ -91,14 +105,89 @@ export default {
       currentPage: 1,
       currentPageUsers: [],
       page: [],
+      user: {
+        sortID: "",
+        loginID: "",
+        username: "",
+        email: "",
+        registeDate: "",
+        role: "",
+        status: "",
+      },
     };
   },
   methods: {
+    sub() {
+      const url = "http://192.168.3.115:8888/selectUser";
+      axios({
+        method: "post",
+        url: url,
+        data: {
+          loginID: this.$refs.loginID.value,
+          username: this.$refs.username.value,
+        },
+      })
+        .then((data) => {
+          this.users = [];
+          this.users = data.data;
+          this.total = this.users.length;
+          this.getPageUsers();
+          this.pageList();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    to(num) {
+      this.currentPage = num;
+      console.log(this.currentPage);
+      this.getPageUsers();
+    },
+    goto(event) {
+      this.currentPage = event.target.value;
+      this.getPageUsers();
+      this.$refs.pageTo.value = "";
+    },
+    prev() {
+      if (this.currentPage != 1) this.currentPage--;
+      this.getPageUsers();
+    },
+    next() {
+      if (this.currentPage != this.page.length) this.currentPage++;
+      this.getPageUsers();
+    },
     getPageUsers() {
-      for (let i = 0; i < this.amount; i++) {
-        let j = (this.currentPage - 1) * 10;
-        this.currentPageUsers.push(this.users[i + j]);
-      }
+      this.currentPageUsers = [];
+      if (this.currentPage != this.page.length)
+        for (let i = 0; i < this.amount; i++) {
+          let j = (this.currentPage - 1) * this.amount;
+          this.currentPageUsers[i] = this.users[i + j];
+          if (this.currentPageUsers[i].status == 1)
+            this.currentPageUsers[i].status = "激活";
+          if (this.currentPageUsers[i].status == 0)
+            this.currentPageUsers[i].status = "已注销";
+          if (this.currentPageUsers[i].role == 1)
+            this.currentPageUsers[i].role = "经理";
+          if (this.currentPageUsers[i].role == 0)
+            this.currentPageUsers[i].role = "普通用户";
+        }
+      else
+        for (
+          let i = 0;
+          i < this.total - this.amount * (this.page.length - 1);
+          i++
+        ) {
+          let j = (this.currentPage - 1) * this.amount;
+          this.currentPageUsers[i] = this.users[i + j];
+          if (this.currentPageUsers[i].status == 1)
+            this.currentPageUsers[i].status = "激活";
+          if (this.currentPageUsers[i].status == 0)
+            this.currentPageUsers[i].status = "已注销";
+          if (this.currentPageUsers[i].role == 1)
+            this.currentPageUsers[i].role = "经理";
+          if (this.currentPageUsers[i].role == 0)
+            this.currentPageUsers[i].role = "普通用户";
+        }
     },
     pageList() {
       let j = this.total / this.amount;
@@ -107,7 +196,7 @@ export default {
     },
   },
   created() {
-    const url = "/json/users.json";
+    const url = "http://192.168.3.115:8888/selectUser";
     axios({
       method: "get",
       url: url,
@@ -138,7 +227,7 @@ h5 {
   padding-right: 10%;
 }
 .btn1 {
-  margin: 20px 80px 0px 150px;
+  margin: 20px 100px 0px 100px;
   padding-left: 12px;
   border-radius: 10px;
   border: 1px solid rgb(58, 184, 241);

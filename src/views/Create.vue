@@ -1,8 +1,8 @@
 <template>
   <div class="create">
-    <form action="http://192.168.3.37:8081/issue" class="form">
-      <span class="title" ref="title">Issue题目</span>
-      <input type="text" class="tle" placeholder="" />
+    <form action="http://192.168.3.115:8888/issue" method="post" class="form">
+      <span class="title">Issue题目</span>
+      <input type="text" class="tle" placeholder="" name="title" />
 
       <h5>基本信息</h5>
       <hr />
@@ -27,7 +27,6 @@
               type="date"
               class="form-control"
               v-model="createDate"
-              ref="createDate"
               disabled
             />
           </td>
@@ -36,15 +35,15 @@
               type="text"
               class="form-control"
               placeholder=""
-              ref="issueType"
+              name="issueType"
             />
           </td>
           <td>
-            <select class="form-control" ref="priority">
-              <option value="最高">最高</option>
-              <option value="较高">较高</option>
-              <option value="一般">一般</option>
-              <option value="低">低</option>
+            <select class="form-control" name="priority">
+              <option value="1">最高</option>
+              <option value="2">较高</option>
+              <option value="3">一般</option>
+              <option value="4">低</option>
             </select>
           </td>
         </tr>
@@ -60,11 +59,11 @@
               type="text"
               class="form-control"
               placeholder=""
-              ref="influentVersion"
+              name="influentVersion"
             />
           </td>
           <td>
-            <input type="date" class="form-control" ref="planModifyTime" />
+            <input type="date" class="form-control" name="planModifyTime" />
           </td>
           <td>
             <input type="date" class="form-control" disabled />
@@ -73,13 +72,13 @@
         </tr>
       </table>
       <h5>重现步骤</h5>
-      <textarea class="form-control" rows="3"></textarea>
+      <textarea class="form-control" rows="3" name="reStep"></textarea>
       <h5>指派修改人</h5>
       <input
         id="modifyUser"
         type="text"
         list="userlist"
-        ref="modifyUser"
+        name="modifyPersonID"
         @change="cheak($event)"
       />
       <datalist id="userlist">
@@ -92,9 +91,7 @@
       </datalist>
       <span v-show="visit">该修改人不存在</span>
       <br />
-      <button type="button" class="btn btn-default btn-lg" @click="submit()">
-        提交
-      </button>
+      <button type="submit" class="btn btn-default btn-lg">提交</button>
     </form>
   </div>
 </template>
@@ -119,6 +116,7 @@ export default {
         if (event.target.value == this.user[i].username) break;
       }
       if (i == this.user.length) this.visit = true;
+      else this.visit = false;
     },
     submit() {},
     formatDate(val) {
@@ -132,7 +130,7 @@ export default {
     },
   },
   created() {
-    const url = "http://192.168.3.37:8081/selectAll/user";
+    const url = "http://192.168.3.115:8888/selectAll/user";
     axios({
       method: "get",
       url: url,

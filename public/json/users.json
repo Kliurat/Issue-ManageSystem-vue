@@ -3,33 +3,74 @@
         "loginID": "123",
         "username": "grylag",
         "email": "grylag@163.com",
-        "registerDate": "1999/07/31",
-        "role": "咸鱼",
-        "status": "0"
+        "registeDate": "1999/07/31",
+        "role": "1",
+        "status": "-1"
     },
     {
         "sortID": "1",
         "loginID": "123",
         "username": "grylag",
         "email": "grylag@163.com",
-        "registerDate": "1999/07/31",
-        "role": "咸鱼",
-        "status": "0"
+        "registeDate": "1999/07/31",
+        "role": "1",
+        "status": "-1"
     }, {
         "sortID": "1",
         "loginID": "123",
         "username": "grylag",
         "email": "grylag@163.com",
-        "registerDate": "1999/07/31",
-        "role": "咸鱼",
-        "status": "0"
+        "registeDate": "1999/07/31",
+        "role": "1",
+        "status": "1"
     }, {
         "sortID": "1",
         "loginID": "123",
         "username": "grylag",
         "email": "grylag@163.com",
-        "registerDate": "1999/07/31",
-        "role": "咸鱼",
-        "status": "0"
+        "registeDate": "1999/07/31",
+        "role": "0",
+        "status": "-1"
+    }, {
+        "sortID": "1",
+        "loginID": "123",
+        "username": "grylag",
+        "email": "grylag@163.com",
+        "registeDate": "1999/07/31",
+        "role": "0",
+        "status": "1"
+    }, {
+        "sortID": "1",
+        "loginID": "123",
+        "username": "grylag",
+        "email": "grylag@163.com",
+        "registeDate": "1999/07/31",
+        "role": "0",
+        "status": "1"
+    }, {
+        "sortID": "1",
+        "loginID": "123",
+        "username": "grylag",
+        "email": "grylag@163.com",
+        "registeDate": "1999/07/31",
+        "role": "1",
+        "status": "1"
+    },
+    {
+        "sortID": "1",
+        "loginID": "123",
+        "username": "grylag",
+        "email": "grylag@163.com",
+        "registeDate": "1999/07/31",
+        "role": "1",
+        "status": "-1"
+    }, {
+        "sortID": "1",
+        "loginID": "123",
+        "username": "grylag",
+        "email": "grylag@163.com",
+        "registeDate": "1999/07/31",
+        "role": "1",
+        "status": "1"
     }
 ]
