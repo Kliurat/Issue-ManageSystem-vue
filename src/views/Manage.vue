@@ -1,7 +1,6 @@
 <template>
   <div class="manage">
-    <h2 class="head">查询</h2>
-        <router-link to="/" class="back">返回</router-link>
+    <h5>查询</h5>
     <hr />
     <form
       action="http://192.168.3.115:8888/selectUser"
@@ -107,34 +106,27 @@ export default {
       currentPage: 1,
       currentPageUsers: [],
       page: [],
-      user: {
-        sortID: "",
-        loginID: "",
-        username: "",
-        email: "",
-        registeDate: "",
-        role: "",
-        status: "",
-      },
+      globalHttpUrl: this.COMMON.httpUrl,
     };
   },
   methods: {
     sub() {
-      const url = "http://192.168.3.115:8888/selectUser";
+      const url = this.globalHttpUrl + "selectUser";
+      let str1 = this.$refs.loginID.value;
+      let str2 = this.$refs.username.value;
+      let str3 = { loginID: str1, username: str2 };
       axios({
         method: "post",
         url: url,
-        data: {
-          loginID: this.$refs.loginID.value,
-          username: this.$refs.username.value,
-        },
+        data: this.$qs.stringify(str3),
       })
-        .then((data) => {
+        .then((list) => {
           this.users = [];
-          this.users = data.data;
+          this.page = [];
+          this.users = list.data;
           this.total = this.users.length;
-          this.getPageUsers();
           this.pageList();
+          this.getPageUsers();
         })
         .catch((err) => {
           console.log(err);
@@ -160,45 +152,49 @@ export default {
     },
     getPageUsers() {
       this.currentPageUsers = [];
-      if (this.currentPage != this.page.length)
-        for (let i = 0; i < this.amount; i++) {
-          let j = (this.currentPage - 1) * this.amount;
-          this.currentPageUsers[i] = this.users[i + j];
-          if (this.currentPageUsers[i].status == 1)
-            this.currentPageUsers[i].status = "激活";
-          if (this.currentPageUsers[i].status == 0)
-            this.currentPageUsers[i].status = "已注销";
-          if (this.currentPageUsers[i].role == 1)
-            this.currentPageUsers[i].role = "经理";
-          if (this.currentPageUsers[i].role == 0)
-            this.currentPageUsers[i].role = "普通用户";
-        }
-      else
-        for (
-          let i = 0;
-          i < this.total - this.amount * (this.page.length - 1);
-          i++
-        ) {
-          let j = (this.currentPage - 1) * this.amount;
-          this.currentPageUsers[i] = this.users[i + j];
-          if (this.currentPageUsers[i].status == 1)
-            this.currentPageUsers[i].status = "激活";
-          if (this.currentPageUsers[i].status == 0)
-            this.currentPageUsers[i].status = "已注销";
-          if (this.currentPageUsers[i].role == 1)
-            this.currentPageUsers[i].role = "经理";
-          if (this.currentPageUsers[i].role == 0)
-            this.currentPageUsers[i].role = "普通用户";
-        }
+      if (this.page.length != 0) {
+        if (this.currentPage != this.page.length)
+          for (let i = 0; i < this.amount; i++) {
+            let j = (this.currentPage - 1) * this.amount;
+            this.currentPageUsers[i] = this.users[i + j];
+            if (this.currentPageUsers[i].status == 1)
+              this.currentPageUsers[i].status = "激活";
+            if (this.currentPageUsers[i].status == 0)
+              this.currentPageUsers[i].status = "已注销";
+            if (this.currentPageUsers[i].role == 1)
+              this.currentPageUsers[i].role = "经理";
+            if (this.currentPageUsers[i].role == 0)
+              this.currentPageUsers[i].role = "普通用户";
+          }
+        else
+          for (
+            let i = 0;
+            i < this.total - this.amount * (this.page.length - 1);
+            i++
+          ) {
+            let j = (this.currentPage - 1) * this.amount;
+            this.currentPageUsers[i] = this.users[i + j];
+            if (this.currentPageUsers[i].status == 1)
+              this.currentPageUsers[i].status = "激活";
+            if (this.currentPageUsers[i].status == 0)
+              this.currentPageUsers[i].status = "已注销";
+            if (this.currentPageUsers[i].role == 1)
+              this.currentPageUsers[i].role = "经理";
+            if (this.currentPageUsers[i].role == 0)
+              this.currentPageUsers[i].role = "普通用户";
+          }
+      }
     },
     pageList() {
+      this.page = [];
       let j = this.total / this.amount;
-      if (this.total % this.amount != 0) j++;
-      for (let i = 1; i <= j; i++) this.page.push(i);
+      for (let i = 0; i < j; i++) this.page[i] = i;
     },
   },
   created() {
     const url = "http://192.168.3.114:8888/selectUser";
+    const url = this.globalHttpUrl + "selectUser";
+
     axios({
       method: "get",
       url: url,
@@ -206,8 +202,8 @@ export default {
       .then((data) => {
         this.users = data.data;
         this.total = this.users.length;
-        this.getPageUsers();
         this.pageList();
+        this.getPageUsers();
       })
       .catch((err) => {
         console.log(err);
