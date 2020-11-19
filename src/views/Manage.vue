@@ -105,31 +105,23 @@ export default {
       currentPage: 1,
       currentPageUsers: [],
       page: [],
-      user: {
-        sortID: "",
-        loginID: "",
-        username: "",
-        email: "",
-        registeDate: "",
-        role: "",
-        status: "",
-      },
+      globalHttpUrl: this.COMMON.httpUrl,
     };
   },
   methods: {
     sub() {
-      const url = "http://192.168.3.115:8888/selectUser";
+      const url = this.globalHttpUrl + "selectUser";
+      let str1 = this.$refs.loginID.value;
+      let str2 = this.$refs.username.value;
+      let str3 = { loginID: str1, username: str2 };
       axios({
         method: "post",
         url: url,
-        data: {
-          loginID: this.$refs.loginID.value,
-          username: this.$refs.username.value,
-        },
+        data: this.$qs.stringify(str3),
       })
-        .then((data) => {
+        .then((list) => {
           this.users = [];
-          this.users = data.data;
+          this.users = list.data;
           this.total = this.users.length;
           this.getPageUsers();
           this.pageList();
@@ -190,13 +182,14 @@ export default {
         }
     },
     pageList() {
+      this.page = [];
       let j = this.total / this.amount;
-      if (this.total % this.amount != 0) j++;
-      for (let i = 1; i <= j; i++) this.page.push(i);
+      for (let i = 0; i < j; i++) this.page[i] = i;
     },
   },
   created() {
-    const url = "http://192.168.3.115:8888/selectUser";
+    const url = this.globalHttpUrl + "selectUser";
+
     axios({
       method: "get",
       url: url,
