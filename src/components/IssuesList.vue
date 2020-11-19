@@ -20,88 +20,27 @@
           </tr>
         </thead>
         <tbody id="tbody">
-          <tr>
+          <tr v-for="(list, index) in partInfo" :key="index">
             <th scope="row"><input type="checkbox" name="" id="" /></th>
-            <th>1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@xxx</td>
-            <td>@xxx</td>
-            <td>@xxx</td>
-            <td>@xxx</td>
-            <td>@xxx</td>
-            <td>@xxx</td>
-            <td><button type="button" class="btn btn-default">详情</button><button type="button" class="btn btn-default">修改</button></td>
-          </tr>
-          <tr>
-            <th scope="row"><input type="checkbox" name="" id="" /></th>
-            <th>2</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@xxx</td>
-            <td>@xxx</td>
-            <td>@xxx</td>
-            <td>@xxx</td>
-            <td>@xxx</td>
-            <td>@xxx</td>
-            <td><button type="button" class="btn btn-default">详情</button><button type="button" class="btn btn-default">修改</button></td>
-          </tr>
-          <tr>
-            <th scope="row"><input type="checkbox" name="" id="" /></th>
-            <th>3</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@xxx</td>
-            <td>@xxx</td>
-            <td>@xxx</td>
-            <td>@xxx</td>
-            <td>@xxx</td>
-            <td>@xxx</td>
-            <td><button type="button" class="btn btn-default">详情</button><button type="button" class="btn btn-default">修改</button></td>
-          </tr>
-          <tr>
-            <th scope="row"><input type="checkbox" name="" id="" /></th>
-            <th>4</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@xxx</td>
-            <td>@xxx</td>
-            <td>@xxx</td>
-            <td>@xxx</td>
-            <td>@xxx</td>
-            <td>@xxx</td>
-            <td><button type="button" class="btn btn-default">详情</button><button type="button" class="btn btn-default">修改</button></td>
-          </tr>
-          <tr>
-            <th scope="row"><input type="checkbox" name="" id="" /></th>
-            <th>5</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@xxx</td>
-            <td>@xxx</td>
-            <td>@xxx</td>
-            <td>@xxx</td>
-            <td>@xxx</td>
-            <td>@xxx</td>
-            <td><button type="button" class="btn btn-default">详情</button><button type="button" class="btn btn-default">修改</button></td>
-          </tr>
-          <tr>
-            <th scope="row"><input type="checkbox" name="" id="" /></th>
-            <th>6</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@xxx</td>
-            <td>@xxx</td>
-            <td>@xxx</td>
-            <td>@xxx</td>
-            <td>@xxx</td>
-            <td>@xxx</td>
-            <td><button type="button" class="btn btn-default">详情</button><button type="button" class="btn btn-default">修改</button></td>
+            <th>{{ index + 1}}</th>
+            <td>{{ list.role }}</td>
+            <td>{{ list.username }}</td>
+            <td>{{ list.username }}</td>
+            <td>{{ list.username }}</td>
+            <td>{{ list.username }}</td>
+            <td>{{ list.username }}</td>
+            <td>{{ list.username }}</td>
+            <td>{{ list.username }}</td>
+            <td>{{ list.username }}</td>
+            <td>
+              <button type="button" class="btn btn-default">详情</button
+              ><button type="button" class="btn btn-default">修改</button>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
-    <div id="btn_body">  
+    <div id="btn_body">
       <button class="btn btn-default glyphicon glyphicon-chevron-left"></button>
       <button type="button" class="btn btn-default">1</button>
       <button type="button" class="btn btn-default">2</button>
@@ -112,10 +51,12 @@
       <button type="button" class="btn btn-default">7</button>
       <button type="button" class="btn btn-default">8</button>
       <button type="button" class="btn btn-default">9</button>
-      <button class="btn btn-default glyphicon glyphicon-chevron-right"></button>
+      <button
+        class="btn btn-default glyphicon glyphicon-chevron-right"
+      ></button>
       <button type="button" class="btn btn-default">20条/页</button>
       <span> 跳至 </span>
-      <input type="text" id="page">
+      <input type="text" id="page" />
       <span> 页 </span>
     </div>
   </div>
@@ -124,6 +65,23 @@
 <script>
 export default {
   name: "IssuesList", //列表
+  props: ["partInfo"],
+  data() {
+    return {
+      infos: this.partInfo,
+    };
+  },
+  watch: {
+    partInfo() {
+      // console.log(this.partInfo);
+      this.infos = this.partInfo;
+    },
+  },
+  mounted() {
+    // console.log(this.partInfo)
+    this.infos = this.partInfo;
+    // console.log(this.infos)
+  },
 };
 </script>
 
@@ -152,10 +110,10 @@ export default {
 .btn-default {
   background-color: white;
 }
-#glyphicon-align-left{
+#glyphicon-align-left {
   color: gray;
 }
-.btn-default{
+.btn-default {
   margin: 10px;
 }
 #btn_body {

@@ -5,54 +5,55 @@
     <br />
     <br />
     <div class="table_all">
-      <table class="table table-hover" >
+      <table class="table table-hover">
         <tbody class="table_boay">
           <tr class="align">
-            <td scope="row">
-              Issue NO <input type="number" maxlength="30" />
-            </td>
+            <td scope="row">Issue NO <input type="number" maxlength="30" /></td>
             <td>
-              Issue 状态 
-                <select name="status" id="select">
-                  <option class="form-control"></option>
-                  <option class="form-control">待修改</option>
-                  <option class="form-control">待验证</option>
-                  <option class="form-control">已关闭</option>
-                </select>
+              Issue 状态
+              <select name="status" id="select">
+                <option class="form-control"></option>
+                <option class="form-control">待修改</option>
+                <option class="form-control">待验证</option>
+                <option class="form-control">已关闭</option>
+              </select>
             </td>
-            <td>创建时间<input type="date"> 至 <input type="date" ></td>
+            <td>创建时间<input type="date" /> 至 <input type="date" /></td>
           </tr>
           <tr class="align">
             <td scope="row" id="create">
-              创建人 <input type="text" maxlength="30" :value="createName"/>
-            <td id="modify">
-              修改人 <input type="text" maxlength="30" :placeholder="modifierName"/>
+              创建人 <input type="text" maxlength="30" :value="createName" />
             </td>
-            <td>修改时间<input type="date"> 至 <input type="date" ></td>
+
+            <td id="modify">
+              修改人
+              <input type="text" maxlength="30" :placeholder="modifierName" />
+            </td>
+            <td>修改时间<input type="date" /> 至 <input type="date" /></td>
           </tr>
         </tbody>
       </table>
     </div>
-    
+
     <div id="button">
       <button type="button" class="btn btn-info" @click="inquire">查询</button>
-      <button type="button" class="btn btn-default">清空</button>
+      <button type="button" class="btn btn-default" @click="clear">清空</button>
     </div>
-    
   </div>
 </template>
 
 <script>
-import axios from 'axios'
+import axios from "axios";
 export default {
   name: "Inquire", //查询
-  data(){
+  data() {
     return {
-      issueID : '',
+      issueID: "",
       issueList: [],
-      createName: '',
-      modifierName: ''
-    }
+      arrayList: [],
+      createName: "",
+      modifierName: "",
+    };
   },
   created() {
     const url = "/json/users.json";
@@ -61,20 +62,37 @@ export default {
       url: url,
     })
       .then((data) => {
-        this.issueList = data.data
-        this.modifierName = this.issueList[1].username
+        this.arrayList = data.data;
+        this.issueList = this.arrayList;
+        // console.log(this.issueList)
+        this.modifierName = this.arrayList[1].username;
+        
       })
       .catch((err) => {
         console.log(err);
       });
   },
   methods: {
-    inquire: function(){
-      this.issueID = this.issueList[1].loginID
-      this.createName = this.issueList[1].role
-      this.modifierName = this.issueList[1].username
-    }
-  }
+    inquire: function() {
+      this.issueList = this.arrayList;
+        // console.log(result)
+        let partInfo = this.issueList;
+        // console.log(partInfo)
+        this.$emit("callBackInfo", this.issueList);
+        // console.log(50050)
+        
+      this.issueID = this.issueList[1].loginID;
+      this.createName = this.issueList[1].role;
+      this.modifierName = this.issueList[1].username;
+    },
+    clear: function() {
+      this.issueList = [];
+      this.issueID = [];
+      this.createName = [];
+      this.modifierName = [];
+      // console.log(this.issueList)
+    },
+  },
 };
 </script>
 
@@ -85,7 +103,7 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 #Inquire_body {
-  background-color: #E4C9E4;
+  background-color: #e4c9e4;
   left: 0;
   top: 0;
   width: 100%;
@@ -103,21 +121,22 @@ input::-webkit-inner-spin-button {
 #create {
   padding-left: 28px;
 }
-#select{
+#select {
   width: 174px;
   height: 30px;
 }
 #modify {
   padding-left: 38px;
 }
-.align{
+.align {
   padding-left: 50px;
 }
-#button{
-  margin-top: 20px;  text-align:center;
+#button {
+  margin-top: 20px;
+  text-align: center;
 }
-#button button{
-  margin: 20px; 
+#button button {
+  margin: 20px;
   width: 100px;
 }
 .table_boay {
@@ -130,10 +149,9 @@ input::-webkit-inner-spin-button {
   margin-bottom: 20px;
   margin-left: 20px;
 }
-.table_all{
+.table_all {
   margin: 20px;
   margin-right: 60px;
   padding-left: 100px;
 }
-
 </style>
