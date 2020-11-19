@@ -121,10 +121,11 @@ export default {
       })
         .then((list) => {
           this.users = [];
+          this.page = [];
           this.users = list.data;
           this.total = this.users.length;
-          this.getPageUsers();
           this.pageList();
+          this.getPageUsers();
         })
         .catch((err) => {
           console.log(err);
@@ -150,36 +151,38 @@ export default {
     },
     getPageUsers() {
       this.currentPageUsers = [];
-      if (this.currentPage != this.page.length)
-        for (let i = 0; i < this.amount; i++) {
-          let j = (this.currentPage - 1) * this.amount;
-          this.currentPageUsers[i] = this.users[i + j];
-          if (this.currentPageUsers[i].status == 1)
-            this.currentPageUsers[i].status = "激活";
-          if (this.currentPageUsers[i].status == 0)
-            this.currentPageUsers[i].status = "已注销";
-          if (this.currentPageUsers[i].role == 1)
-            this.currentPageUsers[i].role = "经理";
-          if (this.currentPageUsers[i].role == 0)
-            this.currentPageUsers[i].role = "普通用户";
-        }
-      else
-        for (
-          let i = 0;
-          i < this.total - this.amount * (this.page.length - 1);
-          i++
-        ) {
-          let j = (this.currentPage - 1) * this.amount;
-          this.currentPageUsers[i] = this.users[i + j];
-          if (this.currentPageUsers[i].status == 1)
-            this.currentPageUsers[i].status = "激活";
-          if (this.currentPageUsers[i].status == 0)
-            this.currentPageUsers[i].status = "已注销";
-          if (this.currentPageUsers[i].role == 1)
-            this.currentPageUsers[i].role = "经理";
-          if (this.currentPageUsers[i].role == 0)
-            this.currentPageUsers[i].role = "普通用户";
-        }
+      if (this.page.length != 0) {
+        if (this.currentPage != this.page.length)
+          for (let i = 0; i < this.amount; i++) {
+            let j = (this.currentPage - 1) * this.amount;
+            this.currentPageUsers[i] = this.users[i + j];
+            if (this.currentPageUsers[i].status == 1)
+              this.currentPageUsers[i].status = "激活";
+            if (this.currentPageUsers[i].status == 0)
+              this.currentPageUsers[i].status = "已注销";
+            if (this.currentPageUsers[i].role == 1)
+              this.currentPageUsers[i].role = "经理";
+            if (this.currentPageUsers[i].role == 0)
+              this.currentPageUsers[i].role = "普通用户";
+          }
+        else
+          for (
+            let i = 0;
+            i < this.total - this.amount * (this.page.length - 1);
+            i++
+          ) {
+            let j = (this.currentPage - 1) * this.amount;
+            this.currentPageUsers[i] = this.users[i + j];
+            if (this.currentPageUsers[i].status == 1)
+              this.currentPageUsers[i].status = "激活";
+            if (this.currentPageUsers[i].status == 0)
+              this.currentPageUsers[i].status = "已注销";
+            if (this.currentPageUsers[i].role == 1)
+              this.currentPageUsers[i].role = "经理";
+            if (this.currentPageUsers[i].role == 0)
+              this.currentPageUsers[i].role = "普通用户";
+          }
+      }
     },
     pageList() {
       this.page = [];
@@ -197,8 +200,8 @@ export default {
       .then((data) => {
         this.users = data.data;
         this.total = this.users.length;
-        this.getPageUsers();
         this.pageList();
+        this.getPageUsers();
       })
       .catch((err) => {
         console.log(err);
