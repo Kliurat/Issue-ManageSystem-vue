@@ -8,28 +8,28 @@
       <table class="table table-hover">
         <tbody class="table_boay">
           <tr class="align">
-            <td scope="row">Issue NO <input type="number" maxlength="30" /></td>
+            <td scope="row">Issue NO <input type="number" maxlength="30" ref="Issue_NO"/></td>
             <td>
               Issue 状态
-              <select name="status" id="select">
-                <option class="form-control"></option>
+              <select name="status" id="select" ref="select">
+                <option class="form-control" selected="selected"></option>
                 <option class="form-control">待修改</option>
                 <option class="form-control">待验证</option>
                 <option class="form-control">已关闭</option>
-              </select>
+              </select>   
             </td>
-            <td>创建时间<input type="date" /> 至 <input type="date" /></td>
+            <td>创建时间<input type="date" ref="create_time"/> 至 <input type="date" ref="create_time1"/></td>
           </tr>
           <tr class="align">
             <td scope="row" id="create">
-              创建人 <input type="text" maxlength="30" :value="createName" />
+              创建人 <input type="text" maxlength="30" ref="create"/>
             </td>
 
             <td id="modify">
               修改人
-              <input type="text" maxlength="30" :placeholder="modifierName" />
+              <input type="text" maxlength="30" :placeholder="modifierName" ref="modify"/>
             </td>
-            <td>修改时间<input type="date" /> 至 <input type="date" /></td>
+            <td>修改时间<input type="date" ref="modify_time"/> 至 <input type="date" ref="modify_time1"/></td>
           </tr>
         </tbody>
       </table>
@@ -86,11 +86,19 @@ export default {
       this.modifierName = this.issueList[1].username;
     },
     clear: function() {
-      this.issueList = [];
-      this.issueID = [];
-      this.createName = [];
-      this.modifierName = [];
-      // console.log(this.issueList)
+      // this.issueList = [];
+      // this.issueID = [];
+      // this.createName = [];
+      // this.modifierName = [];
+      this.$refs.Issue_NO.value = ''
+      this.$refs.create.value = ''
+      this.$refs.modify.value = ''
+      this.$refs.create_time.value = ''
+      this.$refs.create_time1.value = ''
+      this.$refs.modify_time.value = ''
+      this.$refs.modify_time1.value = ''
+      this.$refs.select.value = ''
+      this.modifierName = null
     },
   },
 };
