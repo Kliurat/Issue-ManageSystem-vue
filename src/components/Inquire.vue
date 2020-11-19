@@ -73,7 +73,7 @@ export default {
       });
   },
   methods: {
-    inquire: function() {
+    inquire() {
       this.issueList = this.arrayList;
         // console.log(result)
         let partInfo = this.issueList;
@@ -85,7 +85,7 @@ export default {
       this.createName = this.issueList[1].role;
       this.modifierName = this.issueList[1].username;
     },
-    clear: function() {
+    clear() {
       // this.issueList = [];
       // this.issueID = [];
       // this.createName = [];
