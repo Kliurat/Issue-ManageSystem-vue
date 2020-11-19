@@ -17,7 +17,7 @@
       <button type="button" class="btn btn-default" @click="goToCreate">
         创建新Issue
       </button>
-      <button type="button" class="btn btn-default" @click="isShowDate">
+      <button type="button" class="btn btn-default" @click="goToReport">
         Issue 报表
       </button>
       <button type="button" class="btn btn-default" @click="goToManage">
@@ -29,7 +29,7 @@
     <div>
       <Inquire @callBackInfo="handleInfo"></Inquire>
 
-      <IssuesList :partInfo="infos" v-show="isShow"></IssuesList>
+      <IssuesList :partInfo="infos"></IssuesList>
     </div>
   </div>
 </template>
@@ -45,14 +45,10 @@ export default {
   },
   data() {
     return {
-      isShow: true,
       infos: [],
     };
   },
   methods: {
-    isShowDate: function() {
-      this.isShow = !this.isShow;
-    },
     goToCreate: function() {
       this.$router.replace("/create");
     },
@@ -67,6 +63,9 @@ export default {
     },
     goToRegistered: function() {
       this.$router.replace("/registered");
+    },
+    goToReport: function() {
+      this.$router.replace("/report");
     },
 
     handleInfo(data) {

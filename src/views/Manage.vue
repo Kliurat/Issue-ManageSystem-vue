@@ -1,6 +1,7 @@
 <template>
   <div class="manage">
-    <h5>查询</h5>
+    <h2 class="head">查询</h2>
+        <router-link to="/" class="back">返回</router-link>
     <hr />
     <form
       action="http://192.168.3.115:8888/selectUser"
@@ -68,6 +69,7 @@
         </td>
       </tr>
     </table>
+
     <div class="pageList">
       <button type="button" class="btn btn-default" @click="prev()">
         <b-icon icon="caret-left-fill"></b-icon>
@@ -196,7 +198,7 @@ export default {
     },
   },
   created() {
-    const url = "http://192.168.3.115:8888/selectUser";
+    const url = "http://192.168.3.114:8888/selectUser";
     axios({
       method: "get",
       url: url,
@@ -215,6 +217,10 @@ export default {
 </script>
 
 <style scoped>
+.head {
+  margin-bottom: 20px;
+  margin-left: 20px;
+}
 h5 {
   padding-top: 50px;
 }

@@ -1,6 +1,28 @@
 <template>
   <div id="IssuesList_body">
-    <h2 class="head">Issue列表</h2>
+    <h2 class="head">查询条件</h2>
+    <router-link to="/" class="back">返回</router-link>
+    <div class="link-top"></div>
+    <form action="/json/users.json" method="post" class="form-inline">
+      <div class="form-group">
+        <label for="userId">用户ID</label>
+        <input type="text" class="form-control" id="userId" placeholder="" ref="loginID" maxlength="30"/>
+      </div>
+      <div class="form-group">
+        <label for="name">用户姓名</label>
+        <input type="text" class="form-control" id="name" placeholder="" ref="username" maxlength="30"/>
+      </div>
+      <div class="btn">
+        <button class="btn btn-default btn1" id="sub" type="button" @click="sub()">
+          查询
+        </button>
+        <button class="btn btn-default btn1" id="reset" type="reset" @click="clear">
+          清空
+        </button>
+      </div>
+    </form>
+    <br />
+    <h2 class="head">统计报表</h2>
     <div class="link-top"></div>
     <div id="table_boay">
       <table class="table table-striped ">
@@ -8,34 +30,24 @@
           <tr>
             <th><input type="checkbox" name="" id="" /></th>
             <th>序号</th>
-            <th>Issue ID</th>
-            <th>Issue 标题</th>
-            <th>创建人</th>
-            <th>创建时间</th>
-            <th>修改人</th>
-            <th>Issue 状态</th>
-            <th>计划完成时间</th>
-            <th>实际完成时间</th>
-            <th>操作</th>
+            <th>用户ID</th>
+            <th>用户姓名</th>
+            <th>创建Issue数</th>
+            <th>收到Issue数</th>
+            <th>修改Issue数</th>
+            <th>完成率</th>
           </tr>
         </thead>
         <tbody id="tbody">
-          <tr v-for="(list, index) in partInfo" :key="index">
+          <tr v-for="(user, index) in currentPageUsers" :key="index">
             <th scope="row"><input type="checkbox" name="" id="" /></th>
-            <th>{{ index + 1 }}</th>
-            <td>{{ list.role }}</td>
-            <td>{{ list.username }}</td>
-            <td>{{ list.username }}</td>
-            <td>{{ list.username }}</td>
-            <td>{{ list.username }}</td>
-            <td>{{ list.username }}</td>
-            <td>{{ list.username }}</td>
-            <td>{{ list.username }}</td>
-            <td>{{ list.username }}</td>
-            <td>
-              <button type="button" class="btn btn-default">详情</button
-              ><button type="button" class="btn btn-default">修改</button>
-            </td>
+            <th>{{ user.sortID }}</th>
+            <td>{{ user.sortID }}</td>
+            <td>{{ user.loginID }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.registeDate }}</td>
+            <td>{{ user.role }}</td>
           </tr>
         </tbody>
       </table>
@@ -64,13 +76,11 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from "axios";
 export default {
-  name: "IssuesList", //列表
-  props: ["partInfo"],
+  name: "Report", //报表
   data() {
     return {
-      infos: this.partInfo,
       users: [],
       total: 0,
       amount: 20,
@@ -88,10 +98,24 @@ export default {
       },
     };
   },
+  mounted() {
+    const url = "/json/users.json";
+    axios({
+      method: "get",
+      url: url,
+    })
+      .then((data) => {
+        this.arrayList = data.data;
+        // console.log(this.issueList)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
   methods: {
-    clear() {
-      this.$refs.loginID.value = null;
-      this.$refs.username.value = null;
+    clear(){
+        this.$refs.loginID.value = null
+        this.$refs.username.value = null
     },
     sub() {
       const url = "/json/users.json";
@@ -155,19 +179,8 @@ export default {
       for (let i = 1; i <= j; i++) this.page.push(i);
     },
   },
-  watch: {
-    partInfo() {
-      // console.log(this.partInfo);
-      this.infos = this.partInfo;
-    },
-  },
-  mounted() {
-    // console.log(this.partInfo)
-    this.infos = this.partInfo;
-    // console.log(this.infos)
-  },
-  created() {
-    const url = "/json/users.json";
+  created(){
+      const url = "/json/users.json";
     axios({
       method: "get",
       url: url,
@@ -181,18 +194,11 @@ export default {
       .catch((err) => {
         console.log(err);
       });
-  },
+  }
 };
 </script>
 
 <style scoped>
-#IssuesList_body {
-  background-color: #e4c9e4;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-}
 .head {
   margin-bottom: 20px;
   margin-left: 20px;
@@ -207,18 +213,14 @@ export default {
   height: 1px;
   border-top: dashed black 1px;
 }
-.btn-default {
-  background-color: white;
-}
+
 #glyphicon-align-left {
   color: gray;
 }
 .btn-default {
   margin: 10px;
 }
-#btn_body {
-  text-align: center;
-}
+
 #page {
   width: 55.484px;
   margin: 10px;
@@ -226,13 +228,6 @@ export default {
   border: 1px;
   padding: 12px;
   border-radius: 5px;
-}
-#tbody .btn-default {
-  padding-left: 12px;
-  border-radius: 10px;
-  border: 1px solid rgb(58, 184, 241);
-  margin: 0;
-  margin-left: 10px;
 }
 .form-inline {
   padding-top: 50px;
@@ -254,5 +249,8 @@ export default {
   border: 1px solid rgb(58, 184, 241);
   margin: 0;
   margin-left: 10px;
+}
+.back {
+    position: relative;
 }
 </style>
