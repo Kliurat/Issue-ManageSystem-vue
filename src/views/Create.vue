@@ -1,6 +1,6 @@
 <template>
   <div class="create">
-    <form action="http://192.168.3.115:8888/issue" method="post" class="form">
+    <form action="" method="post" class="form">
       <div>
         <img
           src="/pic/return.gif"
@@ -14,7 +14,8 @@
           type="text"
           class="form-control tle"
           placeholder=""
-          name="title"
+          ref="title"
+          maxlength="80"
         />
       </div>
 
@@ -41,6 +42,7 @@
               type="date"
               class="form-control"
               v-model="createDate"
+              ref="createDate"
               disabled
             />
           </td>
@@ -49,11 +51,12 @@
               type="text"
               class="form-control"
               placeholder=""
-              name="issueType"
+              ref="issueType"
+              maxlength="30"
             />
           </td>
           <td>
-            <select class="form-control" name="priority">
+            <select class="form-control" ref="priority">
               <option value="1">最高</option>
               <option value="2">较高</option>
               <option value="3" selected>一般</option>
@@ -73,28 +76,46 @@
               type="text"
               class="form-control"
               placeholder=""
-              name="influentVersion"
+              ref="influentVersion"
             />
           </td>
           <td>
-            <input type="date" class="form-control" placeholder="请输入时间" name="planModifyTime" />
+            <input
+              type="date"
+              class="form-control"
+              placeholder="请输入时间"
+              ref="planModifyTime"
+              required="required"
+              @change="checkTime($event)"
+            />
           </td>
           <td>
-            <input type="text" class="form-control"  placeholder="系统自动生成" disabled />
+            <input
+              type="text"
+              class="form-control"
+              placeholder="系统自动生成"
+              disabled
+            />
           </td>
           <td></td>
         </tr>
       </table>
       <h5>重现步骤</h5>
-      <textarea class="form-control" rows="3" name="reStep"></textarea>
+      <textarea
+        class="form-control"
+        rows="3"
+        ref="reStep"
+        maxlength="2000"
+      ></textarea>
       <h5>指派修改人</h5>
       <input
         id="modifyUser"
         type="text"
         list="userlist"
         class="form-control"
-        name="modifyPersonID"
-        @change="cheak($event)"
+        ref="modifyPersonID"
+        @change="check($event)"
+        placeholder=""
       />
       <datalist id="userlist">
         <option
@@ -104,9 +125,12 @@
           v-text="'姓名:' + user.username"
         ></option>
       </datalist>
-      <span v-show="visit">该修改人不存在</span>
+      <span v-show="visit">该修改人不存在或输入错误,请输入修改人ID</span>
+
       <br />
-      <button type="submit" class="btn btn-default btn-lg">提交</button>
+      <button type="button" class="btn btn-default btn-lg" @click="submit()">
+        提交
+      </button>
     </form>
   </div>
 </template>
@@ -120,24 +144,67 @@ export default {
       createDate: new Date(),
       user: [],
       visit: false,
+      globalHttpUrl: this.COMMON.httpUrl,
     };
   },
 
   methods: {
-
     regain() {
       this.$router.replace("/");
     },
-    cheak(event) {
+    checkTime(event) {
+      if (this.createDate > event.target.value) {
+        alert("计划修改时间输入错误！！！");
+        event.target.value = "";
+      }
+    },
+    check(event) {
       let i;
       for (i = 0; i < this.user.length; i++) {
         if (event.target.value == this.user[i].loginID) break;
-        if (event.target.value == this.user[i].username) break;
       }
       if (i == this.user.length) this.visit = true;
       else this.visit = false;
     },
-    submit() {},
+    submit() {
+      if (
+        this.$refs.planModifyTime.value != "" &&
+        this.$refs.title.value != "" &&
+        this.$refs.influentVersion.value != "" &&
+        this.$refs.issueType.value != "" &&
+        this.$refs.modifyPersonID.value != "" &&
+        this.$refs.reStep.value != ""
+      ) {
+        const url = this.globalHttpUrl + "issue";
+        axios({
+          method: "post",
+          url: url,
+          data: this.$qs.stringify({
+            title: this.$refs.title.value,
+            issueType: this.$refs.issueType.value,
+            priority: this.$refs.priority.value,
+            influentVersion: this.$refs.influentVersion.value,
+            planModifyTime: this.$refs.planModifyTime.value,
+            reStep: this.$refs.reStep.value,
+            modifyPersonID: this.$refs.modifyPersonID.value,
+          }),
+        })
+          .then((data) => {
+            let result = data.data;
+            if (result.status == 200) {
+              alert(result.msg);
+              this.regain();
+            } else {
+              alert(result.msg);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        alert("Issue信息输入不完整!!!!");
+      }
+    },
     formatDate(val) {
       let date = new Date(val);
       let y = date.getFullYear();
@@ -149,7 +216,7 @@ export default {
     },
   },
   created() {
-    const url = "http://192.168.3.115:8888/selectAll/user";
+    const url = this.globalHttpUrl + "selectAll/user";
     axios({
       method: "get",
       url: url,

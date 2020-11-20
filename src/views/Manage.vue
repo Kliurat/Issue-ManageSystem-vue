@@ -19,6 +19,7 @@
             id="userId"
             placeholder=""
             ref="loginID"
+            maxlength="30"
           />
         </div>
         <div class="form-group">
@@ -29,6 +30,7 @@
             id="name"
             placeholder=""
             ref="username"
+            maxlength="30"
           />
         </div>
         <div class="btn">
