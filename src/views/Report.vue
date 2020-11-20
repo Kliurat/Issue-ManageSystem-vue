@@ -40,14 +40,14 @@
         </thead>
         <tbody id="tbody">
           <tr v-for="(user, index) in currentPageUsers" :key="index">
-            <th scope="row"><input type="checkbox" name="" id="" /></th>
-            <th>{{ user.sortID }}</th>
-            <td>{{ user.sortID }}</td>
-            <td>{{ user.loginID }}</td>
+            <td scope="row"><input type="checkbox" name="" /></td>
+            <td>{{ user.id }}</td>
+            <td>{{ user.userId }}</td>
             <td>{{ user.username }}</td>
-            <td>{{ user.email }}</td>
-            <td>{{ user.registeDate }}</td>
-            <td>{{ user.role }}</td>
+            <td>{{ user.createCount }}</td>
+            <td>{{ user.receiveCount }}</td>
+            <td>{{ user.modifyCount }}</td>
+            <td>{{ user.finishedPer }}%</td>
           </tr>
         </tbody>
       </table>
@@ -87,6 +87,7 @@ export default {
       currentPage: 1,
       currentPageUsers: [],
       page: [],
+      globalHttpUrl: this.COMMON.httpUrl,
       user: {
         sortID: "",
         loginID: "",
@@ -98,41 +99,30 @@ export default {
       },
     };
   },
-  mounted() {
-    const url = "/json/users.json";
-    axios({
-      method: "get",
-      url: url,
-    })
-      .then((data) => {
-        this.arrayList = data.data;
-        // console.log(this.issueList)
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  },
+
   methods: {
     clear(){
         this.$refs.loginID.value = null
         this.$refs.username.value = null
     },
     sub() {
-      const url = "/json/users.json";
+      const url = this.globalHttpUrl + "issue/report";
+      let str1 = this.$refs.loginID.value;
+      let str2 = this.$refs.username.value;
+      let str3 = { loginID: str1, username: str2 };
       axios({
         method: "post",
         url: url,
-        data: {
-          loginID: this.$refs.loginID.value,
-          username: this.$refs.username.value,
-        },
+        data: this.$qs.stringify(str3),
       })
-        .then((data) => {
+        .then((list) => {
           this.users = [];
-          this.users = data.data;
+          this.page = [];
+          this.users = list.data.data;
+          console.log(list)
           this.total = this.users.length;
-          this.getPageUsers();
           this.pageList();
+          this.getPageUsers();
         })
         .catch((err) => {
           console.log(err);
@@ -180,13 +170,14 @@ export default {
     },
   },
   created(){
-      const url = "/json/users.json";
+      const url = this.globalHttpUrl+"issue/report";
     axios({
       method: "get",
       url: url,
     })
       .then((data) => {
-        this.users = data.data;
+        this.users = data.data.data;
+        // console.log(this.users)
         this.total = this.users.length;
         this.getPageUsers();
         this.pageList();
