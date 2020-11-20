@@ -89,31 +89,6 @@ export default {
     };
   },
   methods: {
-    clear() {
-      this.$refs.loginID.value = null;
-      this.$refs.username.value = null;
-    },
-    sub() {
-      const url = "/json/users.json";
-      axios({
-        method: "post",
-        url: url,
-        data: {
-          loginID: this.$refs.loginID.value,
-          username: this.$refs.username.value,
-        },
-      })
-        .then((data) => {
-          this.users = [];
-          this.users = data.data;
-          this.total = this.users.length;
-          this.getPageUsers();
-          this.pageList();
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
     to(num) {
       this.currentPage = num;
       console.log(this.currentPage);
@@ -154,33 +129,6 @@ export default {
       if (this.total % this.amount != 0) j++;
       for (let i = 1; i <= j; i++) this.page.push(i);
     },
-  },
-  watch: {
-    partInfo() {
-      // console.log(this.partInfo);
-      this.infos = this.partInfo;
-    },
-  },
-  mounted() {
-    // console.log(this.partInfo)
-    this.infos = this.partInfo;
-    // console.log(this.infos)
-  },
-  created() {
-    const url = "/json/users.json";
-    axios({
-      method: "get",
-      url: url,
-    })
-      .then((data) => {
-        this.users = data.data;
-        this.total = this.users.length;
-        this.getPageUsers();
-        this.pageList();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   },
 };
 </script>
