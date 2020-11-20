@@ -122,7 +122,7 @@ export default {
     return {
       users: [],
       total: 0,
-      amount: 3,
+      amount: 20,
       currentPage: 1,
       currentPageUsers: [],
       page: [],
