@@ -56,7 +56,7 @@
             <select class="form-control" name="priority">
               <option value="1">最高</option>
               <option value="2">较高</option>
-              <option value="3">一般</option>
+              <option value="3" selected>一般</option>
               <option value="4">低</option>
             </select>
           </td>
@@ -77,10 +77,10 @@
             />
           </td>
           <td>
-            <input type="date" class="form-control" name="planModifyTime" />
+            <input type="date" class="form-control" placeholder="请输入时间" name="planModifyTime" />
           </td>
           <td>
-            <input type="date" class="form-control" disabled />
+            <input type="text" class="form-control"  placeholder="系统自动生成" disabled />
           </td>
           <td></td>
         </tr>
@@ -124,6 +124,7 @@ export default {
   },
 
   methods: {
+
     regain() {
       this.$router.replace("/");
     },
