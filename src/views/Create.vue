@@ -56,7 +56,7 @@
             />
           </td>
           <td>
-            <select class="form-control" ref="priority">
+            <select class="form-control" ref="priority" id="sel">
               <option value="1">最高</option>
               <option value="2">较高</option>
               <option value="3" selected>一般</option>
@@ -267,5 +267,8 @@ h5 {
 }
 #modifyUser {
   width: 30%;
+}
+#sel {
+  width: 82px;
 }
 </style>
