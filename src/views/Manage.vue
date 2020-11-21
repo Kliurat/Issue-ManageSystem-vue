@@ -1,5 +1,8 @@
 <template>
   <div class="manage">
+    <div class="background">
+      <img src="/pic/1.jpg" width="100%" height="100%" alt="" />
+    </div>
     <img
       src="/pic/issue.gif"
       alt="图片不存在"
@@ -208,24 +211,24 @@ export default {
           console.log(err);
         });
     },
-    // to(num) {
-    //   this.currentPage = num;
-    //   console.log(this.currentPage);
-    //   this.getPageUsers();
-    // },
-    // goto(event) {
-    //   this.currentPage = event.target.value;
-    //   this.getPageUsers();
-    //   this.$refs.pageTo.value = "";
-    // },
-    // prev() {
-    //   if (this.currentPage != 1) this.currentPage--;
-    //   this.getPageUsers();
-    // },
-    // next() {
-    //   if (this.currentPage != this.page.length) this.currentPage++;
-    //   this.getPageUsers();
-    // },
+    to(num) {
+      this.currentPage = num;
+      console.log(this.currentPage);
+      this.getPageUsers();
+    },
+    goto(event) {
+      this.currentPage = event.target.value;
+      this.getPageUsers();
+      this.$refs.pageTo.value = "";
+    },
+    prev() {
+      if (this.currentPage != 1) this.currentPage--;
+      this.getPageUsers();
+    },
+    next() {
+      if (this.currentPage != this.page.length) this.currentPage++;
+      this.getPageUsers();
+    },
     changeRole(user) {
       let str;
       if (user.role) str = "经理";
@@ -238,47 +241,47 @@ export default {
       else str = "已注销";
       return str;
     },
-    // getPageUsers() {
-    //   this.currentPageUsers = [];
-    //   if (this.page.length != 0) {
-    //     if (this.currentPage != this.page.length)
-    //       for (let i = 0; i < this.amount; i++) {
-    //         let j = (this.currentPage - 1) * this.amount;
-    //         this.currentPageUsers[i] = this.users[i + j];
-    //       }
-    //     else
-    //       for (
-    //         let i = 0;
-    //         i < this.total - this.amount * (this.page.length - 1);
-    //         i++
-    //       ) {
-    //         let j = (this.currentPage - 1) * this.amount;
-    //         this.currentPageUsers[i] = this.users[i + j];
-    //       }
-    //   }
-    // },
-    // pageList() {
-    //   this.page = [];
-    //   let j = this.total / this.amount;
-    //   for (let i = 0; i < j; i++) this.page[i] = i;
-    // },
+    getPageUsers() {
+      this.currentPageUsers = [];
+      if (this.page.length != 0) {
+        if (this.currentPage != this.page.length)
+          for (let i = 0; i < this.amount; i++) {
+            let j = (this.currentPage - 1) * this.amount;
+            this.currentPageUsers[i] = this.users[i + j];
+          }
+        else
+          for (
+            let i = 0;
+            i < this.total - this.amount * (this.page.length - 1);
+            i++
+          ) {
+            let j = (this.currentPage - 1) * this.amount;
+            this.currentPageUsers[i] = this.users[i + j];
+          }
+      }
+    },
+    pageList() {
+      this.page = [];
+      let j = this.total / this.amount;
+      for (let i = 0; i < j; i++) this.page[i] = i;
+    },
   },
-  // created() {
-  //   const url = this.globalHttpUrl + "selectUser";
-  //   axios({
-  //     method: "get",
-  //     url: url,
-  //   })
-  //     .then((data) => {
-  //       this.users = data.data;
-  //       this.total = this.users.length;
-  //       this.pageList();
-  //       this.getPageUsers();
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // },
+  created() {
+    const url = this.globalHttpUrl + "selectUser";
+    axios({
+      method: "get",
+      url: url,
+    })
+      .then((data) => {
+        this.users = data.data;
+        this.total = this.users.length;
+        this.pageList();
+        this.getPageUsers();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
 };
 </script>
 
@@ -325,5 +328,20 @@ tr {
 }
 .table {
   text-align: center;
+}
+.pageList {
+  text-align: center;
+}
+.background {
+  width: 100%;
+  height: 100%; /**宽高100%是为了图片铺满屏幕 */
+  z-index: -1;
+  position: fixed;
+}
+input {
+  background-color: transparent;
+}
+.goto {
+  width: 100px;
 }
 </style>

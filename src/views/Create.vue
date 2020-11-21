@@ -1,5 +1,8 @@
 <template>
   <div class="create">
+    <div class="background">
+      <img src="/pic/1.jpg" width="100%" height="100%" alt="" />
+    </div>
     <form action="" method="post" class="form">
       <div>
         <img
@@ -270,5 +273,17 @@ h5 {
 }
 #sel {
   width: 82px;
+}
+.background {
+  width: 100%;
+  height: 100%; /**宽高100%是为了图片铺满屏幕 */
+  z-index: -1;
+  position: absolute;
+}
+input {
+  background-color: transparent;
+}
+textarea {
+  background-color: transparent;
 }
 </style>
