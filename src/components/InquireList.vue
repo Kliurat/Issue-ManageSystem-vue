@@ -36,7 +36,7 @@
                 <input
                   type="text"
                   maxlength="30"
-                  :placeholder="modifierName"
+                  v-model="modifyUser"
                   ref="modify"
                 />
               </td>
@@ -50,12 +50,8 @@
       </div>
 
       <div id="button">
-        <button type="button" class="btn btn-info" @click="sub()">
-          查询
-        </button>
-        <button type="button" class="btn btn-default" @click="clear">
-          清空
-        </button>
+        <button type="button" class="btn btn-info" @click="sub()">查询</button>
+        <button type="reset" class="btn btn-default">清空</button>
       </div>
     </div>
 
@@ -63,12 +59,12 @@
       <h2 class="head">Issue列表</h2>
       <div class="link-top"></div>
       <div id="table_boay">
-        <table class="table table-striped ">
+        <table class="table table-striped">
           <thead>
             <tr>
               <th><input type="checkbox" name="" id="" /></th>
               <th>序号</th>
-              <th style="width:100px">Issue ID</th>
+              <th style="width: 100px">Issue ID</th>
               <th>Issue 标题</th>
               <th>创建人</th>
               <th>创建时间</th>
@@ -88,7 +84,7 @@
               <td>{{ list.createPersonID }}</td>
               <td>{{ list.createDate }}</td>
               <td>{{ list.modifyPersonID }}</td>
-              <td>{{ (showStatus(list.status)) }}</td>
+              <td>{{ showStatus(list.status) }}</td>
               <td>{{ list.planModifyTime }}</td>
               <td>{{ list.actualComplteTime }}</td>
               <td>
@@ -99,9 +95,13 @@
                 >
                   详情
                 </button>
-                <button type="button" class="btn btn-default"
+                <button
+                  type="button"
+                  class="btn btn-default"
                   v-if="list.status > -1"
-                >修改</button>
+                >
+                  修改
+                </button>
               </td>
             </tr>
           </tbody>
@@ -120,7 +120,12 @@
         >
           {{ num + 1 }}
         </button>
-        <button type="button" class="btn btn-default" @click="next()" id="Noright">
+        <button
+          type="button"
+          class="btn btn-default"
+          @click="next()"
+          id="Noright"
+        >
           <b-icon icon="caret-right-fill"></b-icon>
         </button>
         <button class="btn btn-default" id="pageNumber">
@@ -140,6 +145,7 @@ export default {
   name: "InquireList",
   data() {
     return {
+      modifyUser: this.$store.state.user.username,
       issueID: "",
       issueList: [],
       arrayList: [],
@@ -189,17 +195,7 @@ export default {
       this.createName = this.issueList[1].role;
       this.modifierName = this.issueList[1].username;
     },
-    clear() {
-      this.$refs.Issue_NO.value = "";
-      this.$refs.create.value = "";
-      this.$refs.modify.value = "";
-      this.$refs.create_time.value = "";
-      this.$refs.create_time1.value = "";
-      this.$refs.modify_time.value = "";
-      this.$refs.modify_time1.value = "";
-      this.$refs.select.value = "";
-      this.modifierName = null;
-    },
+
     sub() {
       const url = this.globalHttpUrl + "selectUser";
       let str1 = this.$refs.loginID.value;
@@ -274,16 +270,16 @@ export default {
         },
       });
     },
-    showStatus(str){
-      if(str == -1){
-        str = "已关闭"
-      }else if(str == 0){
-        str = "待解决"
-      }else{
-        str = "待验证"
+    showStatus(str) {
+      if (str == -1) {
+        str = "已关闭";
+      } else if (str == 0) {
+        str = "待解决";
+      } else {
+        str = "待验证";
       }
       return str;
-    }
+    },
   },
 };
 </script>

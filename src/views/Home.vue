@@ -1,66 +1,70 @@
 <template>
   <div id="main">
-    <h1>GBA Issue管理系统</h1>
-    <div>
-      <button
-        type="button"
-        class="btn btn-default"
-        @click="goToRegistered"
-        v-show="!isLogined"
-      >
-        注册
-      </button>
-      <button
-        type="button"
-        class="btn btn-default"
-        @click="goToLogin"
-        v-show="!isLogined"
-      >
-        登陆
-      </button>
+    <div class="homeNav">
+      <h1>GBA Issue管理系统</h1>
+      <div>
+        <button
+          type="button"
+          class="btn btn-default"
+          @click="goToRegistered"
+          v-show="!isLogined"
+        >
+          注册
+        </button>
+        <button
+          type="button"
+          class="btn btn-default"
+          @click="goToLogin"
+          v-show="!isLogined"
+        >
+          登陆
+        </button>
 
-      <span id="username">welcome{{ user.username }}</span>
-      <button
-        type="button"
-        class="btn btn-default"
-        id="btn3"
-        v-if="isLogined"
-        @click="goToModify"
-      >
-        修改个人信息
-      </button>
-    </div>
-    <div id="btn_issue">
-      <button type="button" class="btn btn-default" @click="goToCreate">
-        创建新Issue
-      </button>
-      <button type="button" class="btn btn-default" @click="goToReport">
-        Issue 报表
-      </button>
-      <button type="button" class="btn btn-default" @click="goToManage">
-        账号管理
-      </button>
+        <span id="username">welcome{{ user.username }}</span>
+        <button
+          type="button"
+          class="btn btn-default"
+          id="btn3"
+          v-if="isLogined"
+          @click="goToModify"
+        >
+          修改个人信息
+        </button>
+      </div>
+      <div id="btn_issue">
+        <button type="button" class="btn btn-default" @click="goToCreate">
+          创建新Issue
+        </button>
+        <button type="button" class="btn btn-default" @click="goToReport">
+          Issue 报表
+        </button>
+        <button type="button" class="btn btn-default" @click="goToManage">
+          账号管理
+        </button>
+      </div>
     </div>
     <br />
     <br />
+    <div v-if="!this.$store.state.token">
+      <h2>第五组：佛</h2>
+      <h4>
+        赖炎林，蔡海锋，柯炜杰，梁悦荣，温津杰，李潮平，成明强，陈海兴，李荣浩，陈汉健
+      </h4>
+    </div>
     <div>
       <!-- <Inquire @callBackInfo="handleInfo"></Inquire>
 
       <IssuesList :partInfo="infos"></IssuesList> -->
-      <InquireList />
+      <InquireList v-if="this.$store.state.token"></InquireList>
     </div>
   </div>
 </template>
 
 <script>
-import Inquire from "@/components/Inquire.vue";
-import IssuesList from "@/components/IssuesList.vue";
 import InquireList from "@/components/InquireList.vue";
 export default {
   name: "Home", //主界面
   components: {
-    Inquire,
-    IssuesList,
     InquireList,
   },
   data() {
@@ -139,5 +143,12 @@ h1 {
 #btn_issue .btn {
   margin: 20px 20px 10px 200px;
   width: 200px;
+}
+.homeNav {
+  width: 100%;
+  height: 100%;
+  position: static;
+  background: #e4c9e4;
+  left: 0;
 }
 </style>

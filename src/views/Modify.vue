@@ -1,31 +1,54 @@
 <template>
   <div class="modify">
-    <h2 class="head">查询条件</h2>
+    <h2 class="head">修改信息</h2>
     <div class="link-top"></div>
     <button type="button" class="back" @click="gotoback">返回</button>
     <div class="container">
       <table class="tb">
         <tr>
           <td class="td">登录ID：</td>
-          <td><input type="text" name="" class="inputlength" ref="ID" disabled /></td>
+          <td>
+            <input
+              type="text"
+              name=""
+              class="inputlength"
+              ref="ID"
+              :placeholder="this.$store.state.user.loginID"
+              readonly
+            />
+          </td>
           <td></td>
         </tr>
         <tr>
           <td class="td"><span class="star">*</span>姓名：</td>
           <td>
-            <input type="text" name="" class="inputlength" ref="name" maxlength="30" />
+            <input
+              type="text"
+              name=""
+              class="inputlength"
+              ref="name"
+              v-model="this.$store.state.user.username"
+              maxlength="30"
+            />
           </td>
           <td></td>
         </tr>
         <tr>
           <td class="td"><span class="star">*</span>邮箱：</td>
           <td>
-            <input type="text" name="" class="inputlength" ref="em" maxlength="30" />
+            <input
+              type="text"
+              name=""
+              class="inputlength"
+              ref="em"
+              v-model="this.$store.state.user.email"
+              maxlength="30"
+            />
           </td>
           <td></td>
         </tr>
         <tr>
-          <td class="td"><span class="star">*</span>输入密码：</td>
+          <td class="td"><span class="star">*</span>修改密码：</td>
           <td>
             <input
               type="password"
@@ -87,10 +110,11 @@ export default {
     register: function () {
       var a = this.$refs.password.value;
       var b = this.$refs.ensurePassword.value;
-      
-      var d =this.$refs.name.value;
-      var e =this.$refs.em.value;
-      if (a == ""|b == ""|d == ""|e == "") {
+
+      var d = this.$refs.name.value;
+      var e = this.$refs.em.value;
+
+      if ((a == "") | (b == "") | (d == "") | (e == "")) {
         alert("请填写完整");
       } else {
         if (a != b) {
