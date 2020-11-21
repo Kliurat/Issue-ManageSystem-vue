@@ -9,7 +9,7 @@
         登陆
       </button>
       <span id="username">/welcome ???</span>
-      <button type="button" class="btn btn-default" id="btn3">
+      <button type="button" class="btn btn-default" id="btn3" @click="goToModify">
         修改个人信息
       </button>
     </div>
@@ -27,9 +27,10 @@
     <br />
     <br />
     <div>
-      <Inquire @callBackInfo="handleInfo"></Inquire>
+      <!-- <Inquire @callBackInfo="handleInfo"></Inquire>
 
-      <IssuesList :partInfo="infos"></IssuesList>
+      <IssuesList :partInfo="infos"></IssuesList> -->
+      <InquireList/>
     </div>
   </div>
 </template>
@@ -37,11 +38,13 @@
 <script>
 import Inquire from "@/components/Inquire.vue";
 import IssuesList from "@/components/IssuesList.vue";
+import InquireList from "@/components/InquireList.vue";
 export default {
   name: "Home", //主界面
   components: {
     Inquire,
     IssuesList,
+    InquireList
   },
   data() {
     return {
@@ -66,6 +69,9 @@ export default {
     },
     goToReport: function() {
       this.$router.replace("/report");
+    },
+    goToModify: function(){
+      this.$router.replace("/modify");
     },
 
     handleInfo(data) {

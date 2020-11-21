@@ -59,7 +59,6 @@
       </div>
     </div>
 
-    
     <div id="IssuesList_body">
       <h2 class="head">Issue列表</h2>
       <div class="link-top"></div>
@@ -69,7 +68,7 @@
             <tr>
               <th><input type="checkbox" name="" id="" /></th>
               <th>序号</th>
-              <th>Issue ID</th>
+              <th style="width:100px">Issue ID</th>
               <th>Issue 标题</th>
               <th>创建人</th>
               <th>创建时间</th>
@@ -82,19 +81,27 @@
           </thead>
           <tbody id="tbody">
             <tr v-for="(list, index) in currentPageUsers" :key="index">
-              <th scope="row"><input type="checkbox" name="" id="" /></th>
-              <th>{{ index + 1 }}</th>
-              <td>{{ list.role }}</td>
-              <td>{{ list.username }}</td>
-              <td>{{ list.username }}</td>
-              <td>{{ list.username }}</td>
-              <td>{{ list.username }}</td>
-              <td>{{ list.username }}</td>
-              <td>{{ list.username }}</td>
-              <td>{{ list.username }}</td>
+              <td scope="row"><input type="checkbox" name="" id="" /></td>
+              <td>{{ list.id }}</td>
+              <td>{{ list.issueNo }}</td>
+              <td>{{ list.title }}</td>
+              <td>{{ list.createPersonID }}</td>
+              <td>{{ list.createDate }}</td>
+              <td>{{ list.modifyPersonID }}</td>
+              <td>{{ (showStatus(list.status)) }}</td>
+              <td>{{ list.planModifyTime }}</td>
+              <td>{{ list.actualComplteTime }}</td>
               <td>
-                <button type="button" class="btn btn-default">详情</button
-                ><button type="button" class="btn btn-default">修改</button>
+                <button
+                  type="button"
+                  class="btn btn-default"
+                  @click="gotoShow(list.issueNo)"
+                >
+                  详情
+                </button>
+                <button type="button" class="btn btn-default"
+                  v-if="list.status > -1"
+                >修改</button>
               </td>
             </tr>
           </tbody>
@@ -113,10 +120,12 @@
         >
           {{ num + 1 }}
         </button>
-        <button type="button" class="btn btn-default" @click="next()">
+        <button type="button" class="btn btn-default" @click="next()" id="Noright">
           <b-icon icon="caret-right-fill"></b-icon>
         </button>
-        <button class="btn btn-default">{{ amount }}条/页</button>
+        <button class="btn btn-default" id="pageNumber">
+          {{ amount }}条/页
+        </button>
         <span>跳至</span>
         <input type="text" @change="goto($event)" class="goto" ref="pageTo" />
         <span>页</span>
@@ -126,7 +135,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from "axios";
 export default {
   name: "InquireList",
   data() {
@@ -136,9 +145,10 @@ export default {
       arrayList: [],
       createName: "",
       modifierName: "",
+      globalHttpUrl: this.COMMON.httpUrl,
       users: [],
       total: 0,
-      amount: 20,
+      amount: 5,
       currentPage: 1,
       currentPageUsers: [],
       page: [],
@@ -154,16 +164,16 @@ export default {
     };
   },
   created() {
-    // const url = this.globalHttpUrl + "selectUser";
-    const url = "/json/users.json";
+    const url = this.globalHttpUrl + "issue/query";
+    // const url = "/json/users.json";
 
     axios({
-      method: "get",
+      method: "post",
       url: url,
     })
       .then((data) => {
-        // console.log(data)
-        this.users = data.data;
+        this.users = data.data.data;
+        console.log(this.users);
         this.total = this.users.length;
         this.pageList();
         this.getPageUsers();
@@ -180,15 +190,15 @@ export default {
       this.modifierName = this.issueList[1].username;
     },
     clear() {
-      this.$refs.Issue_NO.value = ''
-      this.$refs.create.value = ''
-      this.$refs.modify.value = ''
-      this.$refs.create_time.value = ''
-      this.$refs.create_time1.value = ''
-      this.$refs.modify_time.value = ''
-      this.$refs.modify_time1.value = ''
-      this.$refs.select.value = ''
-      this.modifierName = null
+      this.$refs.Issue_NO.value = "";
+      this.$refs.create.value = "";
+      this.$refs.modify.value = "";
+      this.$refs.create_time.value = "";
+      this.$refs.create_time1.value = "";
+      this.$refs.modify_time.value = "";
+      this.$refs.modify_time1.value = "";
+      this.$refs.select.value = "";
+      this.modifierName = null;
     },
     sub() {
       const url = this.globalHttpUrl + "selectUser";
@@ -254,6 +264,26 @@ export default {
       let j = this.total / this.amount;
       for (let i = 0; i < j; i++) this.page[i] = i;
     },
+    gotoShow(data) {
+      // this.$router.replace("/manage");
+      // alert(data)
+      this.$router.push({
+        name: "showDeatail",
+        params: {
+          data: data,
+        },
+      });
+    },
+    showStatus(str){
+      if(str == -1){
+        str = "已关闭"
+      }else if(str == 0){
+        str = "待解决"
+      }else{
+        str = "待验证"
+      }
+      return str;
+    }
   },
 };
 </script>
@@ -355,6 +385,18 @@ input::-webkit-inner-spin-button {
   border-radius: 10px;
   border: 1px solid rgb(58, 184, 241);
   margin: 0;
+  margin-left: 10px;
+}
+.pageList {
+  text-align: center;
+}
+.pageList #pageNumber {
+  margin-left: 10px;
+}
+#tbody {
+  text-align: center;
+}
+#Noright {
   margin-left: 10px;
 }
 </style>

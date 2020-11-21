@@ -1,7 +1,7 @@
 <template>
   <div class="modify">
-    修改信息
-    <hr />
+    <h2 class="head">查询条件</h2>
+    <div class="link-top"></div>
     <button type="button" class="back" @click="gotoback">返回</button>
     <div class="container">
       <table class="tb">
@@ -192,5 +192,14 @@ button {
   color: #fff;
   font-size: 16px;
   margin-bottom: 5px;
+}
+.head {
+  margin-bottom: 20px;
+  margin-left: 20px;
+}
+.link-top {
+  width: 100%;
+  height: 1px;
+  border-top: dashed black 1px;
 }
 </style>
