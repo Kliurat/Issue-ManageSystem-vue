@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
+
 const routes = [{
         path: '/create',
         name: 'Create',
@@ -81,7 +82,17 @@ const routes = [{
         name: 'ManageCopy',
         component: () =>
             import ( /* webpackChunkName: "about" */ '../views/ManageCopy.vue')
+    },
+    {
+        path: '/showDeatail',
+        name: 'showDeatail',
+        meta: {
+            requireAuth: true,
+        },
+        component: () =>
+            import ( /* webpackChunkName: "about" */ '../views/showDeatail.vue')
     }
+
 
 ]
 

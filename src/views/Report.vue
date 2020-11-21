@@ -67,7 +67,7 @@
       <button type="button" class="btn btn-default" @click="next()">
         <b-icon icon="caret-right-fill"></b-icon>
       </button>
-      <button class="btn btn-default">{{ amount }}条/页</button>
+      <button class="btn btn-default" id="pageNumber">{{ amount }}条/页</button>
       <span>跳至</span>
       <input type="text" @change="goto($event)" class="goto" ref="pageTo" />
       <span>页</span>
@@ -83,7 +83,7 @@ export default {
     return {
       users: [],
       total: 0,
-      amount: 20,
+      amount: 2,
       currentPage: 1,
       currentPageUsers: [],
       page: [],
@@ -94,8 +94,8 @@ export default {
         username: "",
         email: "",
         registeDate: "",
-        role: "",
         status: "",
+        role: "",
       },
     };
   },
@@ -106,7 +106,7 @@ export default {
         this.$refs.username.value = null
     },
     sub() {
-      const url = this.globalHttpUrl + "issue/report";
+      const url = this.globalHttpUrl+"issue/report";
       let str1 = this.$refs.loginID.value;
       let str2 = this.$refs.username.value;
       let str3 = { loginID: str1, username: str2 };
@@ -119,7 +119,6 @@ export default {
           this.users = [];
           this.page = [];
           this.users = list.data.data;
-          console.log(list)
           this.total = this.users.length;
           this.pageList();
           this.getPageUsers();
@@ -148,39 +147,54 @@ export default {
     },
     getPageUsers() {
       this.currentPageUsers = [];
-      if (this.currentPage != this.page.length)
-        for (let i = 0; i < this.amount; i++) {
-          let j = (this.currentPage - 1) * this.amount;
-          this.currentPageUsers[i] = this.users[i + j];
-        }
-      else
-        for (
-          let i = 0;
-          i < this.total - this.amount * (this.page.length - 1);
-          i++
-        ) {
-          let j = (this.currentPage - 1) * this.amount;
-          this.currentPageUsers[i] = this.users[i + j];
-        }
+      if (this.page.length != 0) {
+        if (this.currentPage != this.page.length)
+          for (let i = 0; i < this.amount; i++) {
+            let j = (this.currentPage - 1) * this.amount;
+            this.currentPageUsers[i] = this.users[i + j];
+          }
+        else
+          for (
+            let i = 0;
+            i < this.total - this.amount * (this.page.length - 1);
+            i++
+          ) {
+            let j = (this.currentPage - 1) * this.amount;
+            this.currentPageUsers[i] = this.users[i + j];
+          }
+      }
     },
     pageList() {
+      this.page = [];
       let j = this.total / this.amount;
-      if (this.total % this.amount != 0) j++;
-      for (let i = 1; i <= j; i++) this.page.push(i);
+      for (let i = 0; i < j; i++) this.page[i] = i;
     },
   },
   created(){
       const url = this.globalHttpUrl+"issue/report";
+    // axios({
+    //   method: "get",
+    //   url: url,
+    // })
+    //   .then((data) => {
+    //     this.users = data.data.data;
+    //     // console.log(this.users)
+    //     this.total = this.users.length;
+    //     this.getPageUsers();
+    //     this.pageList();
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
     axios({
       method: "get",
       url: url,
     })
       .then((data) => {
         this.users = data.data.data;
-        // console.log(this.users)
         this.total = this.users.length;
-        this.getPageUsers();
         this.pageList();
+        this.getPageUsers();
       })
       .catch((err) => {
         console.log(err);

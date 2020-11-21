@@ -68,12 +68,8 @@ export default {
           .then((data) => {
             if (data.data.status == 200) {
               this.$store.commit("setToken", "true");
-              this.$router.push({
-                name: "Home",
-                params: {
-                  user: data.data.data,
-                },
-              });
+              this.$store.commit("setUser", data.data.data);
+              this.$router.replace("/");
             } else {
               alert(data.data.msg);
             }
