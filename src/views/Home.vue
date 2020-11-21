@@ -2,14 +2,24 @@
   <div id="main">
     <h1>GBA Issue管理系统</h1>
     <div>
-      <button type="button" class="btn btn-default" @click="goToRegistered">
+      <button
+        type="button"
+        class="btn btn-default"
+        @click="goToRegistered"
+        v-show="!isLogined"
+      >
         注册
       </button>
-      <button type="button" class="btn btn-default" @click="goToLogin">
+      <button
+        type="button"
+        class="btn btn-default"
+        @click="goToLogin"
+        v-show="!isLogined"
+      >
         登陆
       </button>
-      <span id="username">/welcome ???</span>
-      <button type="button" class="btn btn-default" id="btn3">
+      <span id="username">welcome{{ user.username }}</span>
+      <button type="button" class="btn btn-default" id="btn3" v-if="isLogined">
         修改个人信息
       </button>
     </div>
@@ -46,25 +56,30 @@ export default {
   data() {
     return {
       infos: [],
+      isLogined: false,
+      user: {
+        username: "",
+        loginId: "",
+      },
     };
   },
   methods: {
-    goToCreate: function() {
+    goToCreate: function () {
       this.$router.replace("/create");
     },
-    goToLogin: function() {
+    goToLogin: function () {
       this.$router.replace("/login");
     },
-    goToManage: function() {
+    goToManage: function () {
       this.$router.replace("/manage");
     },
-    goToLogin: function() {
+    goToLogin: function () {
       this.$router.replace("/login");
     },
-    goToRegistered: function() {
+    goToRegistered: function () {
       this.$router.replace("/registered");
     },
-    goToReport: function() {
+    goToReport: function () {
       this.$router.replace("/report");
     },
 
@@ -73,6 +88,12 @@ export default {
       this.infos = data;
       // console.log(this.infos)
     },
+  },
+  created() {
+    if (this.$store.state.token) {
+      this.isLogined = true;
+      this.user = this.$route.params.user;
+    }
   },
 };
 </script>

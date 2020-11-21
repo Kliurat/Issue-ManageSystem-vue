@@ -88,38 +88,21 @@
           </td>
         </tr>
       </table>
-      <div class="pageList">
-        <button type="button" class="btn btn-default" @click="prev()">
-          <b-icon icon="caret-left-fill"></b-icon>
-        </button>
-        <button
-          class="btn btn-default btn2"
-          v-for="(page, num) in page"
-          :key="num"
-          @click="to(num + 1)"
-        >
-          {{ num + 1 }}
-        </button>
-        <button type="button" class="btn btn-default" @click="next()">
-          <b-icon icon="caret-right-fill"></b-icon>
-        </button>
-        <button class="btn btn-default">{{ amount }}条/页</button>
-        <span>跳至</span>
-        <input type="text" @change="goto($event)" class="goto" ref="pageTo" />
-        <span>页</span>
-      </div>
+      <Paging :adress="adress"></Paging>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import Paging from "../components/Paging";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 export default {
-  name: "Manage",
+  name: "ManageCopy",
   data() {
     return {
+      adress: "selectUser",
       users: [],
       total: 0,
       amount: 20,
