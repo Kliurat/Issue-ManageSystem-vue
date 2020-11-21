@@ -14,7 +14,7 @@
               class="inputlength"
               ref="ID"
               :placeholder="this.$store.state.user.loginID"
-              readonly
+              disabled
             />
           </td>
           <td></td>
@@ -27,7 +27,7 @@
               name=""
               class="inputlength"
               ref="name"
-              v-model="this.$store.state.user.username"
+              :value="this.$store.state.user.username"
               maxlength="30"
             />
           </td>
@@ -41,7 +41,7 @@
               name=""
               class="inputlength"
               ref="em"
-              v-model="this.$store.state.user.email"
+              :value="this.$store.state.user.email"
               maxlength="30"
             />
           </td>
@@ -70,6 +70,7 @@
               ref="ensurePassword"
               class="inputlength"
               maxlength="30"
+              @change="check($event)"
             />
           </td>
           <td><span class="err" v-show="newPassword">密码不一致</span></td>
@@ -77,7 +78,7 @@
       </table>
 
       <br />
-      <button v-on:click="register">修改</button>
+      <button v-on:click="update()">修改</button>
       <br />
 
       <br />
@@ -87,12 +88,19 @@
 
 
 <script>
+import axios from "axios";
 export default {
   name: "Modify", //修改
   data() {
     return {
       passwordFormat: false,
       newPassword: false,
+      globalHttpUrl: this.COMMON.httpUrl,
+      user: {
+        username: "",
+        loginID: "",
+        email: "",
+      },
     };
   },
   methods: {
@@ -101,27 +109,57 @@ export default {
       let az = /[a-z]/;
       let AZ = /[A-Z]/;
       let patrn = /[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘'，。、]/;
-      if (az.test(str) && AZ.test(str) && patrn.test(str)) {
+      if (az.test(str) && AZ.test(str) && patrn.test(str) && str.length > 8) {
         this.passwordFormat = false;
       } else {
         this.passwordFormat = true;
       }
     },
-    register: function () {
-      var a = this.$refs.password.value;
-      var b = this.$refs.ensurePassword.value;
-
-      var d = this.$refs.name.value;
-      var e = this.$refs.em.value;
-
-      if ((a == "") | (b == "") | (d == "") | (e == "")) {
-        alert("请填写完整");
+    check(event) {
+      if (this.$refs.password.value == event.target.value) {
+        this.newPassword = false;
       } else {
-        if (a != b) {
-          this.newPassword = true;
-        } else {
-          this.newPassword = false;
-        }
+        this.newPassword = true;
+      }
+    },
+    update() {
+      if (
+        !this.newPassword &&
+        !this.passwordFormat &&
+        this.$refs.name.value != "" &&
+        this.$refs.em.value != "" &&
+        this.$refs.password.value != "" &&
+        this.$refs.ensurePassword.value != ""
+      ) {
+        const url = this.globalHttpUrl + "update/user";
+        axios({
+          method: "put",
+          url: url,
+          // contentType: "application/json",this.$qs.stringify
+          data: {
+            loginID: this.$store.state.user.loginID,
+            username: this.$refs.name.value,
+            email: this.$refs.em.value,
+            password: this.$refs.password.value,
+          },
+        })
+          .then((data) => {
+            if (data.data) {
+              alert("修改成功");
+              this.user.loginID = this.$store.state.user.loginID;
+              this.user.username = this.$refs.name.value;
+              this.user.email = this.$refs.em.value;
+              this.$store.commit("setUser", this.user);
+              this.$router.replace("/");
+            } else {
+              alert("修改失败");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        alert("请正确填写所有字段");
       }
     },
     gotoback: function () {
