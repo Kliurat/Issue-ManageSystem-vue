@@ -1,41 +1,73 @@
 <template>
   <div class="registered">
-    <h3 id="head">账号注册</h3>
-    <div class="link-top"></div>
+
+    账号注册
+    <hr />
+    <button type="button" class="back" @click="gotoback">返回</button>
+
     <div class="container">
       <table class="tb">
         <tr>
           <td class="td">登录ID：</td>
-          <td><input type="text" name="" class="inputlength" /></td>
+
+          <td><input type="text" name="" ref="ID" class="inputlength" /></td>
+          <td></td>
         </tr>
         <tr>
           <td class="td"><span class="star">*</span>姓名：</td>
-          <td><input type="text" name="" class="inputlength" /></td>
+          <td>
+            <input type="text" name="" class="inputlength" ref="name" maxlength="30" />
+          </td>
+          <td></td>
         </tr>
         <tr>
           <td class="td"><span class="star">*</span>邮箱：</td>
-          <td><input type="text" name="" class="inputlength" /></td>
+          <td>
+            <input type="text" name="" class="inputlength" ref="em" maxlength="30" />
+          </td>
+          <td></td>
         </tr>
         <tr>
           <td class="td"><span class="star">*</span>输入密码：</td>
-          <td><input type="text" name="" class="inputlength" /></td>
+          <td>
+            <input
+              type="password"
+              name=""
+              ref="password"
+              class="inputlength"
+              maxlength="30"
+              @change="checkPassword($event)"
+            />
+          </td>
+          <td><span class="err" v-show="passwordFormat">密码格式错误</span></td>
         </tr>
         <tr>
           <td class="td"><span class="star">*</span>确认密码：</td>
-          <td><input type="text" name="" class="inputlength" /></td>
+          <td>
+            <input
+              type="password"
+              name=""
+              ref="ensurePassword"
+              class="inputlength"
+              maxlength="30"
+            />
+          </td>
+          <td><span class="err" v-show="newPassword">密码不一致</span></td>
+
         </tr>
       </table>
 
       <br />
       <button v-on:click="register">注册</button>
 
-      <!-- <p v-on:click="ToLogin">已有账号？马上登录</p> -->
+
       <br />
       <p>
         <router-link to="/login">已有账号？马上登录</router-link>
       </p>
       <br />
-      <!-- <router-link to="/">返回</router-link> -->
+
+
     </div>
   </div>
 </template>
@@ -43,32 +75,66 @@
 <script>
 export default {
   name: "Registered", //注册
+
+  data() {
+    return {
+      passwordFormat: false,
+      newPassword: false,
+    };
+  },
+  methods: {
+    checkPassword(event) {
+      let str = event.target.value;
+      let az = /[a-z]/;
+      let AZ = /[A-Z]/;
+      let patrn = /[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘'，。、]/;
+      if (az.test(str) && AZ.test(str) && patrn.test(str)) {
+        this.passwordFormat = false;
+      } else {
+        this.passwordFormat = true;
+      }
+    },
+    register: function () {
+      var a = this.$refs.password.value;
+      var b = this.$refs.ensurePassword.value;
+      var d =this.$refs.name.value;
+      var e =this.$refs.em.value;
+      if (a == ""|b == ""|d == ""|e == "") {
+        alert("请填写完整");
+      } else {
+        if (a != b) {
+          this.newPassword = true;
+        } else {
+          this.newPassword = false;
+        }
+      }
+    },
+    gotoback: function () {
+      this.$router.replace("/");
+    },
+  },
+
 };
 </script>
 
 <style scoped>
-#head {
-  margin-bottom: 20px;
-  margin-left: 20px;
-}
-.link-top {
-  width: 100%;
-  height: 1px;
-  border-top: dashed black 1px;
-}
-.link-top {
-  width: 100%;
-  height: 1px;
-  border-top: dashed black 1px;
-}
+
+
 .inputlength {
   width: 400px;
   height: 30px;
   border-radius: 10px;
   border: none;
+
+  margin-left: 0px;
+}
+.err {
+  width: 200px;
 }
 
 .td {
+  width: 150px;
+
   text-align: right;
 }
 
@@ -79,19 +145,42 @@ export default {
   padding: 0;
   height: 120px;
   margin: 0px auto;
-  width: 500px;
+
+  width: 700px;
+
   border: none;
   text-align: center;
 }
 .registered {
-  background: #e4c9e4;
+
+  background: plum;
+
   height: 100%;
   width: 100%;
   position: absolute;
 }
+
+p {
+  margin-left: 500px;
+}
 .container {
-  text-align: center;
+  margin-left: 130px;
   margin-top: 100px;
+}
+.back {
+  width: 70px;
+
+  background: blue;
+  color: black;
+  border-radius: 10px;
+  text-align: center;
+
+  padding: 0px;
+  margin-left: 0px;
+  border: none;
+}
+.back:hover {
+  background-color: rgb(1, 1, 170);
 }
 
 span {
@@ -110,6 +199,7 @@ input {
   box-sizing: border-box;
 }
 
+
 button {
   border-radius: 10px;
   display: block;
@@ -124,11 +214,5 @@ button {
   margin-bottom: 5px;
 }
 
-span {
-  cursor: pointer;
-}
-
-span:hover {
-  color: #41b883;
-}
 </style>
+

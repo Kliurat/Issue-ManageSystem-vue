@@ -1,53 +1,74 @@
 <template>
   <div id="login">
-    <h3 id="head">登录</h3>
-    <div class="link-top"></div>
-    <router-link to="/" class="back">返回</router-link>
-    <div class="login_container">
+
+    <div class="head">登录</div><hr>
+    <button type="button" class="back" @click="gotoback">返回</button>
+     <div class="login_container">
       <table class="tb">
         <tr >
           <td class="world"><span class="star">*</span>输入ID：</td>
-          <td><input type="text" value="" class="inputlength" /></td>
+          <td><input type="text" value="" class="inputlength" ref="ID" maxlength="30"/></td>
         </tr>
         <tr >
           <td class="world"><span class="star">*</span>输入密码：</td>
-          <td><input type="password" class="inputlength" /></td>
+          <td><input type="password" class="inputlength" ref="password" maxlength="30" /></td>
         </tr>
       </table>
-      
-
+     </div>   
       <br />
-      <input type="submit" class="submit" value="登录" />
+      <input type="submit" v-on:click="login" class="submit" value="登录"  />
+
+    
       <br />
       <p>
         <router-link to="/registered">没有账号？马上注册</router-link>
       </p>
-    </div>
-  </div>
+
+      
+     
+  </div> 
+
 </template>
 
 <script>
 export default {
   name: "Login", //登陆
+
+  data() {
+    return {
+      
+    }
+  },
+  methods:{
+    login:function(){
+      var a = this.$refs.password.value;
+      var b =this.$refs.ID.value;
+      if (a == ""|b == "") {
+        alert("请填写完整");
+      }
+    },
+
+    gotoback :function(){
+      this.$router.replace('/')
+    }
+  },
 };
+  
 </script>
 
 <style scoped>
-.link-top {
-  width: 100%;
-  height: 1px;
-  border-top: dashed black 1px;
-}
-.world{
+.world {
+
   text-align: right;
 }
 
 .star {
   color: red;
 }
-#head {
-  margin-bottom: 20px;
-  margin-left: 20px;
+
+.head {
+  margin-right: auto;
+
 }
 #login {
   width: 100%;
@@ -60,8 +81,19 @@ export default {
 
   text-align: center;
 }
-.back{
-  text-align: right;
+
+.back {
+  width: 70px;
+  height: 30px;
+  background: blue;
+  color: black;
+  border-radius: 10px;
+  text-align: center;
+  border:none;
+}
+.back:hover{
+  background-color: rgb(1, 1, 170);
+
 }
 .inputlength {
   width: 400px;
@@ -69,14 +101,16 @@ export default {
   border-radius: 10px;
   border: none;
 }
-.tb{
-  padding: 0 ;
+
+.tb {
+  padding: 0;
+
   height: 120px;
   margin: 0px auto;
   width: 500px;
   border: none;
   text-align: center;
-  
+
 }
 
 p {
@@ -93,9 +127,13 @@ p {
   margin: 0 auto;
   border: none;
   background-color: #2769f7;
-  color: #fff;
+
+  color:black;
   font-size: 16px;
   margin-bottom: 5px;
+}
+.submit:hover {
+  background-color: rgb(1, 1, 170);
 }
 
 span {
@@ -105,37 +143,9 @@ span {
 span:hover {
   color: #41b883;
 }
-#login {
-    background-color: #E4C9E4;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-}
-#login_head {
-  margin-bottom: 20px;
-  margin-left: 20px;
-}
-.link-top {
-  width: 100%;
-  height: 1px;
-  border-top: dashed black 1px;
-}
-.login_form {
-    text-align: center;
-    margin-top: 150px;
-}
-.login_form button{
-    width: 200px;
-    margin-top: 50px;
-    border-radius: 15px;
-}
-.from-group{
-    margin: 15px;
-}
-#login_id {
-    margin-left: 15px;
-}
+
 </style>
-</style>
+
+
+
+
