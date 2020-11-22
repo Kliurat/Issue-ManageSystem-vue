@@ -13,9 +13,10 @@
         <input
           type="text"
           class="form-control tle"
-          placeholder=""
+          :placeholder="title"
           ref="title"
           maxlength="80"
+          :disabled="isShow"
         />
       </div>
 
@@ -33,31 +34,38 @@
             <input
               type="text"
               class="form-control"
-            />
-          </td>
-          <td>
-            <input
-              type="date"
-              class="form-control"
-              ref="createDate"
+              :disabled="isShow"
+              :placeholder="issueNo"
             />
           </td>
           <td>
             <input
               type="text"
               class="form-control"
-              placeholder=""
-              ref="issueType"
-              maxlength="30"
+              ref="createDate"
+              :disabled="isShow"
+              :placeholder="createDate"
             />
           </td>
           <td>
-            <select class="form-control" ref="priority" id="sel">
-              <option value="1">最高</option>
-              <option value="2">较高</option>
-              <option value="3" selected>一般</option>
-              <option value="4">低</option>
-            </select>
+            <input
+              type="text"
+              class="form-control"
+              :placeholder="issueType"
+              ref="issueType"
+              maxlength="30"
+              :disabled="isShow"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              ref="priority"
+              v-model="priorityID"
+              maxlength="30"
+              :disabled="isShow"
+            />
           </td>
         </tr>
         <tr>
@@ -71,24 +79,27 @@
             <input
               type="text"
               class="form-control"
-              placeholder=""
+              :placeholder="influentVersion"
               ref="influentVersion"
-            />
-          </td>
-          <td>
-            <input
-              type="date"
-              class="form-control"
-              placeholder="请输入时间"
-              ref="planModifyTime"
-              required="required"
-              @change="checkTime($event)"
+              :disabled="isShow"
             />
           </td>
           <td>
             <input
               type="text"
               class="form-control"
+              :placeholder="planModifyTime"
+              ref="planModifyTime"
+              required="required"
+              :disabled="isShow"
+            />
+          </td>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              :disabled="isShow"
+              :placeholder="actualComplteTime"
             />
           </td>
           <td></td>
@@ -101,8 +112,8 @@
         list="userlist"
         class="form-control"
         ref="modifyPersonID"
-        @change="check($event)"
-        placeholder=""
+        :placeholder="modifyPersonID"
+        :disabled="isShow"
       />
       <h5>重现步骤</h5>
       <textarea
@@ -110,25 +121,41 @@
         rows="3"
         ref="reStep"
         maxlength="2000"
+        :placeholder="reStep"
+        :disabled="isShow"
       ></textarea>
-      <div>
-      <h5>解决方案</h5>
-      <textarea
-        class="form-control"
-        rows="3"
-        ref="reStep"
-        maxlength="2000"
-      ></textarea>
+      <div v-if="isSolve">
+        <h5>解决方案</h5>
+        <textarea
+          class="form-control"
+          rows="3"
+          ref="reStep"
+          maxlength="2000"
+          :placeholder="solution"
+        ></textarea>
+        <div class="btn4" v-show="isShowBtn">
+          <button
+            class="btn btn-default btn3 "
+            id="sub"
+            type="button"
+            @click="sub()"
+          >
+            提交验证
+          </button>
+        </div>
+        <div class="btn4" v-show="!isShowBtn">
+          <button
+            class="btn btn-default btn1"
+            type="button"
+            @click="sub()"
+          >
+            退回修改
+          </button>
+          <button class="btn btn-default btn1" id="reset" type="reset" @click="sub()">
+            关闭
+          </button>
+        </div>
       </div>
-      <datalist id="userlist">
-        <option
-          v-for="(user, index) in user"
-          :key="index"
-          :value="user.loginID"
-          v-text="'姓名:' + user.username"
-        ></option>
-      </datalist>
-      <span v-show="visit">该修改人不存在或输入错误,请输入修改人ID</span>
     </form>
   </div>
 </template>
@@ -142,97 +169,101 @@ export default {
   },
   data() {
     return {
-      createDate: new Date(),
       user: [],
       visit: false,
       globalHttpUrl: this.COMMON.httpUrl,
       data: this.$route.params.data,
+      status: this.$route.params.status,
+      create: this.$route.params.create,
+      modify: this.$route.params.modify,
+      isShow: true,
+      isShowBtn: false,
+      isSolve: true,
+      title: '',//题目
+      issueNo: '',//
+      createDate: '',
+      issueType: '',
+      influentVersion: '',
+      planModifyTime: '',
+      actualComplteTime: '',
+      modifyPersonID: '',
+      reStep:'',
+      solution:'',
+      priority: '',
+      modifyPersonID:'',
+      priorityID: ''
     };
   },
     created() {
-        // alert("qweer"+this.$route.params.data)
-        const url = this.globalHttpUrl + "selectAll/user";
+        // alert("qweer"+this.$route.params)
+        // console.log(this.data)
+        const url = this.globalHttpUrl + "issue/getIssueByIssueNo";
         axios({
-        method: "get",
+        method: "post",
         url: url,
+        data: this.$qs.stringify({issueNo:this.data,
+        status: 1}),
         })
         .then((data) => {
+          // console.log(data)
+          
             this.user = data.data;
+            console.log(this.user)
+            this.issueNo = this.user.issueNo
+            this.title = this.user.title
+            this.issueType = this.user.issueType
+            this.createDate = this.user.createDate
+            this.influentVersion = this.user.influentVersion
+            this.actualComplteTime = this.user.actualComplteTime
+            this.planModifyTime = this.user.planModifyTime
+            this.reStep = this.user.reStep
+            this.solution = this.user.solution
+            // this.priority = this.user.priority
+            this.modifyPersonID = this.user.modifyPersonID
+            this.priorityID = this.showPriority(this.user.priority)
+            this.isSolve = true
+            // console.log(this.user.id)
+            // if(this.$store.user.loginID == this.user.id){
+            //   this.isSolve = false
+            // }else{              
+            //   this.isSolve = true
+            // }
+            if(this.status == -1){
+              this.isSolve = false
+            }else{              
+              this.isSolve = true
+            }
+            if(this.$store.user.loginID == this.user.id){
+              this.isShowBtn = false
+            }else{
+              this.isShowBtn = true
+            }
         })
         .catch((err) => {
             console.log(err);
         });
-        this.formatDate(this.createDate);
+  },
+  mounted(){
+
   },
   methods: {
-      shouwwwww(){
-          alert(this.data);
-      },
-    
     regain() {
       this.$router.replace("/");
     },
-    checkTime(event) {
-      if (this.createDate > event.target.value) {
-        alert("计划修改时间输入错误！！！");
-        event.target.value = "";
-      }
+    sub(){
+      this.$router.replace("/");
     },
-    check(event) {
-      let i;
-      for (i = 0; i < this.user.length; i++) {
-        if (event.target.value == this.user[i].loginID) break;
-      }
-      if (i == this.user.length) this.visit = true;
-      else this.visit = false;
-    },
-    submit() {
-      if (
-        this.$refs.planModifyTime.value != "" &&
-        this.$refs.title.value != "" &&
-        this.$refs.influentVersion.value != "" &&
-        this.$refs.issueType.value != "" &&
-        this.$refs.modifyPersonID.value != "" &&
-        this.$refs.reStep.value != ""
-      ) {
-        const url = this.globalHttpUrl + "issue";
-        axios({
-          method: "post",
-          url: url,
-          data: this.$qs.stringify({
-            title: this.$refs.title.value,
-            issueType: this.$refs.issueType.value,
-            priority: this.$refs.priority.value,
-            influentVersion: this.$refs.influentVersion.value,
-            planModifyTime: this.$refs.planModifyTime.value,
-            reStep: this.$refs.reStep.value,
-            modifyPersonID: this.$refs.modifyPersonID.value,
-          }),
-        })
-          .then((data) => {
-            let result = data.data;
-            if (result.status == 200) {
-              alert(result.msg);
-              this.regain();
-            } else {
-              alert(result.msg);
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+    showPriority(str) {
+      if (str == 1) {
+        str = "最高";
+      } else if (str == 2) {
+        str = "较高";
+      } else if (str == 3) {
+        str = "一般";
       } else {
-        alert("Issue信息输入不完整!!!!");
+        str = "低";
       }
-    },
-    formatDate(val) {
-      let date = new Date(val);
-      let y = date.getFullYear();
-      let M = date.getMonth() + 1;
-      M = M < 10 ? "0" + M : M;
-      let d = date.getDate();
-      d = d < 10 ? "0" + d : d;
-      this.createDate = y + "-" + M + "-" + d;
+      return str;
     },
   },
 };
@@ -276,5 +307,27 @@ h5 {
 }
 #sel {
   width: 82px;
+}
+.btn1 {
+  margin: 20px 100px 0px 100px;
+  padding-left: 12px;
+  border-radius: 10px;
+  border: 1px solid rgb(58, 184, 241);
+}
+.btn2 {
+  padding-left: 12px;
+  border-radius: 10px;
+  border: 1px solid rgb(58, 184, 241);
+  margin: 0;
+  margin-left: 5px;
+  margin-bottom: 0px;
+}
+.btn3 {
+  margin-top:20px;
+  border-radius: 10px;
+  border: 1px solid rgb(58, 184, 241);
+}
+.btn4 {
+  text-align: center;
 }
 </style>

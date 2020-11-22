@@ -91,7 +91,7 @@
                 <button
                   type="button"
                   class="btn btn-default"
-                  @click="gotoShow(list.issueNo)"
+                  @click="gotoShow(list.issueNo,list.status,list.createPersonID,list.modifyPersonID)"
                 >
                   详情
                 </button>
@@ -99,6 +99,7 @@
                   type="button"
                   class="btn btn-default"
                   v-if="list.status > -1"
+                  @click="gotoShow(list.issueNo,list.status,list.createPersonID,list.modifyPersonID)"
                 >
                   修改
                 </button>
@@ -182,7 +183,7 @@ export default {
     })
       .then((data) => {
         this.users = data.data.data;
-        console.log(this.users);
+        // console.log(this.users);
         this.total = this.users.length;
         this.pageList();
         this.getPageUsers();
@@ -263,13 +264,16 @@ export default {
       let j = this.total / this.amount;
       for (let i = 0; i < j; i++) this.page[i] = i;
     },
-    gotoShow(data) {
+    gotoShow(data,status,create,modify) {
       // this.$router.replace("/manage");
       // alert(data)
       this.$router.push({
         name: "showDeatail",
         params: {
           data: data,
+          status: status,
+          create: create,
+          modify: modify
         },
       });
     },
