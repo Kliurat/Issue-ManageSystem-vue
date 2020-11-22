@@ -147,10 +147,11 @@
           <button
             class="btn btn-default btn1"
             type="button"
+            @click="sub()"
           >
             退回修改
           </button>
-          <button class="btn btn-default btn1" id="reset" type="reset">
+          <button class="btn btn-default btn1" id="reset" type="reset" @click="sub()">
             关闭
           </button>
         </div>
@@ -221,10 +222,21 @@ export default {
             this.modifyPersonID = this.user.modifyPersonID
             this.priorityID = this.showPriority(this.user.priority)
             this.isSolve = true
-            if(this.$store.user.loginID == this.user.id){
+            // console.log(this.user.id)
+            // if(this.$store.user.loginID == this.user.id){
+            //   this.isSolve = false
+            // }else{              
+            //   this.isSolve = true
+            // }
+            if(this.status == -1){
               this.isSolve = false
             }else{              
               this.isSolve = true
+            }
+            if(this.$store.user.loginID == this.user.id){
+              this.isShowBtn = false
+            }else{
+              this.isShowBtn = true
             }
         })
         .catch((err) => {
