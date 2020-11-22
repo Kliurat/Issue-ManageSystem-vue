@@ -16,7 +16,7 @@
           :placeholder="title"
           ref="title"
           maxlength="80"
-          :disabled="isShow"
+          disabled
         />
       </div>
 
@@ -34,7 +34,7 @@
             <input
               type="text"
               class="form-control"
-              :disabled="isShow"
+              disabled
               :placeholder="issueNo"
             />
           </td>
@@ -43,7 +43,7 @@
               type="text"
               class="form-control"
               ref="createDate"
-              :disabled="isShow"
+              disabled
               :placeholder="createDate"
             />
           </td>
@@ -54,7 +54,7 @@
               :placeholder="issueType"
               ref="issueType"
               maxlength="30"
-              :disabled="isShow"
+              disabled
             />
           </td>
           <td>
@@ -64,7 +64,7 @@
               ref="priority"
               v-model="priorityID"
               maxlength="30"
-              :disabled="isShow"
+              disabled
             />
           </td>
         </tr>
@@ -81,7 +81,7 @@
               class="form-control"
               :placeholder="influentVersion"
               ref="influentVersion"
-              :disabled="isShow"
+              disabled
             />
           </td>
           <td>
@@ -91,14 +91,14 @@
               :placeholder="planModifyTime"
               ref="planModifyTime"
               required="required"
-              :disabled="isShow"
+              disabled
             />
           </td>
           <td>
             <input
               type="text"
               class="form-control"
-              :disabled="isShow"
+              disabled
               :placeholder="actualComplteTime"
             />
           </td>
@@ -113,7 +113,7 @@
         class="form-control"
         ref="modifyPersonID"
         :placeholder="modifyPersonID"
-        :disabled="isShow"
+        disabled
       />
       <h5>重现步骤</h5>
       <textarea
@@ -122,7 +122,7 @@
         ref="reStep"
         maxlength="2000"
         :placeholder="reStep"
-        :disabled="isShow"
+        disabled
       ></textarea>
       <div v-if="isSolve">
         <h5>解决方案</h5>
@@ -132,29 +132,33 @@
           ref="reStep"
           maxlength="2000"
           :placeholder="solution"
+          :disabled="isShowSolve"
         ></textarea>
-        <div class="btn4" v-show="isShowBtn">
-          <button
-            class="btn btn-default btn3 "
-            id="sub"
-            type="button"
-            @click="sub()"
-          >
-            提交验证
-          </button>
+        <div v-show="isShow">
+          <div class="btn4" v-show="isShowBtn">
+            <button
+              class="btn btn-default btn3 "
+              id="sub"
+              type="button"
+              @click="sub()"
+            >
+              提交验证
+            </button>
+          </div>
+          <div class="btn4" v-show="!isShowBtn">
+            <button
+              class="btn btn-default btn1"
+              type="button"
+              @click="sub()"
+            >
+              退回修改
+            </button>
+            <button class="btn btn-default btn1" id="reset" type="reset" @click="sub()">
+              关闭
+            </button>
+          </div>
         </div>
-        <div class="btn4" v-show="!isShowBtn">
-          <button
-            class="btn btn-default btn1"
-            type="button"
-            @click="sub()"
-          >
-            退回修改
-          </button>
-          <button class="btn btn-default btn1" id="reset" type="reset" @click="sub()">
-            关闭
-          </button>
-        </div>
+        
       </div>
     </form>
   </div>
@@ -177,9 +181,11 @@ export default {
       create: this.$route.params.create,
       modify: this.$route.params.modify,
       isShow: true,
-      isShowBtn: false,
+      isShowBtn: true,
       isSolve: true,
+      isShowSolve:false,
       title: '',//题目
+      createPersonID: '',
       issueNo: '',//
       createDate: '',
       issueType: '',
@@ -208,7 +214,7 @@ export default {
           // console.log(data)
           
             this.user = data.data;
-            console.log(this.user)
+            // console.log(this.user)
             this.issueNo = this.user.issueNo
             this.title = this.user.title
             this.issueType = this.user.issueType
@@ -220,6 +226,7 @@ export default {
             this.solution = this.user.solution
             // this.priority = this.user.priority
             this.modifyPersonID = this.user.modifyPersonID
+            this.createPersonID = this.user.createPersonID
             this.priorityID = this.showPriority(this.user.priority)
             this.isSolve = true
             // console.log(this.user.id)
@@ -228,15 +235,23 @@ export default {
             // }else{              
             //   this.isSolve = true
             // }
-            if(this.status == -1){
-              this.isSolve = false
-            }else{              
-              this.isSolve = true
-            }
-            if(this.$store.user.loginID == this.user.id){
-              this.isShowBtn = false
-            }else{
+
+            console.log(this.$store.state.user.loginID)
+            // console.log(this.user.createPersonID)
+            if(this.status == 0){
               this.isShowBtn = true
+            }
+            if(this.status == 1){
+              this.isShowBtn = false
+              this.isShowSolve = true
+            }
+            if(this.status == -1){
+              this.isShow = false
+            }
+            if(this.$store.state.user.loginID == this.user.createPersonID){
+              this.isSolve = false
+            }else{
+              this.isSolve = true
             }
         })
         .catch((err) => {

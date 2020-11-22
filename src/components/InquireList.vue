@@ -5,49 +5,52 @@
       <div class="link-top"></div>
       <br />
       <br />
-      <div class="table_all">
-        <table class="table table-hover">
-          <tbody class="table_boay">
-            <tr class="align">
-              <td scope="row">
-                Issue NO <input type="number" maxlength="30" ref="Issue_NO" />
-              </td>
-              <td>
-                Issue 状态
-                <select name="status" id="select" ref="select">
-                  <option class="form-control" selected="selected"></option>
-                  <option class="form-control">待修改</option>
-                  <option class="form-control">待验证</option>
-                  <option class="form-control">已关闭</option>
-                </select>
-              </td>
-              <td>
-                创建时间<input type="date" ref="create_time" /> 至
-                <input type="date" ref="create_time1" />
-              </td>
-            </tr>
-            <tr class="align">
-              <td scope="row" id="create">
-                创建人 <input type="text" maxlength="30" ref="create" />
-              </td>
+      <form action="">
+        <div class="table_all">
+          <table class="table table-hover">
+            <tbody class="table_boay">
+              <tr class="align">
+                <td scope="row">
+                  Issue NO <input type="number" maxlength="30" ref="Issue_NO" />
+                </td>
+                <td>
+                  Issue 状态
+                  <select name="status" id="select" ref="select">
+                    <option class="form-control" selected="selected"></option>
+                    <option class="form-control">待修改</option>
+                    <option class="form-control">待验证</option>
+                    <option class="form-control">已关闭</option>
+                  </select>
+                </td>
+                <td>
+                  创建时间<input type="date" ref="create_time" /> 至
+                  <input type="date" ref="create_time1" />
+                </td>
+              </tr>
+              <tr class="align">
+                <td scope="row" id="create">
+                  创建人 <input type="text" maxlength="30" ref="create" />
+                </td>
 
-              <td id="modify">
-                修改人
-                <input
-                  type="text"
-                  maxlength="30"
-                  v-model="modifyUser"
-                  ref="modify"
-                />
-              </td>
-              <td>
-                修改时间<input type="date" ref="modify_time" /> 至
-                <input type="date" ref="modify_time1" />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+                <td id="modify">
+                  修改人
+                  <input
+                    type="text"
+                    maxlength="30"
+                    v-model="modifyUser"
+                    ref="modify"
+                  />
+                </td>
+                <td>
+                  修改时间<input type="date" ref="modify_time" /> 至
+                  <input type="date" ref="modify_time1" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </form>
+      
 
       <div id="button">
         <button type="button" class="btn btn-info" @click="sub()">查询</button>
@@ -81,9 +84,9 @@
               <td>{{ list.id }}</td>
               <td>{{ list.issueNo }}</td>
               <td>{{ list.title }}</td>
-              <td>{{ list.createPersonID }}</td>
+              <td>{{ list.createPersonName }}</td>
               <td>{{ list.createDate }}</td>
-              <td>{{ list.modifyPersonID }}</td>
+              <td>{{ list.modifyPersonName }}</td>
               <td>{{ showStatus(list.status) }}</td>
               <td>{{ list.planModifyTime }}</td>
               <td>{{ list.actualComplteTime }}</td>
@@ -177,11 +180,15 @@ export default {
     axios({
       method: "post",
       url: url,
+      // data(
+      //   modifyPerson:xxx
+      // },
       xhrFields: {
         withCredentials: true,
       },
     })
       .then((data) => {
+        // console.log(data.data)
         this.users = data.data.data;
         // console.log(this.users);
         this.total = this.users.length;
@@ -281,7 +288,7 @@ export default {
       if (str == -1) {
         str = "已关闭";
       } else if (str == 0) {
-        str = "待解决";
+        str = "待修改";
       } else {
         str = "待验证";
       }
