@@ -176,6 +176,9 @@ export default {
     axios({
       method: "post",
       url: url,
+      xhrFields: {
+        withCredentials: true,
+      },
     })
       .then((data) => {
         this.users = data.data.data;

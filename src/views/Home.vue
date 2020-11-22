@@ -31,31 +31,50 @@
           修改个人信息
         </button>
       </div>
-      <div id="btn_issue">
-        <button type="button" class="btn btn-default" @click="goToCreate">
+      <div class="photo" v-if="!isLogined">
+        <img src="/pic/error.jpg" alt="" id="photo" />
+      </div>
+      <div id="btn_issue" v-if="isLogined">
+        <button
+          type="button"
+          class="btn btn-default"
+          @click="goToCreate"
+          v-if="!checkRole || isSuper"
+        >
           创建新Issue
         </button>
-        <button type="button" class="btn btn-default" @click="goToReport">
+        <button
+          type="button"
+          class="btn btn-default"
+          @click="goToReport"
+          v-if="checkRole || isSuper"
+        >
           Issue 报表
         </button>
-        <button type="button" class="btn btn-default" @click="goToManage">
+        <button
+          type="button"
+          class="btn btn-default"
+          @click="goToManage"
+          v-if="isSuper"
+        >
           账号管理
         </button>
       </div>
     </div>
     <br />
     <br />
-    <div v-if="!this.$store.state.token">
+    <div v-if="!this.$store.state.token" class="group_msg">
       <h2>第五组：佛</h2>
       <h4>
-        赖炎林，蔡海锋，柯炜杰，梁悦荣，温津杰，李潮平，成明强，陈海兴，李荣浩，陈汉健
+        赖炎林，蔡海锋，柯炜杰，梁悦荣，温津杰<br />
+        李潮平，成明强，陈海兴，李荣浩，陈汉健
       </h4>
     </div>
-    <div>
+    <div v-if="isLogined">
       <!-- <Inquire @callBackInfo="handleInfo"></Inquire>
 
       <IssuesList :partInfo="infos"></IssuesList> -->
-      <InquireList v-if="this.$store.state.token"></InquireList>
+      <InquireList></InquireList>
     </div>
   </div>
 </template>
@@ -71,9 +90,11 @@ export default {
     return {
       infos: [],
       isLogined: false,
+      checkRole: "",
+      isSuper: false,
       user: {
         username: "",
-        loginId: "",
+        loginID: "",
       },
     };
   },
@@ -110,9 +131,11 @@ export default {
     if (this.$store.state.token) {
       this.isLogined = true;
       this.user = this.$store.state.user;
+      this.checkRole = this.user.role;
+      if (this.user.loginID == "Admin") {
+        this.isSuper = true;
+      }
     } else {
-      console.log(this.$store.state.token);
-      console.log(this.$store.state.user.username);
     }
   },
 };
@@ -121,6 +144,8 @@ export default {
 <style scoped>
 #main {
   background-color: #e4c9e4;
+  width: 100%;
+  height: 100%;
 }
 h1 {
   text-align: center;
@@ -145,10 +170,15 @@ h1 {
   width: 200px;
 }
 .homeNav {
-  width: 100%;
-  height: 100%;
   position: static;
-  background: #e4c9e4;
-  left: 0;
+}
+.group_msg {
+  text-align: center;
+}
+.photo {
+  text-align: center;
+}
+#photo {
+  height: 400px;
 }
 </style>

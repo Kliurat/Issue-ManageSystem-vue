@@ -1,5 +1,8 @@
 <template>
   <div id="login">
+    <div class="background">
+      <img src="/pic/login.jpg" width="100%" height="100%" alt="" />
+    </div>
     <div class="head">登录</div>
     <hr />
     <button type="button" class="back" @click="gotoback">返回</button>
@@ -60,6 +63,9 @@ export default {
         axios({
           method: "post",
           url: url,
+          xhrFields: {
+            withCredentials: true,
+          },
           data: this.$qs.stringify({
             loginId: b,
             password: a,
@@ -99,12 +105,7 @@ export default {
 .head {
   margin-right: auto;
 }
-#login {
-  width: 100%;
-  height: 100%;
-  background: plum;
-  position: absolute;
-}
+
 .login_container {
   margin-top: 100px;
 
@@ -169,6 +170,18 @@ span {
 
 span:hover {
   color: #41b883;
+}
+.background {
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  position: fixed;
+}
+#login {
+  width: 100%;
+  height: 100%;
+  background: plum;
+  position: absolute;
 }
 </style>
 

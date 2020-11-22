@@ -10,14 +10,15 @@ import 'bootstrap'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import global from './common.vue'
 import qs from 'qs';
+import Axios from 'axios'
 Vue.prototype.$qs = qs;
 Vue.prototype.COMMON = global
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 
 router.beforeEach((to, from, next) => {
-    if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
-        if (store.state.token) { // 通过vuex state获取当前的token是否存在
+    if (to.meta.requireAuth) {
+        if (store.state.token) {
             next();
         } else {
             next({
@@ -37,3 +38,5 @@ new Vue({
     store,
     render: h => h(App)
 }).$mount('#app')
+
+Axios.defaults.withCredentials = true;

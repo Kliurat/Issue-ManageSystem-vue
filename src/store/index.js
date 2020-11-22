@@ -10,6 +10,7 @@ export default new Vuex.Store({
             username: "",
             loginID: "",
             email: "",
+            role: "",
         },
     },
     mutations: {
