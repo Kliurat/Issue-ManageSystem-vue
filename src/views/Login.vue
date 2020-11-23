@@ -3,8 +3,8 @@
     <div class="background">
       <img src="/pic/login.jpg" width="100%" height="100%" alt="" />
     </div>
-    <div class="head">登录</div>
-    <hr />
+    <h2 class="head">登陆</h2>
+    <div class="link-top"></div>
     <button type="button" class="back" @click="gotoback">返回</button>
     <div class="login_container">
       <table class="tb">
@@ -103,7 +103,13 @@ export default {
 }
 
 .head {
-  margin-right: auto;
+  margin-bottom: 20px;
+  margin-left: 20px;
+}
+.link-top {
+  width: 100%;
+  height: 1px;
+  border-top: dashed black 1px;
 }
 
 .login_container {
@@ -113,6 +119,7 @@ export default {
 }
 
 .back {
+  margin-top: 20px;
   width: 70px;
   height: 30px;
   background: blue;

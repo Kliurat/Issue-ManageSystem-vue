@@ -164,12 +164,7 @@ export default {
 </script>
 
 <style scoped>
-#main {
-    background-color: #e4c9e4;
-    width: 100%;
-    height:100%;
-   
-}
+
 h1 {
   text-align: center;
 }
