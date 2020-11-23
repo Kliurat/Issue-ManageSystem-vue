@@ -180,6 +180,7 @@ export default {
       status: this.$route.params.status,
       create: this.$route.params.create,
       modify: this.$route.params.modify,
+      isShowDetail: this.$route.params.isShowDetail,
       isShow: true,
       isShowBtn: true,
       isSolve: true,
@@ -235,7 +236,7 @@ export default {
             // }else{              
             //   this.isSolve = true
             // }
-
+            this.isShow = this.isShowDetail
             console.log(this.$store.state.user.loginID)
             // console.log(this.user.createPersonID)
             if(this.status == 0){

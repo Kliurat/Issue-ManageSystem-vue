@@ -54,7 +54,7 @@
 
       <div id="button">
         <button type="button" class="btn btn-info" @click="sub()">查询</button>
-        <button type="reset" class="btn btn-default">清空</button>
+        <button type="reset" class="btn btn-default" @click="clear()">清空</button>
       </div>
     </div>
 
@@ -94,7 +94,7 @@
                 <button
                   type="button"
                   class="btn btn-default"
-                  @click="gotoShow(list.issueNo,list.status,list.createPersonID,list.modifyPersonID)"
+                  @click="gotoShow(list.issueNo,list.status,list.createPersonID,list.modifyPersonID,isShowDetail)"
                 >
                   详情
                 </button>
@@ -102,7 +102,7 @@
                   type="button"
                   class="btn btn-default"
                   v-if="list.status > -1"
-                  @click="gotoShow(list.issueNo,list.status,list.createPersonID,list.modifyPersonID)"
+                  @click="gotoShow(list.issueNo,list.status,list.createPersonID,list.modifyPersonID,isShowDetail2)"
                 >
                   修改
                 </button>
@@ -150,6 +150,8 @@ export default {
   data() {
     return {
       modifyUser: this.$store.state.user.username,
+      isShowDetail: false,
+      isShowDetail2: true,
       issueID: "",
       issueList: [],
       arrayList: [],
@@ -208,19 +210,32 @@ export default {
     },
 
     sub() {
-      const url = this.globalHttpUrl + "selectUser";
-      let str1 = this.$refs.loginID.value;
-      let str2 = this.$refs.username.value;
-      let str3 = { loginID: str1, username: str2 };
-      axios({
+      if(this.$refs.create_time.value > this.$refs.create_time1.value){
+        alert("创建时间不符合条件")
+      }else if(this.$refs.modify_time.value > this.$refs.modify_time1.value){
+        alert("修改时间不符合条件")
+      }else{
+        const url = this.globalHttpUrl + "issue/query";
+        axios({
         method: "post",
         url: url,
-        data: this.$qs.stringify(str3),
+        data: this.$qs.stringify({
+          issueNo:this.$refs.Issue_NO.value,
+          status:this.$refs.select.value,
+          createStartDate:this.$refs.create_time.value,
+          createEndDate:this.$refs.create_time1.value,
+          createPersonID:this.$refs.create.value,
+          modifyPersonID:this.$refs.modify.value,
+          modifyStartDate:this.$refs.modify_time.value,
+          modifyEndDate:this.$refs.modify_time1.value,
+        }),
       })
         .then((list) => {
+          console.log(list.data)
           this.users = [];
           this.page = [];
           this.users = list.data;
+          console.log(this.users)
           this.total = this.users.length;
           this.pageList();
           this.getPageUsers();
@@ -228,6 +243,8 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+      }
+      
     },
     to(num) {
       this.currentPage = num;
@@ -271,7 +288,7 @@ export default {
       let j = this.total / this.amount;
       for (let i = 0; i < j; i++) this.page[i] = i;
     },
-    gotoShow(data,status,create,modify) {
+    gotoShow(data,status,create,modify,isShowDetail) {
       // this.$router.replace("/manage");
       // alert(data)
       this.$router.push({
@@ -280,7 +297,8 @@ export default {
           data: data,
           status: status,
           create: create,
-          modify: modify
+          modify: modify,
+          isShowDetail: isShowDetail
         },
       });
     },
@@ -294,6 +312,21 @@ export default {
       }
       return str;
     },
+    clear() {
+      // this.issueList = [];
+      // this.issueID = [];
+      // this.createName = [];
+      // this.modifierName = [];
+      this.$refs.Issue_NO.value = ''
+      this.$refs.create.value = ''
+      this.$refs.modify.value = ''
+      this.$refs.create_time.value = ''
+      this.$refs.create_time1.value = ''
+      this.$refs.modify_time.value = ''
+      this.$refs.modify_time1.value = ''
+      this.$refs.select.value = ''
+      this.modifierName = null
+    }
   },
 };
 </script>
