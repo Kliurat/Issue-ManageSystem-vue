@@ -1,11 +1,11 @@
 <template>
   <div id="login">
     <div class="background">
-      <img src="/pic/login.jpg" width="100%" height="100%" alt="" />
+      <img src="/pic/10.jfif" width="100%" height="100%" alt="" />
     </div>
     <h2 class="head">登陆</h2>
     <div class="link-top"></div>
-    <button type="button" class="back" @click="gotoback">返回</button>
+    <button type="button" class="back" @click="gotoback" v-if="false">返回</button>
     <div class="login_container">
       <table class="tb">
         <tr>
@@ -122,7 +122,7 @@ export default {
   margin-top: 20px;
   width: 70px;
   height: 30px;
-  background: blue;
+  background: yellow;
   color: black;
   border-radius: 10px;
   text-align: center;

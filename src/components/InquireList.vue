@@ -17,9 +17,9 @@
                   Issue 状态
                   <select name="status" id="select" ref="select">
                     <option class="form-control" selected="selected"></option>
-                    <option class="form-control">待修改</option>
-                    <option class="form-control">待验证</option>
-                    <option class="form-control">已关闭</option>
+                    <option class="form-control" value="0">待修改</option>
+                    <option class="form-control" value="1">待验证</option>
+                    <option class="form-control" value="-1">已关闭</option>
                   </select>
                 </td>
                 <td>
@@ -58,7 +58,7 @@
       </div>
     </div>
 
-    <div id="IssuesList_body" v-if="true">
+    <div id="IssuesList_body" v-if="isShow">
       <h2 class="head">Issue列表</h2>
       <div class="link-top"></div>
       <div id="table_boay">
@@ -245,8 +245,8 @@ export default {
           this.users = list.data.data;
           console.log(this.users)
           this.total = this.users.length;
-          if(this.users.length){
-            this.isShow = true
+          if(this.users.length==0){
+            this.isShow = false;
             alert("查询不到该条件的信息")
           }
           this.pageList();

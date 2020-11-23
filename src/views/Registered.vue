@@ -170,7 +170,7 @@ export default {
       
     },
     gotoback: function () {
-      this.$router.replace("/");
+      this.$router.replace("/login");
     },
   },
 
@@ -221,7 +221,7 @@ export default {
 }
 .registered {
 
-  background: plum;
+  background: pink;
 
   height: 100%;
   width: 100%;
