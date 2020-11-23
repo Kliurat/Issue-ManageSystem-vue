@@ -43,6 +43,7 @@
               ref="em"
               :value="this.$store.state.user.email"
               maxlength="30"
+              @change="checkEmail($event)"
             />
           </td>
           <td></td>
@@ -95,6 +96,7 @@ export default {
     return {
       passwordFormat: false,
       newPassword: false,
+      emailFormat:false,
       globalHttpUrl: this.COMMON.httpUrl,
       user: {
         username: "",
@@ -109,7 +111,7 @@ export default {
       let az = /[a-z]/;
       let AZ = /[A-Z]/;
       let patrn = /[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘'，。、]/;
-      if (az.test(str) && AZ.test(str) && patrn.test(str) && str.length > 8) {
+      if (az.test(str) && AZ.test(str) && patrn.test(str) && str.length >= 8) {
         this.passwordFormat = false;
       } else {
         this.passwordFormat = true;
@@ -122,8 +124,18 @@ export default {
         this.newPassword = true;
       }
     },
+    checkEmail(event){
+       let reg = new RegExp("^[a-z0-9A-Z]+[- | a-z0-9A-Z . _]+@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-z]{2,}$"); 
+      if(reg.test(event.target.value)){
+       
+        this.emailFormat=false;
+      }else{
+        this.emailFormat=true;
+      }
+    },
     update() {
       if (
+        !this.emailFormat &&
         !this.newPassword &&
         !this.passwordFormat &&
         this.$refs.name.value != "" &&

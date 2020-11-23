@@ -23,9 +23,10 @@
         <tr>
           <td class="td"><span class="star">*</span>邮箱：</td>
           <td>
-            <input type="text" name="" class="inputlength" ref="em" maxlength="30" />
+            <input type="email" name="" class="inputlength" ref="em" maxlength="30" @change="checkEmail($event)"/>
+
           </td>
-          <td></td>
+          <td><span class="err" v-show="emailFormat">邮箱格式错误</span></td>
         </tr>
         <tr>
           <td class="td"><span class="star">*</span>输入密码：</td>
@@ -50,6 +51,7 @@
               ref="ensurePassword"
               class="inputlength"
               maxlength="30"
+              @change="ensurePwd($event)"
             />
           </td>
           <td><span class="err" v-show="newPassword">密码不一致</span></td>
@@ -73,6 +75,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "Registered", //注册
 
@@ -80,6 +83,15 @@ export default {
     return {
       passwordFormat: false,
       newPassword: false,
+      emailFormat:false,
+      
+      globalHttpUrl: this.COMMON.httpUrl,
+      user: {
+            username: "",
+            loginID: "",
+            email: "",
+            role: "",
+        },
     };
   },
   methods: {
@@ -87,27 +99,75 @@ export default {
       let str = event.target.value;
       let az = /[a-z]/;
       let AZ = /[A-Z]/;
+      
       let patrn = /[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘'，。、]/;
-      if (az.test(str) && AZ.test(str) && patrn.test(str)) {
+      if (az.test(str) && AZ.test(str) && patrn.test(str)&&(event.target.value.length>=8)) {
         this.passwordFormat = false;
       } else {
         this.passwordFormat = true;
       }
     },
-    register: function () {
-      var a = this.$refs.password.value;
-      var b = this.$refs.ensurePassword.value;
-      var d =this.$refs.name.value;
-      var e =this.$refs.em.value;
-      if (a == ""|b == ""|d == ""|e == "") {
-        alert("请填写完整");
-      } else {
-        if (a != b) {
+    checkEmail(event){
+       let reg = new RegExp("^[a-z0-9A-Z]+[- | a-z0-9A-Z . _]+@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-z]{2,}$"); 
+      if(reg.test(event.target.value)){
+       
+        this.emailFormat=false;
+      }else{
+        this.emailFormat=true;
+      }
+    },
+    ensurePwd($event){
+      let password = this.$refs.password.value;
+      
+       if (password != event.target.value) {
           this.newPassword = true;
         } else {
           this.newPassword = false;
+          }
+    },
+    register: function () {
+       const url = this.globalHttpUrl + "register/user";
+      let ID =this.$refs.ID.value;
+      let password = this.$refs.password.value;
+      let ensurePassword = this.$refs.ensurePassword.value;
+      let name =this.$refs.name.value;
+      let email =this.$refs.em.value;
+      if (ID==""||password == ""||ensurePassword == ""||name == ""||email == ""||this.passwordFormat||this.emailFormat||this.newPassword) {
+        alert("请正确填写完整");
+      } else {
+        
+      axios({
+      method: "post",
+      url: url,
+      data:this.$qs.stringify({
+        loginID:ID,
+        password:password,
+        username:name,
+        email:email,
+      }),
+    })
+      .then((data) => {
+        if(data.data==1){
+          this.user.loginID=ID;
+          this.user.username=name;
+          this.user.email=email;
+          this.user.role=0;
+          this.$store.commit("setToken", "true");
+          this.$store.commit("setUser", this.user);
+          this.$router.replace("/");
         }
-      }
+        if(data.data==-1){
+          alert("该登录ID已被注册");
+        }
+        if(data.data==0){
+          alert("注册失败");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+        }
+      
     },
     gotoback: function () {
       this.$router.replace("/");

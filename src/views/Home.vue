@@ -25,21 +25,20 @@
           type="button"
           class="btn btn-default"
           id="btn3"
-          v-if="isLogined"
+          v-if="isLogined&&!isSuper"
           @click="goToModify"
+          
         >
           修改个人信息
         </button>
       </div>
-      <div class="photo" v-if="!isLogined">
-        <img src="/pic/error.jpg" alt="" id="photo" />
-      </div>
+     
       <div id="btn_issue" v-if="isLogined">
         <button
           type="button"
           class="btn btn-default"
           @click="goToCreate"
-          v-if="!checkRole || isSuper"
+          v-if="!checkRole&&!isSuper"
         >
           创建新Issue
         </button>
@@ -47,7 +46,7 @@
           type="button"
           class="btn btn-default"
           @click="goToReport"
-          v-if="checkRole || isSuper"
+          v-if="checkRole&&isSuper"
         >
           Issue 报表
         </button>
@@ -61,16 +60,19 @@
         </button>
       </div>
     </div>
+     <div class="photo" v-if="!isLogined||isSuper">
+        <img src="/pic/error.jpg" alt="" id="photo" />
+      </div>
     <br />
     <br />
-    <div v-if="!this.$store.state.token" class="group_msg">
+    <div v-if="!isLogined||isSuper" class="group_msg">
       <h2>第五组：佛</h2>
       <h4>
         赖炎林，蔡海锋，柯炜杰，梁悦荣，温津杰<br />
         李潮平，成明强，陈海兴，李荣浩，陈汉健
       </h4>
     </div>
-    <div v-if="isLogined">
+    <div v-if="isLogined&&!isSuper">
       <!-- <Inquire @callBackInfo="handleInfo"></Inquire>
 
       <IssuesList :partInfo="infos"></IssuesList> -->
@@ -165,6 +167,9 @@ h1 {
 }
 #btn3 {
   margin-left: 100px;
+}
+#btn_issue{
+  text-align: center;
 }
 #btn_issue .btn {
   margin: 20px 20px 10px 200px;

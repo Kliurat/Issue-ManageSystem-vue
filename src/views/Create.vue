@@ -6,7 +6,7 @@
     <form action="" method="post" class="form">
       <div>
         <img
-          src="/pic/return.gif"
+          src="/pic/return.jpeg"
           title="点我返回主页"
           alt="图片不存在"
           class="return"
@@ -183,6 +183,7 @@ export default {
           method: "post",
           url: url,
           data: this.$qs.stringify({
+            createPersonID:this.$store.state.user.loginID,
             title: this.$refs.title.value,
             issueType: this.$refs.issueType.value,
             priority: this.$refs.priority.value,
