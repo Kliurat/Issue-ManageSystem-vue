@@ -145,9 +145,7 @@ export default {
     },
   },
   created() {
-    console.log(this.$store.state.token);
-    console.log(this.isSuper);
-    console.log(this.isLogined);
+    
     if (this.$store.state.token) {
       this.isLogined = true;
       this.user = this.$store.state.user;
@@ -203,7 +201,5 @@ h1 {
 #photo {
   height: 400px;
 }
-#logout{
-  
-}
+
 </style>

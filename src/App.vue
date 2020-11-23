@@ -17,6 +17,6 @@ export default {
 
 <style>
   body {
-    background-color: red;
+    background-color:pink;
   }
 </style>
