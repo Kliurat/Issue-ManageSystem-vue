@@ -1,4 +1,5 @@
 <template>
+
   <router-view id="main"/>
 </template>
 
@@ -17,6 +18,7 @@ export default {
 
 <style>
   body {
-    background-color: red;
+    background-image: url(/pic/10.jfif);
+    background-size: cover;
   }
 </style>

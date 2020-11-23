@@ -61,7 +61,6 @@
       </div>
     </div>
      <div class="photo" v-if="!isLogined||isSuper">
-        <img src="/pic/error.jpg" alt="" id="photo" />
       </div>
     <br />
     <br />

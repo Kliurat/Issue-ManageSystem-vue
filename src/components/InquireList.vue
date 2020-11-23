@@ -58,7 +58,7 @@
       </div>
     </div>
 
-    <div id="IssuesList_body" v-if="true">
+    <div id="IssuesList_body" v-if="isShow">
       <h2 class="head">Issue列表</h2>
       <div class="link-top"></div>
       <div id="table_boay">
