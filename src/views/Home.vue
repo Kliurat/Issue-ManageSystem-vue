@@ -145,8 +145,7 @@ export default {
 
 <style scoped>
 #main {
-  background-color: #e4c9e4;
-  
+    background-color: #e4c9e4;
     width: 100%;
     height: 100%;
 }
@@ -172,7 +171,6 @@ h1 {
   text-align: center;
 }
 #btn_issue .btn {
-  margin: 20px 20px 10px 200px;
   width: 200px;
 }
 .homeNav {

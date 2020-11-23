@@ -58,7 +58,7 @@
       </div>
     </div>
 
-    <div id="IssuesList_body">
+    <div id="IssuesList_body" v-show="isShow">
       <h2 class="head">Issue列表</h2>
       <div class="link-top"></div>
       <div id="table_boay">
@@ -152,6 +152,7 @@ export default {
       modifyUser: this.$store.state.user.username,
       isShowDetail: false,
       isShowDetail2: true,
+      isShow: true,
       issueID: "",
       issueList: [],
       arrayList: [],
@@ -176,7 +177,7 @@ export default {
     };
   },
   created() {
-    const url = this.globalHttpUrl + "issue/query";
+    const url = this.globalHttpUrl + "issue/queryIssueByID";
     // const url = "/json/users.json";
 
     axios({
@@ -184,6 +185,7 @@ export default {
       url: url,
       data:this.$qs.stringify({
         modifyPersonID:this.$store.state.user.loginID,
+        createPersonID:this.$store.state.user.loginID,
       }),
       xhrFields: {
         withCredentials: true,
@@ -194,6 +196,10 @@ export default {
         this.users = data.data.data;
         // console.log(this.users);
         this.total = this.users.length;
+        // console.log(this.users.length)
+        if(this.users.length == 0){
+          this.isShow = false
+        }
         this.pageList();
         this.getPageUsers();
       })
@@ -231,12 +237,15 @@ export default {
         }),
       })
         .then((list) => {
-          console.log(list.data)
+          // console.log(list.data)
           this.users = [];
           this.page = [];
           this.users = list.data;
-          console.log(this.users)
+          // console.log(this.users)
           this.total = this.users.length;
+          if(this.users.length){
+            this.isShow = true
+          }
           this.pageList();
           this.getPageUsers();
         })
@@ -357,7 +366,7 @@ input::-webkit-inner-spin-button {
   padding-left: 28px;
 }
 #select {
-  width: 174px;
+  width: 186px;
   height: 30px;
 }
 #modify {
