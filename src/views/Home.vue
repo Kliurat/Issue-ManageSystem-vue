@@ -31,6 +31,7 @@
         >
           修改个人信息
         </button>
+        <button id="logout" class="btn btn-default" v-if="isLogined" @click="logout">退出登录</button>
       </div>
      
       <div id="btn_issue" v-if="isLogined">
@@ -46,7 +47,7 @@
           type="button"
           class="btn btn-default"
           @click="goToReport"
-          v-if="checkRole&&isSuper"
+          v-if="checkRole&&!isSuper"
         >
           Issue 报表
         </button>
@@ -97,9 +98,16 @@ export default {
         username: "",
         loginID: "",
       },
+      user1:{
+        username: "",
+            loginID: "",
+            email: "",
+            role: "",
+      }
     };
   },
   methods: {
+
     goToCreate: function () {
       this.$router.replace("/create");
     },
@@ -121,7 +129,14 @@ export default {
     goToModify: function () {
       this.$router.replace("/modify");
     },
-
+    logout(){
+      this.$store.commit("setToken", "false");
+      this.$store.commit("setUser", this.user1);
+      this.isLogined = false;
+      window.sessionStorage.clear();
+      this.$router.replace("/login");
+      
+    },
     handleInfo(data) {
       // console.log({prop:data})
       this.infos = data;
@@ -129,6 +144,9 @@ export default {
     },
   },
   created() {
+    console.log(this.$store.state.token);
+    console.log(this.isSuper);
+    console.log(this.isLogined);
     if (this.$store.state.token) {
       this.isLogined = true;
       this.user = this.$store.state.user;
@@ -137,6 +155,8 @@ export default {
         this.isSuper = true;
       }
     } else {
+      this.isLogined=false;
+      this.isSuper=false;
     }
   },
 };
@@ -176,9 +196,13 @@ h1 {
   text-align: center;
 }
 .photo {
+  padding-top: 5%;
   text-align: center;
 }
 #photo {
   height: 400px;
+}
+#logout{
+  
 }
 </style>
