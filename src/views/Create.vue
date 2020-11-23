@@ -222,8 +222,11 @@ export default {
   created() {
     const url = this.globalHttpUrl + "selectAll/user";
     axios({
-      method: "get",
+      method: "post",
       url: url,
+      data:this.$qs.stringify({
+        loginID:this.$store.state.user.loginID,
+      }),
     })
       .then((data) => {
         this.user = data.data;
@@ -279,7 +282,7 @@ h5 {
   width: 100%;
   height: 100%; /**宽高100%是为了图片铺满屏幕 */
   z-index: -1;
-  position: absolute;
+  position: fixed;
 }
 input {
   background-color: transparent;

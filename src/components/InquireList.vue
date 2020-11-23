@@ -234,7 +234,7 @@ export default {
           console.log(list.data)
           this.users = [];
           this.page = [];
-          this.users = list.data;
+          this.users = list.data.data;
           console.log(this.users)
           this.total = this.users.length;
           this.pageList();
@@ -340,9 +340,9 @@ input::-webkit-inner-spin-button {
 #main {
   background-color: #e4c9e4;
   left: 0;
-  top: 0;
   width: 100%;
   height: 100%;
+  
 }
 .link-top {
   width: 100%;
@@ -351,7 +351,7 @@ input::-webkit-inner-spin-button {
 }
 .page-header {
   left: 50px;
-  position: relative;
+  
 }
 #create {
   padding-left: 28px;
