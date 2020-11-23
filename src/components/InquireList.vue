@@ -11,7 +11,7 @@
             <tbody class="table_boay">
               <tr class="align">
                 <td scope="row">
-                  Issue NO <input type="number" maxlength="30" ref="Issue_NO" />
+                  Issue NO <input type="text" maxlength="30" ref="Issue_NO" />
                 </td>
                 <td>
                   Issue 状态
@@ -37,7 +37,7 @@
                   <input
                     type="text"
                     maxlength="30"
-                    v-model="modifyUser"
+                    :placeholder="modifyUser"
                     ref="modify"
                   />
                 </td>
@@ -230,8 +230,8 @@ export default {
           status:this.$refs.select.value,
           createStartDate:this.$refs.create_time.value,
           createEndDate:this.$refs.create_time1.value,
-          createPersonID:this.$refs.create.value,
-          modifyPersonID:this.$refs.modify.value,
+          createPersonName:this.$refs.create.value,
+          modifyPersonName:this.$refs.modify.value,
           modifyStartDate:this.$refs.modify_time.value,
           modifyEndDate:this.$refs.modify_time1.value,
         }),

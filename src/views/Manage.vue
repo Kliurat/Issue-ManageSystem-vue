@@ -50,6 +50,7 @@
           </button>
         </div>
       </form>
+      <div v-show="!isNull">
       <h5>用户信息</h5>
       <hr />
       <table class="table table-bordered">
@@ -110,7 +111,13 @@
         <span>跳至</span>
         <input type="text" @change="goto($event)" class="goto" ref="pageTo" />
         <span>页</span>
+        <br>
+        <span class="kk">共{{total}}条</span>
+        <span class="kk">当前页：{{currentPage}}</span>
+        <span class="kk">共{{page.length}}页</span>
       </div>
+      </div>
+      
     </div>
   </div>
 </template>
@@ -129,6 +136,7 @@ export default {
       currentPage: 1,
       currentPageUsers: [],
       page: [],
+      isNull:false,
       globalHttpUrl: this.COMMON.httpUrl,
       user: {
         sortID: "",
@@ -206,6 +214,14 @@ export default {
           this.total = this.users.length;
           this.pageList();
           this.getPageUsers();
+          
+          if(this.total==0){
+            location.reload() 
+            alert("符合条件数据为零");
+             
+          }else{
+            
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -343,5 +359,8 @@ input {
 }
 .goto {
   width: 100px;
+}
+.kk{
+  margin: auto 20px;
 }
 </style>

@@ -42,7 +42,7 @@
           <tr v-for="(user, index) in currentPageUsers" :key="index">
             <td scope="row"><input type="checkbox" name="" /></td>
             <td>{{ user.id }}</td>
-            <td>{{ user.userId }}</td>
+            <td>{{ user.loginID }}</td>
             <td>{{ user.username }}</td>
             <td>{{ user.createCount }}</td>
             <td>{{ user.receiveCount }}</td>
@@ -71,6 +71,10 @@
       <span>跳至</span>
       <input type="text" @change="goto($event)" class="goto" ref="pageTo" />
       <span>页</span>
+      <br>
+        <span class="kk">共{{total}}条</span>
+        <span class="kk">当前页：{{currentPage}}</span>
+        <span class="kk">共{{page.length}}页</span>
     </div>
   </div>
 </template>
@@ -83,7 +87,7 @@ export default {
     return {
       users: [],
       total: 0,
-      amount: 2,
+      amount: 4,
       currentPage: 1,
       currentPageUsers: [],
       page: [],
@@ -257,5 +261,11 @@ export default {
 }
 .back {
     position: relative;
+}
+.pageList {
+  text-align: center;
+}
+.kk{
+  margin: auto 20px;
 }
 </style>
