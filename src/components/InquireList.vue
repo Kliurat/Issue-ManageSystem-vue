@@ -58,7 +58,7 @@
       </div>
     </div>
 
-    <div id="IssuesList_body" v-if="isShow">
+    <div id="IssuesList_body" v-if="true">
       <h2 class="head">Issue列表</h2>
       <div class="link-top"></div>
       <div id="table_boay">
@@ -241,10 +241,11 @@ export default {
           this.users = [];
           this.page = [];
           this.users = list.data;
-          // console.log(this.users)
+          console.log(this.users)
           this.total = this.users.length;
           if(this.users.length){
             this.isShow = true
+            alert("查询不到该条件的信息")
           }
           this.pageList();
           this.getPageUsers();
@@ -347,10 +348,7 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 #main {
-  background-color: #e4c9e4;
-  left: 0;
-  width: 100%;
-  height: 100%;
+
 }
 .link-top {
   width: 100%;

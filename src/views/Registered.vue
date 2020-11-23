@@ -1,8 +1,8 @@
 <template>
   <div class="registered">
 
-    账号注册
-    <hr />
+    <h2 class="head">登陆</h2>
+    <div class="link-top"></div>
     <button type="button" class="back" @click="gotoback">返回</button>
 
     <div class="container">
@@ -178,7 +178,15 @@ export default {
 </script>
 
 <style scoped>
-
+.head {
+  margin-bottom: 20px;
+  margin-left: 20px;
+}
+.link-top {
+  width: 100%;
+  height: 1px;
+  border-top: dashed black 1px;
+}
 
 .inputlength {
   width: 400px;
@@ -229,7 +237,7 @@ p {
 }
 .back {
   width: 70px;
-
+  margin-top: 20px;
   background: blue;
   color: black;
   border-radius: 10px;
