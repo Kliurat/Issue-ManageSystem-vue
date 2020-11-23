@@ -129,7 +129,7 @@
         <textarea
           class="form-control"
           rows="3"
-          ref="reStep"
+          ref="solution"
           maxlength="2000"
           :placeholder="solution"
           :disabled="isShowSolve"
@@ -140,7 +140,7 @@
               class="btn btn-default btn3 "
               id="sub"
               type="button"
-              @click="sub()"
+              @click="verification()"
             >
               提交验证
             </button>
@@ -149,11 +149,12 @@
             <button
               class="btn btn-default btn1"
               type="button"
-              @click="sub()"
+              ref="cancel"
+              @click="cancel()"
             >
               退回修改
             </button>
-            <button class="btn btn-default btn1" id="reset" type="reset" @click="sub()">
+            <button class="btn btn-default btn1" id="reset" type="reset" ref="shutDown" @click="shutDown()">
               关闭
             </button>
           </div>
@@ -198,7 +199,8 @@ export default {
       solution:'',
       priority: '',
       modifyPersonID:'',
-      priorityID: ''
+      priorityID: '',
+      id: 0
     };
   },
     created() {
@@ -216,6 +218,7 @@ export default {
           
             this.user = data.data;
             // console.log(this.user)
+            this.id = this.user.id
             this.issueNo = this.user.issueNo
             this.title = this.user.title
             this.issueType = this.user.issueType
@@ -237,7 +240,7 @@ export default {
             //   this.isSolve = true
             // }
             this.isShow = this.isShowDetail
-            console.log(this.$store.state.user.loginID)
+            // console.log(this.$store.state.user.loginID)
             // console.log(this.user.createPersonID)
             if(this.status == 0){
               this.isShowBtn = true
@@ -245,14 +248,15 @@ export default {
             if(this.status == 1){
               this.isShowBtn = false
               this.isShowSolve = true
+              this.isShow = false
             }
             if(this.status == -1){
               this.isShow = false
+              this.isShowSolve = true
             }
             if(this.$store.state.user.loginID == this.user.createPersonID){
               this.isSolve = false
-            }else{
-              this.isSolve = true
+              this.isShow = true
             }
         })
         .catch((err) => {
@@ -266,8 +270,72 @@ export default {
     regain() {
       this.$router.replace("/");
     },
-    sub(){
-      this.$router.replace("/");
+    verification(){
+      const url = this.globalHttpUrl + "issue/update";
+        axios({
+        method: "put",
+        url: url,
+        data: this.$qs.stringify({
+          solution:this.$refs.solution.value,
+          id: this.id,
+          status: 1
+        }),
+      })
+        .then((data) => {
+          console.log(data.data.status)
+          if(data.data.status == 200){
+            this.$router.replace("/");
+          }else(
+            alert("提交失败")
+          )
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    cancel(){
+      const url = this.globalHttpUrl + "issue/update";
+        axios({
+        method: "put",
+        url: url,
+        data: this.$qs.stringify({
+          id: this.id,
+          status: 0 
+        }),
+      })
+        .then((data) => {
+          console.log(data.data.status)
+          if(data.data.status == 200){
+            this.$router.replace("/");
+          }else(
+            alert("提交失败")
+          )
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    shutDown(){
+      const url = this.globalHttpUrl + "issue/update";
+        axios({
+        method: "put",
+        url: url,
+        data: this.$qs.stringify({
+          id: this.id,
+          status: -1
+        }),
+      })
+        .then((data) => {
+          console.log(data.data.status)
+          if(data.data.status == 200){
+            this.$router.replace("/");
+          }else(
+            alert("提交失败")
+          )
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     showPriority(str) {
       if (str == 1) {
