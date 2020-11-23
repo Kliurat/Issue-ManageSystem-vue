@@ -240,7 +240,9 @@ export default {
           // console.log(list.data)
           this.users = [];
           this.page = [];
-          this.users = list.data;
+
+
+          this.users = list.data.data;
           console.log(this.users)
           this.total = this.users.length;
           if(this.users.length){
@@ -347,9 +349,7 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none !important;
   margin: 0;
 }
-#main {
 
-}
 .link-top {
   width: 100%;
   height: 1px;
@@ -357,7 +357,7 @@ input::-webkit-inner-spin-button {
 }
 .page-header {
   left: 50px;
-  position: relative;
+  
 }
 #create {
   padding-left: 28px;
