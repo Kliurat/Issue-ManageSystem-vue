@@ -180,9 +180,9 @@ export default {
     axios({
       method: "post",
       url: url,
-      // data(
-      //   modifyPerson:xxx
-      // },
+      data:this.$qs.stringify({
+        modifyPersonID:this.$store.state.user.loginID,
+      }),
       xhrFields: {
         withCredentials: true,
       },
