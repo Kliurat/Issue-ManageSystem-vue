@@ -171,6 +171,7 @@ h1 {
   text-align: center;
 }
 #btn_issue .btn {
+  margin-top: 10px;
   width: 200px;
 }
 .homeNav {

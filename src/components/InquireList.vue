@@ -58,7 +58,7 @@
       </div>
     </div>
 
-    <div id="IssuesList_body" v-show="isShow">
+    <div id="IssuesList_body" v-if="isShow">
       <h2 class="head">Issue列表</h2>
       <div class="link-top"></div>
       <div id="table_boay">
@@ -349,7 +349,6 @@ input::-webkit-inner-spin-button {
 #main {
   background-color: #e4c9e4;
   left: 0;
-  top: 0;
   width: 100%;
   height: 100%;
 }
