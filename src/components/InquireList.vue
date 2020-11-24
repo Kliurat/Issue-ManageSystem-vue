@@ -216,6 +216,12 @@ export default {
     },
 
     sub() {
+      if(this.$refs.create_time1.value == null){
+        this.$refs.create_time1.value = new Date()
+      }
+      if(this.$refs.modify_time1.value == null){
+        this.$refs.modify_time1.value = new Date()
+      }
       if(this.$refs.create_time.value > this.$refs.create_time1.value){
         alert("创建时间不符合条件")
       }else if(this.$refs.modify_time.value > this.$refs.modify_time1.value){
@@ -240,13 +246,11 @@ export default {
           // console.log(list.data)
           this.users = [];
           this.page = [];
-
-
           this.users = list.data.data;
           console.log(this.users)
           this.total = this.users.length;
-          if(this.users.length){
-            this.isShow = true
+          if(this.users.length == 0){
+            location.reload() 
             alert("查询不到该条件的信息")
           }
           this.pageList();
@@ -301,8 +305,6 @@ export default {
       for (let i = 0; i < j; i++) this.page[i] = i;
     },
     gotoShow(data,status,create,modify,isShowDetail) {
-      // this.$router.replace("/manage");
-      // alert(data)
       this.$router.push({
         name: "showDeatail",
         params: {
@@ -325,10 +327,6 @@ export default {
       return str;
     },
     clear() {
-      // this.issueList = [];
-      // this.issueID = [];
-      // this.createName = [];
-      // this.modifierName = [];
       this.$refs.Issue_NO.value = ''
       this.$refs.create.value = ''
       this.$refs.modify.value = ''

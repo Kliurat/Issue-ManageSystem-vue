@@ -154,7 +154,7 @@
             >
               退回修改
             </button>
-            <button class="btn btn-default btn1" id="reset" type="reset" ref="shutDown" @click="shutDown()">
+            <button  class="btn btn-default btn1" id="reset" type="reset" ref="shutDown" @click="shutDown()">
               关闭
             </button>
           </div>
@@ -232,32 +232,39 @@ export default {
             this.modifyPersonID = this.user.modifyPersonID
             this.createPersonID = this.user.createPersonID
             this.priorityID = this.showPriority(this.user.priority)
-            this.isSolve = true
-            // console.log(this.user.id)
-            // if(this.$store.user.loginID == this.user.id){
-            //   this.isSolve = false
-            // }else{              
-            //   this.isSolve = true
-            // }
+            this.isSolve = true 
             this.isShow = this.isShowDetail
-            // console.log(this.$store.state.user.loginID)
-            // console.log(this.user.createPersonID)
-            if(this.status == 0){
-              this.isShowBtn = true
+            if(this.$store.state.user.loginID != this.user.createPersonID && this.status == 0){//修改人
+              this.isSolve = true //显示解决方案
+              this.isShow = true //显示按钮
+              this.isShowBtn = true //显示提交验证
             }
-            if(this.status == 1){
-              this.isShowBtn = false
-              this.isShowSolve = true
-              this.isShow = false
+            if(this.$store.state.user.loginID != this.user.createPersonID && this.status == -1 ){//修改人
+              this.isSolve = true //显示解决方案
+              this.isShow = false //不显示按钮
+              this.isShowSolve = true //无法修改
             }
-            if(this.status == -1){
-              this.isShow = false
-              this.isShowSolve = true
+            if(this.$store.state.user.loginID != this.user.createPersonID && this.status == 1){//修改人
+              this.isSolve = true //显示解决方案
+              this.isShowSolve = true //无法修改
+              this.isShow = false //不显示按钮
             }
-            if(this.$store.state.user.loginID == this.user.createPersonID){
-              this.isSolve = false
-              this.isShow = true
+            if(this.$store.state.user.loginID == this.user.createPersonID && this.status == 1){//创建人
+              this.isSolve = true //显示解决方案
+              this.isShow = true //显示按钮
+              this.isShowBtn = false //显示退回修改
+              this.isShowSolve = true //无法修改
             }
+            if(this.$store.state.user.loginID == this.user.createPersonID && this.status == 0){//创建人
+              this.isSolve = false //不显示解决方案
+              this.isShowSolve = true //无法修改
+            }
+            if(this.$store.state.user.loginID == this.user.createPersonID && this.status == -1){//创建人
+              this.isSolve = true //显示解决方案
+              this.isShow = false //不显示按钮
+              this.isShowSolve = true //无法修改
+            }
+            
         })
         .catch((err) => {
             console.log(err);
