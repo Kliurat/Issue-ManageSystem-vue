@@ -18,7 +18,8 @@ export default {
 
 <style>
   body {
-    background-image: url(/pic/10.jfif);
+    background-image: url(/pic/13.jpg);
     background-size: cover;
+
   }
 </style>
