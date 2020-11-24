@@ -313,7 +313,16 @@ export default {
       for (let i = 0; i < j; i++) this.page[i] = i;
     },
     gotoShow(data,status,create,modify,isShowDetail) {
-       
+      this.$router.push({
+        name: "showDeatail",
+        params: {
+          data: data,
+          status: status,
+          create: create,
+          modify: modify,
+          isShowDetail: isShowDetail
+        },
+      });
     },
     showStatus(str) {
       if (str == -1) {
