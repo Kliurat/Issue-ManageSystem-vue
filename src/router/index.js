@@ -45,6 +45,15 @@ const routes = [{
             import ( /* webpackChunkName: "about" */ '../views/Report.vue')
     },
     {
+        path: '/userIssueList',
+        name: 'UserIssueList',
+        meta: {
+            requireAuth: true,
+        },
+        component: () =>
+            import ( /* webpackChunkName: "about" */ '../views/UserIssueList.vue')
+    },
+    {
         path: '/inquireList',
         name: 'InquireList',
         component: () =>

@@ -1,6 +1,6 @@
 <template>
   <div id="main">
-    <div id="Inquire_body">
+    <div id="Inquire_body" v-if="isShow">
       <h2 class="head">Issue查询</h2>
       <div class="link-top"></div>
       <br />
@@ -58,7 +58,7 @@
       </div>
     </div>
 
-    <div id="IssuesList_body" v-if="isShow">
+    <div id="IssuesList_body">
       <h2 class="head">Issue列表</h2>
       <div class="link-top"></div>
       <div id="table_boay">
@@ -101,7 +101,7 @@
                 <button
                   type="button"
                   class="btn btn-default"
-                  v-if="list.status > -1"
+                  v-if="showBtn(list.status,list.createPersonID,list.modifyPersonID)"
                   @click="gotoShow(list.issueNo,list.status,list.createPersonID,list.modifyPersonID,isShowDetail2)"
                 >
                   修改
@@ -153,6 +153,7 @@ export default {
       isShowDetail: false,
       isShowDetail2: true,
       isShow: true,
+      isShowBtn: true,
       issueID: "",
       issueList: [],
       arrayList: [],
@@ -194,7 +195,7 @@ export default {
       .then((data) => {
         // console.log(data.data)
         this.users = data.data.data;
-        // console.log(this.users);
+        console.log(this.users);
         this.total = this.users.length;
         // console.log(this.users.length)
         if(this.users.length == 0){
@@ -262,6 +263,13 @@ export default {
       }
       
     },
+    showBtn(data,id,id2){
+      if(data == -1 || (this.$store.state.user.loginID != id && this.$store.state.user.loginID != id2)){
+        return false
+      }else{
+        return true
+      }
+    },
     to(num) {
       this.currentPage = num;
       console.log(this.currentPage);
@@ -305,16 +313,7 @@ export default {
       for (let i = 0; i < j; i++) this.page[i] = i;
     },
     gotoShow(data,status,create,modify,isShowDetail) {
-      this.$router.push({
-        name: "showDeatail",
-        params: {
-          data: data,
-          status: status,
-          create: create,
-          modify: modify,
-          isShowDetail: isShowDetail
-        },
-      });
+       
     },
     showStatus(str) {
       if (str == -1) {

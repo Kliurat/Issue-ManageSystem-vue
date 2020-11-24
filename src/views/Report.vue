@@ -1,85 +1,88 @@
 <template>
-  <div id="IssuesList_body">
-    <h2 class="head">查询条件</h2>
-    <router-link to="/" class="back">返回</router-link>
-    <div class="link-top"></div>
-    <form action="/json/users.json" method="post" class="form-inline">
-      <div class="form-group">
-        <label for="userId">用户ID</label>
-        <input type="text" class="form-control" id="userId" placeholder="" ref="loginID" maxlength="30"/>
+  <div id="main" >
+    <div id="Report_body" v-if="isShow">
+      <h2 class="head">查询条件</h2>
+      <router-link to="/" class="back">返回</router-link>
+      <div class="link-top"></div>
+      <form action="/json/users.json" method="post" class="form-inline">
+        <div class="form-group">
+          <label for="userId">用户ID</label>
+          <input type="text" class="form-control" id="userId" placeholder="" ref="loginID" maxlength="30"/>
+        </div>
+        <div class="form-group">
+          <label for="name">用户姓名</label>
+          <input type="text" class="form-control" id="name" placeholder="" ref="username" maxlength="30"/>
+        </div>
+        <div class="btn">
+          <button class="btn btn-default btn1" id="sub" type="button" @click="sub()">
+            查询
+          </button>
+          <button class="btn btn-default btn1" id="reset" type="reset" @click="clear">
+            清空
+          </button>
+        </div>
+      </form>
+      <br />
+      <h2 class="head">统计报表</h2>
+      <div class="link-top"></div>
+      <div id="table_boay">
+        <table class="table table-striped ">
+          <thead>
+            <tr>
+              <th><input type="checkbox" name="" id="" /></th>
+              <th>序号</th>
+              <th>用户ID</th>
+              <th>用户姓名</th>
+              <th>创建Issue数</th>
+              <th>收到Issue数</th>
+              <th>修改Issue数</th>
+              <th>完成率</th>
+            </tr>
+          </thead>
+          <tbody id="tbody">
+            <tr v-for="(user, index) in currentPageUsers" :key="index">
+              <td scope="row"><input type="checkbox" name="" /></td>
+              <td>{{ user.id }}</td>
+              <td>{{ user.loginID }}</td>
+              <td>{{ user.username }}</td>
+              <td><span @click="goToCreateCount(user.loginID,1)">{{ user.createCount }}</span></td>
+              <td><span @click="goToReceiveCount(user.loginID,2)">{{ user.receiveCount }}</span></td>
+              <td><span @click="goToModifyCount(user.loginID,3)">{{ user.modifyCount }}</span></td>
+              <td>{{ user.finishedPer }}%</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <div class="form-group">
-        <label for="name">用户姓名</label>
-        <input type="text" class="form-control" id="name" placeholder="" ref="username" maxlength="30"/>
-      </div>
-      <div class="btn">
-        <button class="btn btn-default btn1" id="sub" type="button" @click="sub()">
-          查询
+      <div class="pageList">
+        <button type="button" class="btn btn-default" @click="prev()">
+          <b-icon icon="caret-left-fill"></b-icon>
         </button>
-        <button class="btn btn-default btn1" id="reset" type="reset" @click="clear">
-          清空
+        <button
+          class="btn btn-default btn2"
+          v-for="(page, num) in page"
+          :key="num"
+          @click="to(num + 1)"
+        >
+          {{ num + 1 }}
         </button>
+        <button type="button" class="btn btn-default" @click="next()">
+          <b-icon icon="caret-right-fill"></b-icon>
+        </button>
+        <button class="btn btn-default" id="pageNumber">{{ amount }}条/页</button>
+        <span>跳至</span>
+        <input type="text" @change="goto($event)" class="goto" ref="pageTo" />
+        <span>页</span>
+        <br>
+          <span class="kk">共{{total}}条</span>
+          <span class="kk">当前页：{{currentPage}}</span>
+          <span class="kk">共{{page.length}}页</span>
       </div>
-    </form>
-    <br />
-    <h2 class="head">统计报表</h2>
-    <div class="link-top"></div>
-    <div id="table_boay">
-      <table class="table table-striped ">
-        <thead>
-          <tr>
-            <th><input type="checkbox" name="" id="" /></th>
-            <th>序号</th>
-            <th>用户ID</th>
-            <th>用户姓名</th>
-            <th>创建Issue数</th>
-            <th>收到Issue数</th>
-            <th>修改Issue数</th>
-            <th>完成率</th>
-          </tr>
-        </thead>
-        <tbody id="tbody">
-          <tr v-for="(user, index) in currentPageUsers" :key="index">
-            <td scope="row"><input type="checkbox" name="" /></td>
-            <td>{{ user.id }}</td>
-            <td>{{ user.loginID }}</td>
-            <td>{{ user.username }}</td>
-            <td>{{ user.createCount }}</td>
-            <td>{{ user.receiveCount }}</td>
-            <td>{{ user.modifyCount }}</td>
-            <td>{{ user.finishedPer }}%</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="pageList">
-      <button type="button" class="btn btn-default" @click="prev()">
-        <b-icon icon="caret-left-fill"></b-icon>
-      </button>
-      <button
-        class="btn btn-default btn2"
-        v-for="(page, num) in page"
-        :key="num"
-        @click="to(num + 1)"
-      >
-        {{ num + 1 }}
-      </button>
-      <button type="button" class="btn btn-default" @click="next()">
-        <b-icon icon="caret-right-fill"></b-icon>
-      </button>
-      <button class="btn btn-default" id="pageNumber">{{ amount }}条/页</button>
-      <span>跳至</span>
-      <input type="text" @change="goto($event)" class="goto" ref="pageTo" />
-      <span>页</span>
-      <br>
-        <span class="kk">共{{total}}条</span>
-        <span class="kk">当前页：{{currentPage}}</span>
-        <span class="kk">共{{page.length}}页</span>
     </div>
   </div>
 </template>
 
 <script>
+import InquireList from "@/components/InquireList.vue";
 import axios from "axios";
 export default {
   name: "Report", //报表
@@ -101,10 +104,36 @@ export default {
         status: "",
         role: "",
       },
+      isShow: true
     };
   },
 
   methods: {
+    goToCreateCount(data,flag){
+      this.$router.push({
+        name: "UserIssueList",
+        params: {
+          createPersonID: data,
+        },
+      });
+    },
+    goToReceiveCount(data,flag){
+      this.$router.push({
+        name: "UserIssueList",
+        params: { 
+          modifyPersonID: data,
+        },
+      });
+    },
+    goToModifyCount(data,flag){
+      this.$router.push({
+        name: "UserIssueList",
+        params: {
+          modifyPersonID: data,
+          flag: flag
+        },
+      });
+    },
     clear(){
         this.$refs.loginID.value = null
         this.$refs.username.value = null
@@ -195,6 +224,7 @@ export default {
       url: url,
     })
       .then((data) => {
+        // console.log(data.data)
         this.users = data.data.data;
         this.total = this.users.length;
         this.pageList();
