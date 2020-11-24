@@ -268,7 +268,7 @@ export default {
   },
   methods: {
     regain() {
-      this.$router.replace("/");
+      this.$router.push("/");
     },
     verification(){
       const url = this.globalHttpUrl + "issue/update";
@@ -284,7 +284,7 @@ export default {
         .then((data) => {
           console.log(data.data.status)
           if(data.data.status == 200){
-            this.$router.replace("/");
+            this.$router.push("/");
           }else(
             alert("提交失败")
           )
@@ -306,7 +306,7 @@ export default {
         .then((data) => {
           console.log(data.data.status)
           if(data.data.status == 200){
-            this.$router.replace("/");
+            this.$router.push("/");
           }else(
             alert("提交失败")
           )
@@ -328,7 +328,7 @@ export default {
         .then((data) => {
           console.log(data.data.status)
           if(data.data.status == 200){
-            this.$router.replace("/");
+            this.$router.push("/");
           }else(
             alert("提交失败")
           )

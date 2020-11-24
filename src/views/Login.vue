@@ -76,7 +76,7 @@ export default {
               window.sessionStorage.setItem("logined",true);
               this.$store.commit("setToken", "true");
               this.$store.commit("setUser", data.data.data);
-              this.$router.replace("/");
+              this.$router.push("/");
             } else {
               alert(data.data.msg);
             }
@@ -88,7 +88,7 @@ export default {
     },
 
     gotoback: function () {
-      this.$router.replace("/");
+      this.$router.push("/");
     },
   },
 };

@@ -7,6 +7,7 @@ import router from './router'
 import store from './store'
 import $ from 'jquery'
 import 'bootstrap'
+
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import global from './common.vue'
 import qs from 'qs';
