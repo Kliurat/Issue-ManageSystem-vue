@@ -21,6 +21,14 @@ router.beforeEach((to, from, next) => {
     if (to.meta.requireAuth) {
         if (store.state.token) {
             next();
+            let role = store.state.user.role;
+            if (to.meta.roles.includes(role)) {
+                next();
+            } else {
+                next({
+                    path: '/',
+                })
+            }
         } else {
             next({
                 path: '/login',

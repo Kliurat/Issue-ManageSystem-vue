@@ -300,19 +300,19 @@ export default {
           .catch((err) => {
             console.log(err);
           });
-        axios({
-          method: "post",
-          url: url2,
-          // headers:{
-          //   "Content-Type":"multipart/form-data"
-          // },
-          data:files,
-        })
-          .then((data) => {
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        // axios({
+        //   method: "post",
+        //   url: url2,
+        //   // headers:{
+        //   //   "Content-Type":"multipart/form-data"
+        //   // },
+        //   data:files,
+        // })
+        //   .then((data) => {
+        //   })
+        //   .catch((err) => {
+        //     console.log(err);
+        //   });
 
 
 

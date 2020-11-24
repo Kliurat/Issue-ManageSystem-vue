@@ -17,9 +17,9 @@
                   Issue 状态
                   <select name="status" id="select" ref="select">
                     <option class="form-control" selected="selected"></option>
-                    <option class="form-control">待修改</option>
-                    <option class="form-control">待验证</option>
-                    <option class="form-control">已关闭</option>
+                    <option class="form-control" value="0">待修改</option>
+                    <option class="form-control" value="1">待验证</option>
+                    <option class="form-control" value="-1">已关闭</option>
                   </select>
                 </td>
                 <td>

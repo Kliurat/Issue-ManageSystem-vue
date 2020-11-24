@@ -210,7 +210,7 @@ export default {
     created() {
         // alert("qweer"+this.$route.params)
         // console.log(this.data)
-        const imgUrl = this.globalHttpUrl + "file/download";
+        this.imgSrc = this.globalHttpUrl + "file/download";
         const url = this.globalHttpUrl + "issue/getIssueByIssueNo";
         axios({
         method: "post",
@@ -289,12 +289,7 @@ export default {
         //  }).then(data=>{
         //    this.imgSrc=data; // data即为图片地址
         //   });
-          axios({
-            method:'get',
-            url:imgUrl,
-          }).then((data)=>{
-            this.imgSrc=window.URL.createObjectURL(data.data);
-          })
+          
   },
   mounted(){
 
