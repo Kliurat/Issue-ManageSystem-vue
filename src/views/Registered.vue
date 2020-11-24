@@ -152,9 +152,10 @@ export default {
           this.user.username=name;
           this.user.email=email;
           this.user.role=0;
+          window.sessionStorage.setItem("logined",true);
           this.$store.commit("setToken", "true");
           this.$store.commit("setUser", this.user);
-          this.$router.replace("/");
+          this.$router.push("/");
         }
         if(data.data==-1){
           alert("该登录ID已被注册");
@@ -170,7 +171,7 @@ export default {
       
     },
     gotoback: function () {
-      this.$router.replace("/login");
+      this.$router.back(-1);
     },
   },
 

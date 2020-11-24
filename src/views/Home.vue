@@ -20,7 +20,7 @@
           登陆
         </button>
 
-        <span id="username">welcome{{ user.username }}</span>
+        <span id="username">welcome {{ user.username }}</span>
         <button
           type="button"
           class="btn btn-default"
@@ -106,31 +106,31 @@ export default {
   methods: {
 
     goToCreate: function () {
-      this.$router.replace("/create");
+      this.$router.push("/create");
     },
     goToLogin: function () {
-      this.$router.replace("/login");
+      this.$router.push("/login");
     },
     goToManage: function () {
-      this.$router.replace("/manage");
+      this.$router.push("/manage");
     },
     goToLogin: function () {
-      this.$router.replace("/login");
+      this.$router.push("/login");
     },
     goToRegistered: function () {
-      this.$router.replace("/registered");
+      this.$router.push("/registered");
     },
     goToReport: function () {
-      this.$router.replace("/report");
+      this.$router.push("/report");
     },
     goToModify: function () {
-      this.$router.replace("/modify");
+      this.$router.push("/modify");
     },
     logout(){
       this.isLogined = false;
       console.log(this.isLogined);
       window.sessionStorage.clear();
-      this.$router.replace("/login");
+      this.$router.push("/login");
     },
   },
   created() {

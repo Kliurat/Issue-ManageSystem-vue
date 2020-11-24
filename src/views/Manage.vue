@@ -65,7 +65,7 @@
           <td>操作</td>
         </tr>
         <tr v-for="(user, index) in currentPageUsers" :key="index">
-          <td>{{ user.sortID }}</td>
+          <td>{{index+1}}</td>
           <td>{{ user.loginID }}</td>
           <td>{{ user.username }}</td>
           <td>{{ user.email }}</td>
@@ -84,10 +84,18 @@
             <button
               type="button"
               class="btn btn-default btn2"
-              @click="promotion(user.loginID)"
+              @click="promotion(user.loginID,user.role)"
               v-if="!user.role && user.status"
             >
               经理
+            </button>
+            <button
+              type="button"
+              class="btn btn-default btn2"
+              @click="promotion(user.loginID,user.role)"
+              v-if="user.role && user.status"
+            >
+              降职
             </button>
           </td>
         </tr>
@@ -151,7 +159,7 @@ export default {
   },
   methods: {
     regain() {
-      this.$router.replace("/");
+      this.$router.push("/");
     },
     logoff(loginID) {
       const url = this.globalHttpUrl + "update/statusAndrole";
@@ -175,14 +183,14 @@ export default {
           console.log(err);
         });
     },
-    promotion(loginID) {
+    promotion(loginID,role) {
       const url = this.globalHttpUrl + "update/statusAndrole";
       axios({
         method: "post",
         url: url,
         data: this.$qs.stringify({
           loginID: loginID,
-          role: 1,
+          role:role,
         }),
       })
         .then((list) => {
@@ -214,11 +222,9 @@ export default {
           this.total = this.users.length;
           this.pageList();
           this.getPageUsers();
-          
           if(this.total==0){
-            location.reload() 
+            location.reload(); 
             alert("符合条件数据为零");
-             
           }else{
             
           }

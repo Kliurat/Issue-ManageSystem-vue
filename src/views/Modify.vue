@@ -162,7 +162,7 @@ export default {
               this.user.username = this.$refs.name.value;
               this.user.email = this.$refs.em.value;
               this.$store.commit("setUser", this.user);
-              this.$router.replace("/");
+              this.$router.push("/");
             } else {
               alert("修改失败");
             }
@@ -175,7 +175,7 @@ export default {
       }
     },
     gotoback: function () {
-      this.$router.replace("/");
+      this.$router.push("/");
     },
   },
 };
