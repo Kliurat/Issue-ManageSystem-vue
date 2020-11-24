@@ -1,8 +1,9 @@
 <template>
   <div class="manage">
-    <h1 class="home">GBA Issue管理系统</h1>
-    <div class="homeBody">
-      <img
+    <div class="background">
+      <img src="/pic/1.jpg" width="100%" height="100%" alt="" />
+    </div>
+    <img
       src="/pic/issue.gif"
       alt="图片不存在"
       title="点我返回主页"
@@ -64,7 +65,7 @@
           <td>操作</td>
         </tr>
         <tr v-for="(user, index) in currentPageUsers" :key="index">
-          <td>{{index+1}}</td>
+          <td>{{user.sortID}}</td>
           <td>{{ user.loginID }}</td>
           <td>{{ user.username }}</td>
           <td>{{ user.email }}</td>
@@ -126,8 +127,6 @@
       </div>
       
     </div>
-    </div>
-    
   </div>
 </template>
 
@@ -288,7 +287,6 @@ export default {
       let j = this.total / this.amount;
       for (let i = 0; i < j; i++) this.page[i] = i;
     },
-    
   },
   created() {
     const url = this.globalHttpUrl + "selectUser";
@@ -370,16 +368,5 @@ input {
 }
 .kk{
   margin: auto 20px;
-}
-.homeBody{
-  margin-top: 70px;
-}
-h1 {
-  height: 70px;
-  width: 100%;
-  position: fixed;
-  text-align: center;
-  background-image: url(/pic/13.jpg);
-  top: 0;
 }
 </style>
