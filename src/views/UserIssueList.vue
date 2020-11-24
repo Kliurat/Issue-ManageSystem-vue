@@ -1,6 +1,9 @@
 <template>
     <div id="main">
-        <div id="IssuesList_body">
+        <h1 class="home">GBA Issue管理系统</h1>
+        <div class="homeBody">
+          <div id="IssuesList_body">
+            
             <h2 class="head">Issue列表</h2>
             <button class="btn btn-default btn4" @click="back">返回</button>
             <div class="link-top"></div>
@@ -41,14 +44,6 @@
                         >
                         详情
                         </button>
-                        <button
-                        type="button"
-                        class="btn btn-default"
-                        v-if="showBtn(list.status,list.createPersonID,list.modifyPersonID)"
-                        @click="gotoShow(list.issueNo,list.status,list.createPersonID,list.modifyPersonID,isShowDetail2)"
-                        >
-                        修改
-                        </button>
                     </td>
                     </tr>
                 </tbody>
@@ -83,6 +78,8 @@
                 <span>页</span>
             </div>
             </div>
+        </div>
+        
     </div>
 </template>
 
@@ -349,5 +346,17 @@ input::-webkit-inner-spin-button {
     border-radius: 10px;
     border: 1px solid rgb(58, 184, 241);
     float: left;
+    margin-top: 10px;
+}
+.homeBody{
+  margin-top: 70px;
+}
+h1 {
+  height: 70px;
+  width: 100%;
+  position: fixed;
+  text-align: center;
+  background-image: url(/pic/13.jpg);
+  top: 0;
 }
 </style>

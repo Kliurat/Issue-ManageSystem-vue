@@ -1,9 +1,8 @@
 <template>
   <div class="manage">
-    <div class="background">
-      <img src="/pic/1.jpg" width="100%" height="100%" alt="" />
-    </div>
-    <img
+    <h1 class="home">GBA Issue管理系统</h1>
+    <div class="homeBody">
+      <img
       src="/pic/issue.gif"
       alt="图片不存在"
       title="点我返回主页"
@@ -127,6 +126,8 @@
       </div>
       
     </div>
+    </div>
+    
   </div>
 </template>
 
@@ -369,5 +370,16 @@ input {
 }
 .kk{
   margin: auto 20px;
+}
+.homeBody{
+  margin-top: 70px;
+}
+h1 {
+  height: 70px;
+  width: 100%;
+  position: fixed;
+  text-align: center;
+  background-image: url(/pic/13.jpg);
+  top: 0;
 }
 </style>

@@ -1,9 +1,8 @@
 <template>
   <div class="create">
-    <div class="background">
-      <img src="/pic/1.jpg" width="100%" height="100%" alt="" />
-    </div>
-    <form action="" method="post" class="form">
+    <h1 class="home">GBA Issue管理系统</h1>
+    <div class="homeBody">
+      <form action="" method="post" class="form">
       <div>
         <img
           src="/pic/return.jpeg"
@@ -168,6 +167,8 @@
         提交
       </button>
     </form>
+    </div>
+    
   </div>
 </template>
 
@@ -506,5 +507,16 @@ textarea {
 }
 .c-red{
 	color: red;
+}
+.homeBody{
+  margin-top: 70px;
+}
+h1 {
+  height: 70px;
+  width: 100%;
+  position: fixed;
+  text-align: center;
+  background-image: url(/pic/13.jpg);
+  top: 0;
 }
 </style>
