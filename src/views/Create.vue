@@ -267,7 +267,10 @@ export default {
         this.$refs.modifyPersonID.value != "" &&
         this.$refs.reStep.value != ""
       ) {
-         
+        let files=new FormData();
+        for(let i=0;i<this.imgList.length;i++){
+          files.append("files",this.imgList[i].file);
+        }
         const url = this.globalHttpUrl + "issue";
         const url2 = this.globalHttpUrl + "file/upload";
         axios({
@@ -302,9 +305,7 @@ export default {
           // headers:{
           //   "Content-Type":"multipart/form-data"
           // },
-          data: ({
-                files: this.imgList[0].file,
-          }),
+          data:files,
         })
           .then((data) => {
           })

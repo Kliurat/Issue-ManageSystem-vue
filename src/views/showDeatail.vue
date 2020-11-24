@@ -124,6 +124,9 @@
         :placeholder="reStep"
         disabled
       ></textarea>
+      <div>
+      <img :src="imgSrc" alt="">
+      </div>
       <div v-if="isSolve">
         <h5>解决方案</h5>
         <textarea
@@ -174,6 +177,7 @@ export default {
   },
   data() {
     return {
+      imgSrc:"",
       user: [],
       visit: false,
       globalHttpUrl: this.COMMON.httpUrl,
@@ -206,6 +210,7 @@ export default {
     created() {
         // alert("qweer"+this.$route.params)
         // console.log(this.data)
+        const imgUrl = this.globalHttpUrl + "file/download";
         const url = this.globalHttpUrl + "issue/getIssueByIssueNo";
         axios({
         method: "post",
@@ -264,11 +269,32 @@ export default {
               this.isShow = false //不显示按钮
               this.isShowSolve = true //无法修改
             }
-            
+           
         })
         .catch((err) => {
             console.log(err);
         });
+        // axios({
+        //    method: 'get',
+        //    url: imgUrl ,
+        //    headers: {
+        //      'Content-Type': 'application/x-www-form-urlencoded',
+        //      "token": this.token  // 必须添加的请求头
+        //    },
+        //    responseType: "arraybuffer", // 关键 设置 响应类型为二进制流
+        //  }).then(function (response) {  // 将后台的图片二进制流传华为base64
+        //    return 'data:image/png;base64,' + btoa(
+        //      new Uint8Array(response.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
+        //    );
+        //  }).then(data=>{
+        //    this.imgSrc=data; // data即为图片地址
+        //   });
+          axios({
+            method:'get',
+            url:imgUrl,
+          }).then((data)=>{
+            this.imgSrc=window.URL.createObjectURL(data.data);
+          })
   },
   mounted(){
 

@@ -287,6 +287,7 @@ export default {
       let j = this.total / this.amount;
       for (let i = 0; i < j; i++) this.page[i] = i;
     },
+    
   },
   created() {
     const url = this.globalHttpUrl + "selectUser";
