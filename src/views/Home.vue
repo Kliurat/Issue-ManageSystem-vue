@@ -73,9 +73,6 @@
       </h4>
     </div>
     <div v-if="isLogined&&!isSuper">
-      <!-- <Inquire @callBackInfo="handleInfo"></Inquire>
-
-      <IssuesList :partInfo="infos"></IssuesList> -->
       <InquireList></InquireList>
     </div>
   </div>
@@ -130,22 +127,15 @@ export default {
       this.$router.replace("/modify");
     },
     logout(){
-      this.$store.commit("setToken", "false");
-      this.$store.commit("setUser", this.user1);
       this.isLogined = false;
+      console.log(this.isLogined);
       window.sessionStorage.clear();
       this.$router.replace("/login");
-      
-    },
-    handleInfo(data) {
-      // console.log({prop:data})
-      this.infos = data;
-      // console.log(this.infos)
     },
   },
   created() {
-    
-    if (this.$store.state.token) {
+    let logined=window.sessionStorage.getItem("logined");
+    if (logined) {
       this.isLogined = true;
       this.user = this.$store.state.user;
       this.checkRole = this.user.role;
@@ -153,15 +143,12 @@ export default {
         this.isSuper = true;
       }
     } else {
-      this.isLogined=false;
-      this.isSuper=false;
     }
   },
 };
 </script>
 
 <style scoped>
-
 h1 {
   text-align: center;
 }
@@ -200,5 +187,4 @@ h1 {
 #photo {
   height: 400px;
 }
-
 </style>
