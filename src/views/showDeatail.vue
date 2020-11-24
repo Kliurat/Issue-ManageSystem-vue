@@ -329,7 +329,9 @@ export default {
         url: url,
         data: this.$qs.stringify({
           id: this.id,
-          status: -1
+          status: -1,
+          issueNo: this.issueNo,
+          modifyPersonID: this.modifyPersonID
         }),
       })
         .then((data) => {

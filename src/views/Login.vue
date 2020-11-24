@@ -3,6 +3,7 @@
     <div class="background">
       <img src="/pic/10.jfif" width="100%" height="100%" alt="" />
     </div>
+    <h1 class="home">GBA Issue管理系统</h1>
     <h2 class="head">登陆</h2>
     <div class="link-top"></div>
     <button type="button" class="back" @click="gotoback" >返回</button>
@@ -76,7 +77,7 @@ export default {
               window.sessionStorage.setItem("logined",true);
               this.$store.commit("setToken", "true");
               this.$store.commit("setUser", data.data.data);
-              this.$router.push("/");
+              this.$router.replace("/");
             } else {
               alert(data.data.msg);
             }
@@ -88,7 +89,7 @@ export default {
     },
 
     gotoback: function () {
-      this.$router.push("/");
+      this.$router.replace("/");
     },
   },
 };
@@ -123,15 +124,13 @@ export default {
   margin-top: 20px;
   width: 70px;
   height: 30px;
-  background: yellow;
+  background: white;
   color: black;
   border-radius: 10px;
   text-align: center;
   border: none;
 }
-.back:hover {
-  background-color: rgb(1, 1, 170);
-}
+
 .inputlength {
   width: 400px;
   height: 30px;
@@ -168,9 +167,6 @@ p {
   font-size: 16px;
   margin-bottom: 5px;
 }
-.submit:hover {
-  background-color: rgb(1, 1, 170);
-}
 
 span {
   cursor: pointer;
@@ -190,6 +186,12 @@ span:hover {
   height: 100%;
   background: plum;
   position: absolute;
+}
+h1 {
+  height: 70px;
+  width: 100%;
+  text-align: center;
+  top: 0;
 }
 </style>
 

@@ -1,8 +1,10 @@
 <template>
   <div id="main" >
-    <div id="Report_body" v-if="isShow">
+    <h1 class="home">GBA Issue管理系统</h1>
+    <div class="homeBody">
+      <div id="Report_body" v-if="isShow">
       <h2 class="head">查询条件</h2>
-      <router-link to="/" class="back">返回</router-link>
+      <button class="btn btn-default btn4" @click="back">返回</button>
       <div class="link-top"></div>
       <form action="/json/users.json" method="post" class="form-inline">
         <div class="form-group">
@@ -45,9 +47,9 @@
               <td>{{ user.id }}</td>
               <td>{{ user.loginID }}</td>
               <td>{{ user.username }}</td>
-              <td><span @click="goToCreateCount(user.loginID,1)">{{ user.createCount }}</span></td>
-              <td><span @click="goToReceiveCount(user.loginID,2)">{{ user.receiveCount }}</span></td>
-              <td><span @click="goToModifyCount(user.loginID,3)">{{ user.modifyCount }}</span></td>
+              <td><span class="issueColor" @click="goToCreateCount(user.loginID,1)">{{ user.createCount }}</span></td>
+              <td><span class="issueColor" @click="goToReceiveCount(user.loginID,2)">{{ user.receiveCount }}</span></td>
+              <td><span class="issueColor" @click="goToModifyCount(user.loginID,3)">{{ user.modifyCount }}</span></td>
               <td>{{ user.finishedPer }}%</td>
             </tr>
           </tbody>
@@ -78,6 +80,8 @@
           <span class="kk">共{{page.length}}页</span>
       </div>
     </div>
+    </div>
+    
   </div>
 </template>
 
@@ -202,6 +206,9 @@ export default {
       let j = this.total / this.amount;
       for (let i = 0; i < j; i++) this.page[i] = i;
     },
+    back(){
+        this.$router.replace("/");
+    }
   },
   created(){
       const url = this.globalHttpUrl+"issue/report";
@@ -289,13 +296,33 @@ export default {
   margin: 0;
   margin-left: 10px;
 }
-.back {
-    position: relative;
+.btn4{
+    border-radius: 10px;
+    border: 1px solid rgb(58, 184, 241);
+    float: left;
 }
 .pageList {
   text-align: center;
 }
 .kk{
   margin: auto 20px;
+}
+.issueColor{
+  color: rgb(90, 90, 238);
+  cursor:pointer;
+}
+.issueColor:hover{
+  color: rgb(218, 30, 177);
+}
+.homeBody{
+  margin-top: 70px;
+}
+h1 {
+  height: 70px;
+  width: 100%;
+  position: fixed;
+  text-align: center;
+  background-image: url(/pic/13.jpg);
+  top: 0;
 }
 </style>

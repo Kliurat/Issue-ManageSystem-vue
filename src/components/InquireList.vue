@@ -1,6 +1,6 @@
 <template>
   <div id="main">
-    <div id="Inquire_body" v-if="isShow">
+    <div id="Inquire_body">
       <h2 class="head">Issue查询</h2>
       <div class="link-top"></div>
       <br />
@@ -162,7 +162,7 @@ export default {
       globalHttpUrl: this.COMMON.httpUrl,
       users: [],
       total: 0,
-      amount: 5,
+      amount: 20,
       currentPage: 1,
       currentPageUsers: [],
       page: [],
@@ -248,7 +248,7 @@ export default {
           this.users = [];
           this.page = [];
           this.users = list.data.data;
-          console.log(this.users)
+          // console.log(this.users)
           this.total = this.users.length;
           if(this.users.length == 0){
             location.reload() 

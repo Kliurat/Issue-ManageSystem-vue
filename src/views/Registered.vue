@@ -1,6 +1,6 @@
 <template>
   <div class="registered">
-
+    <h1 class="home">GBA Issue管理系统</h1>
     <h2 class="head">登陆</h2>
     <div class="link-top"></div>
     <button type="button" class="back" @click="gotoback">返回</button>
@@ -220,14 +220,6 @@ export default {
   border: none;
   text-align: center;
 }
-.registered {
-
-  background: pink;
-
-  height: 100%;
-  width: 100%;
-  position: absolute;
-}
 
 p {
   margin-left: 500px;
@@ -239,8 +231,9 @@ p {
 .back {
   width: 70px;
   margin-top: 20px;
-  background: blue;
+  background: white;
   color: black;
+  border: 1px solid blue;
   border-radius: 10px;
   text-align: center;
 
@@ -248,10 +241,6 @@ p {
   margin-left: 0px;
   border: none;
 }
-.back:hover {
-  background-color: rgb(1, 1, 170);
-}
-
 span {
   text-align: center;
 }
@@ -276,12 +265,16 @@ button {
   height: 40px;
   line-height: 40px;
   margin: 0 auto;
-  border: none;
   background-color: blue;
   color: #fff;
   font-size: 16px;
   margin-bottom: 5px;
 }
-
+h1 {
+  height: 50px;
+  width: 100%;
+  text-align: center;
+  top: 0;
+}
 </style>
 

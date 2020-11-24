@@ -1,5 +1,6 @@
 <template>
   <div class="modify">
+    <h1 class="home">GBA Issue管理系统</h1>
     <h2 class="head">修改信息</h2>
     <div class="link-top"></div>
     <button type="button" class="back" @click="gotoback">返回</button>
@@ -209,12 +210,6 @@ export default {
   border: none;
   text-align: center;
 }
-.modify {
-  background: plum;
-  height: 100%;
-  width: 100%;
-  position: absolute;
-}
 p {
   margin-left: 500px;
 }
@@ -224,18 +219,13 @@ p {
 }
 .back {
   width: 70px;
-
-  background: blue;
   color: black;
   border-radius: 10px;
   text-align: center;
-
-  padding: 0px;
-  margin-left: 0px;
-  border: none;
-}
-.back:hover {
-  background-color: rgb(1, 1, 170);
+  margin-left: 10px;
+  margin-top: 10px;
+  border: 1px solid rgb(58, 184, 241);
+  background-color: white;
 }
 
 span {
@@ -275,5 +265,11 @@ button {
   width: 100%;
   height: 1px;
   border-top: dashed black 1px;
+}
+h1 {
+  height: 50px;
+  width: 100%;
+  text-align: center;
+  top: 0;
 }
 </style>
