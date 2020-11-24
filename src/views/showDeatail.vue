@@ -210,7 +210,8 @@ export default {
     created() {
         // alert("qweer"+this.$route.params)
         // console.log(this.data)
-        this.imgSrc = this.globalHttpUrl + "file/download";
+        let list = this.globalHttpUrl + "file/download"
+         console.log(list.length);
         const url = this.globalHttpUrl + "issue/getIssueByIssueNo";
         axios({
         method: "post",
