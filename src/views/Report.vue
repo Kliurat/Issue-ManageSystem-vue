@@ -24,6 +24,7 @@
           </button>
         </div>
       </form>
+      <a href="http://192.168.3.114:8888/excel" class="btn btn-default btn1 btn3">导出报表</a>
       <br />
       <h2 class="head">统计报表</h2>
       <div class="link-top"></div>
@@ -113,6 +114,19 @@ export default {
   },
 
   methods: {
+    exportReport(){
+      
+      axios({
+      method: "get",
+      url: this.globalHttpUrl + "/excel",
+    })
+      .then((data) => {
+        
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    },
     goToCreateCount(data,flag){
       this.$router.push({
         name: "UserIssueList",
@@ -324,5 +338,10 @@ h1 {
   text-align: center;
   background-image: url(/pic/13.jpg);
   top: 0;
+}
+.btn3 {
+  display: block;
+  margin-top: 20px;
+  float: right;
 }
 </style>

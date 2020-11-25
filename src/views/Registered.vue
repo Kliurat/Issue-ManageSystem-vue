@@ -1,10 +1,9 @@
 <template>
   <div class="registered">
     <h1 class="home">GBA Issue管理系统</h1>
-    <h2 class="head">登陆</h2>
+    <h2 class="head">注册</h2>
     <div class="link-top"></div>
-    <button type="button" class="back" @click="gotoback">返回</button>
-
+    <button type="button" class="back btn btn-default" @click="gotoback">返回</button>
     <div class="container">
       <table class="tb">
         <tr>
@@ -133,7 +132,7 @@ export default {
           this.newPassword = false;
           }
     },
-    register: function () {
+    register() {
        const url = this.globalHttpUrl + "register/user";
       let ID =this.$refs.ID.value;
       let password = this.$refs.password.value;
@@ -178,9 +177,12 @@ export default {
         }
       
     },
-    gotoback: function () {
+    gotoback() {
       this.$router.back(-1);
     },
+    registration(){
+
+    }
   },
 
 };
@@ -190,6 +192,7 @@ export default {
 .head {
   margin-bottom: 20px;
   margin-left: 20px;
+  text-align: center;
 }
 .link-top {
   width: 100%;
@@ -241,13 +244,11 @@ p {
   margin-top: 20px;
   background: white;
   color: black;
-  border: 1px solid blue;
   border-radius: 10px;
   text-align: center;
-
+  border: 1px solid rgb(58, 184, 241);
   padding: 0px;
-  margin-left: 0px;
-  border: none;
+  margin-left: 10px;
 }
 span {
   text-align: center;
@@ -283,6 +284,13 @@ h1 {
   width: 100%;
   text-align: center;
   top: 0;
+}
+.registration{
+  float: right;
+  border-radius: 10px;
+  margin-right: 20px;
+  margin-top: -40px;
+  background-color: white;
 }
 </style>
 
