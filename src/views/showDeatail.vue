@@ -1,9 +1,11 @@
 <template>
   <div class="create">
-    <form action="" method="post" class="form">
+    <h1 class="home">GBA Issue管理系统</h1>
+    <div class="homeBody">
+      <form action="" method="post" class="form">
       <div>
         <img
-          src="/pic/return.gif"
+          src="/pic/return.jpeg"
           title="点我返回主页"
           alt="图片不存在"
           class="return"
@@ -105,6 +107,7 @@
           <td></td>
         </tr>
       </table>
+
       <h5>指派修改人</h5>
       <input
         id="modifyUser"
@@ -125,7 +128,7 @@
         disabled
       ></textarea>
       <div>
-      <img :src="imgSrc" alt="" class="reStepImg">
+        <img :src="imgSrc" alt="" class="reStepImg" />
       </div>
       <div v-if="isSolve">
         <h5>解决方案</h5>
@@ -150,21 +153,28 @@
           </div>
           <div class="btn4" v-show="!isShowBtn">
             <button
-              class="btn btn-default btn1"
+              class="btn btn-default btn1 btn5"
               type="button"
               ref="cancel"
               @click="cancel()"
             >
               退回修改
             </button>
-            <button  class="btn btn-default btn1" id="reset" type="reset" ref="shutDown" @click="shutDown()">
+            <button
+              class="btn btn-default btn1 btn6"
+              id="reset"
+              type="reset"
+              ref="shutDown"
+              @click="shutDown()"
+            >
               关闭
             </button>
           </div>
         </div>
-        
       </div>
     </form>
+    </div>
+    
   </div>
 </template>
 
@@ -172,12 +182,10 @@
 import axios from "axios";
 export default {
   name: "showDeatail", //创建新Issue
-  props: {
-      
-  },
+  props: {},
   data() {
     return {
-      imgSrc:"",
+      imgSrc: "",
       user: [],
       visit: false,
       globalHttpUrl: this.COMMON.httpUrl,
@@ -189,184 +197,197 @@ export default {
       isShow: true,
       isShowBtn: true,
       isSolve: true,
-      isShowSolve:false,
-      title: '',//题目
-      createPersonID: '',
-      issueNo: '',//
-      createDate: '',
-      issueType: '',
-      influentVersion: '',
-      planModifyTime: '',
-      actualComplteTime: '',
-      modifyPersonID: '',
-      reStep:'',
-      solution:'',
-      priority: '',
-      modifyPersonID:'',
-      priorityID: '',
-      id: 0
+      isShowSolve: false,
+      title: "", //题目
+      createPersonID: "",
+      issueNo: "", //
+      createDate: "",
+      issueType: "",
+      influentVersion: "",
+      planModifyTime: "",
+      actualComplteTime: "",
+      modifyPersonID: "",
+      reStep: "",
+      solution: "",
+      priority: "",
+      modifyPersonID: "",
+      priorityID: "",
+      id: 0,
     };
   },
-    created() {
-        // alert("qweer"+this.$route.params)
-        // console.log(this.data)
-        this.imgSrc = this.globalHttpUrl + "file/download"
-        
-        const url = this.globalHttpUrl + "issue/getIssueByIssueNo";
-        axios({
-        method: "post",
-        url: url,
-        data: this.$qs.stringify({issueNo:this.data,
-        status: 1}),
-        })
-        .then((data) => {
-          // console.log(data)
-          
-            this.user = data.data;
-            // console.log(this.user)
-            this.id = this.user.id
-            this.issueNo = this.user.issueNo
-            this.title = this.user.title
-            this.issueType = this.user.issueType
-            this.createDate = this.user.createDate
-            this.influentVersion = this.user.influentVersion
-            this.actualComplteTime = this.user.actualComplteTime
-            this.planModifyTime = this.user.planModifyTime
-            this.reStep = this.user.reStep
-            this.solution = this.user.solution
-            // this.priority = this.user.priority
-            this.modifyPersonID = this.user.modifyPersonID
-            this.createPersonID = this.user.createPersonID
-            this.priorityID = this.showPriority(this.user.priority)
-            this.isSolve = true 
-            this.isShow = this.isShowDetail
-            if(this.$store.state.user.loginID != this.user.createPersonID && this.status == 0){//修改人
-              this.isSolve = true //显示解决方案
-              this.isShow = true //显示按钮
-              this.isShowBtn = true //显示提交验证
-            }
-            if(this.$store.state.user.loginID != this.user.createPersonID && this.status == -1 ){//修改人
-              this.isSolve = true //显示解决方案
-              this.isShow = false //不显示按钮
-              this.isShowSolve = true //无法修改
-            }
-            if(this.$store.state.user.loginID != this.user.createPersonID && this.status == 1){//修改人
-              this.isSolve = true //显示解决方案
-              this.isShowSolve = true //无法修改
-              this.isShow = false //不显示按钮
-            }
-            if(this.$store.state.user.loginID == this.user.createPersonID && this.status == 1){//创建人
-              this.isSolve = true //显示解决方案
-              this.isShow = true //显示按钮
-              this.isShowBtn = false //显示退回修改
-              this.isShowSolve = true //无法修改
-            }
-            if(this.$store.state.user.loginID == this.user.createPersonID && this.status == 0){//创建人
-              this.isSolve = false //不显示解决方案
-              this.isShowSolve = true //无法修改
-            }
-            if(this.$store.state.user.loginID == this.user.createPersonID && this.status == -1){//创建人
-              this.isSolve = true //显示解决方案
-              this.isShow = false //不显示按钮
-              this.isShowSolve = true //无法修改
-            }
-           
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-        // axios({
-        //    method: 'get',
-        //    url: imgUrl ,
-        //    headers: {
-        //      'Content-Type': 'application/x-www-form-urlencoded',
-        //      "token": this.token  // 必须添加的请求头
-        //    },
-        //    responseType: "arraybuffer", // 关键 设置 响应类型为二进制流
-        //  }).then(function (response) {  // 将后台的图片二进制流传华为base64
-        //    return 'data:image/png;base64,' + btoa(
-        //      new Uint8Array(response.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
-        //    );
-        //  }).then(data=>{
-        //    this.imgSrc=data; // data即为图片地址
-        //   });
-          
-  },
-  mounted(){
+  created() {
+    // alert("qweer"+this.$route.params)
+    // console.log(this.data)
+    this.imgSrc = this.globalHttpUrl + "file/download";
 
+    const url = this.globalHttpUrl + "issue/getIssueByIssueNo";
+    axios({
+      method: "post",
+      url: url,
+      data: this.$qs.stringify({ issueNo: this.data, status: 1 }),
+    })
+      .then((data) => {
+        // console.log(data)
+
+        this.user = data.data;
+        // console.log(this.user)
+        this.id = this.user.id;
+        this.issueNo = this.user.issueNo;
+        this.title = this.user.title;
+        this.issueType = this.user.issueType;
+        this.createDate = this.user.createDate;
+        this.influentVersion = this.user.influentVersion;
+        this.actualComplteTime = this.user.actualComplteTime;
+        this.planModifyTime = this.user.planModifyTime;
+        this.reStep = this.user.reStep;
+        this.solution = this.user.solution;
+        // this.priority = this.user.priority
+        this.modifyPersonID = this.user.modifyPersonID;
+        this.createPersonID = this.user.createPersonID;
+        this.priorityID = this.showPriority(this.user.priority);
+        this.isSolve = true;
+        this.isShow = this.isShowDetail;
+        if (
+          this.$store.state.user.loginID != this.user.createPersonID &&
+          this.status == 0
+        ) {
+          //修改人
+          this.isSolve = true; //显示解决方案
+          this.isShow = true; //显示按钮
+          this.isShowBtn = true; //显示提交验证
+        }
+        if (
+          this.$store.state.user.loginID != this.user.createPersonID &&
+          this.status == -1
+        ) {
+          //修改人
+          this.isSolve = true; //显示解决方案
+          this.isShow = false; //不显示按钮
+          this.isShowSolve = true; //无法修改
+        }
+        if (
+          this.$store.state.user.loginID != this.user.createPersonID &&
+          this.status == 1
+        ) {
+          //修改人
+          this.isSolve = true; //显示解决方案
+          this.isShowSolve = true; //无法修改
+          this.isShow = false; //不显示按钮
+        }
+        if (
+          this.$store.state.user.loginID == this.user.createPersonID &&
+          this.status == 1
+        ) {
+          //创建人
+          this.isSolve = true; //显示解决方案
+          this.isShow = true; //显示按钮
+          this.isShowBtn = false; //显示退回修改
+          this.isShowSolve = true; //无法修改
+        }
+        if (
+          this.$store.state.user.loginID == this.user.createPersonID &&
+          this.status == 0
+        ) {
+          //创建人
+          this.isSolve = false; //不显示解决方案
+          this.isShowSolve = true; //无法修改
+        }
+        if (
+          this.$store.state.user.loginID == this.user.createPersonID &&
+          this.status == -1
+        ) {
+          //创建人
+          this.isSolve = true; //显示解决方案
+          this.isShow = false; //不显示按钮
+          this.isShowSolve = true; //无法修改
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    // axios({
+    //    method: 'get',
+    //    url: imgUrl ,
+    //    headers: {
+    //      'Content-Type': 'application/x-www-form-urlencoded',
+    //      "token": this.token  // 必须添加的请求头
+    //    },
+    //    responseType: "arraybuffer", // 关键 设置 响应类型为二进制流
+    //  }).then(function (response) {  // 将后台的图片二进制流传华为base64
+    //    return 'data:image/png;base64,' + btoa(
+    //      new Uint8Array(response.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
+    //    );
+    //  }).then(data=>{
+    //    this.imgSrc=data; // data即为图片地址
+    //   });
   },
+  mounted() {},
   methods: {
     regain() {
       this.$router.push("/");
     },
-    verification(){
+    verification() {
       const url = this.globalHttpUrl + "issue/update";
-        axios({
+      axios({
         method: "put",
         url: url,
         data: this.$qs.stringify({
-          solution:this.$refs.solution.value,
+          solution: this.$refs.solution.value,
           id: this.id,
-          status: 1
+          status: 1,
         }),
       })
         .then((data) => {
-          console.log(data.data.status)
-          if(data.data.status == 200){
+          console.log(data.data.status);
+          if (data.data.status == 200) {
             this.$router.push("/");
-          }else(
-            alert("提交失败")
-          )
+          } else alert("提交失败");
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    cancel(){
+    cancel() {
       const url = this.globalHttpUrl + "issue/update";
-        axios({
+      axios({
         method: "put",
         url: url,
         data: this.$qs.stringify({
           id: this.id,
-          status: 0 
+          status: 0,
         }),
       })
         .then((data) => {
-          console.log(data.data.status)
-          if(data.data.status == 200){
+          console.log(data.data.status);
+          if (data.data.status == 200) {
             this.$router.push("/");
-          }else(
-            alert("提交失败")
-          )
+          } else alert("提交失败");
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    shutDown(){
+    shutDown() {
       const url = this.globalHttpUrl + "issue/update";
-        axios({
-        method: "put",
-        url: url,
-        data: this.$qs.stringify({
-          id: this.id,
-          status: -1,
-          issueNo: this.issueNo,
-          modifyPersonID: this.modifyPersonID
-        }),
-      })
-        .then((data) => {
-          console.log(data.data.status)
-          if(data.data.status == 200){
-            this.$router.push("/");
-          }else(
-            alert("提交失败")
-          )
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+          axios({
+            method: "put",
+            url: url,
+            data: this.$qs.stringify({
+              id: this.id,
+              status: -1,
+              issueNo: this.issueNo,
+              modifyPersonID: this.modifyPersonID,
+            }),
+          })
+            .then((data) => {
+              console.log(data.data.status);
+              if (data.data.status == 200) {
+                this.$router.push("/");
+              } else alert("提交失败");
+            })
+            .catch((err) => {
+              console.log(err);
+            });
     },
     showPriority(str) {
       if (str == 1) {
@@ -380,6 +401,23 @@ export default {
       }
       return str;
     },
+    handleClick(){
+      let self = this
+      this.$vueConfirm.confirm(
+        {
+          message: `Are you sure?`,
+          button: {
+            no: 'No',
+            yes: 'Yes'
+          }
+        },
+        function(confirm) {
+          if (confirm == true) {
+            self.$vueConfirm.close()
+          }
+        }
+      )
+    }
   },
 };
 </script>
@@ -395,15 +433,15 @@ td {
 }
 .title {
   margin: 3%;
-  font-size: 50px;
+  font-size: 35px;
   color: rgb(211, 35, 182);
 }
 .tle {
   padding-top: 0px;
   display: inline;
   outline: 0;
-  font-size: 50px;
-  width: 40%;
+  font-size: 28px;
+  width: 60%;
 }
 
 h5 {
@@ -413,8 +451,8 @@ h5 {
 .return {
   float: left;
   border-radius: 50%;
-  width: 80px;
-  height: 80px;
+  width: 65px;
+  height: 65px;
   cursor: pointer;
 }
 #modifyUser {
@@ -427,25 +465,45 @@ h5 {
   margin: 20px 100px 0px 100px;
   padding-left: 12px;
   border-radius: 10px;
-  border: 1px solid rgb(58, 184, 241);
+  
 }
 .btn2 {
   padding-left: 12px;
   border-radius: 10px;
-  border: 1px solid rgb(58, 184, 241);
   margin: 0;
   margin-left: 5px;
   margin-bottom: 0px;
+  background-color: #5BC0DE;
+  color: white;
 }
 .btn3 {
-  margin-top:20px;
+  margin-top: 20px;
   border-radius: 10px;
-  border: 1px solid rgb(58, 184, 241);
+  
 }
 .btn4 {
   text-align: center;
 }
-.reStepImg{
+.reStepImg {
   width: 30%;
+}
+.btn5{
+  background-color: #F0AD4E;
+  color: white;
+}
+.btn6{
+  background-color: #D9534F;
+  color: white;
+}
+.homeBody{
+  margin-top: 70px;
+}
+h1 {
+  height: 70px;
+  width: 100%;
+  position: fixed;
+  text-align: center;
+  background-image: url(/pic/13.jpg);
+  top: 0;
 }
 </style>

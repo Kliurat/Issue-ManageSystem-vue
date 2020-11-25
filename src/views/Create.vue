@@ -1,6 +1,7 @@
 <template>
   <div class="create">
     <h1 class="home">GBA Issue管理系统</h1>
+    
     <div class="homeBody">
       <form action="" method="post" class="form">
       <div>
@@ -27,8 +28,8 @@
         <tr>
           <td>Issue No</td>
           <td>创建时间</td>
-          <td>Issue类型</td>
-          <td>Issue等级</td>
+          <td><span class="star">*</span>Issue类型</td>
+          <td><span class="star">*</span>Issue等级</td>
         </tr>
         <tr>
           <td>
@@ -67,8 +68,8 @@
           </td>
         </tr>
         <tr>
-          <td>影响版本</td>
-          <td>计划修改时间</td>
+          <td><span class="star">*</span>影响版本</td>
+          <td><span class="star">*</span>计划修改时间</td>
           <td>实际完成时间</td>
           <td></td>
         </tr>
@@ -102,7 +103,7 @@
           <td></td>
         </tr>
       </table>
-      <h5>重现步骤</h5>
+      <h5><span class="star">*</span>重现步骤</h5>
       <textarea
         class="form-control"
         rows="3"
@@ -142,7 +143,7 @@
 	</div>
       </div>
    
-      <h5>指派修改人</h5>
+      <h5><span class="star">*</span>指派修改人</h5>
       <input
         id="modifyUser"
         type="text"
@@ -359,15 +360,15 @@ td {
 }
 .title {
   margin: 3%;
-  font-size: 50px;
+  font-size: 35px;
   color: rgb(211, 35, 182);
 }
 .tle {
   padding-top: 0px;
   display: inline;
   outline: 0;
-  font-size: 50px;
-  width: 40%;
+  font-size: 28px;
+  width: 60%;
 }
 
 h5 {
@@ -377,8 +378,8 @@ h5 {
 .return {
   float: left;
   border-radius: 50%;
-  width: 80px;
-  height: 80px;
+  width: 65px;
+  height: 65px;
   cursor: pointer;
 }
 #modifyUser {
@@ -516,5 +517,13 @@ h1 {
   text-align: center;
   background-image: url(/pic/13.jpg);
   top: 0;
+}
+.btn-lg{
+    border: 1px solid rgb(58, 184, 241);
+    background-color: #5BC0DE;
+    color: white;
+}
+.star {
+  color: red;
 }
 </style>

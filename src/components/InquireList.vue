@@ -113,6 +113,7 @@
       </div>
 
       <div class="pageList">
+        <span class="kk">共{{total}}条</span>
         <button type="button" class="btn btn-default" @click="prev()">
           <b-icon icon="caret-left-fill"></b-icon>
         </button>
@@ -120,9 +121,9 @@
           class="btn btn-default btn2"
           v-for="(page, num) in page"
           :key="num"
-          @click="to(num + 1)"
+          @click="to(page + 1)"
         >
-          {{ num + 1 }}
+          {{ page + 1 }}
         </button>
         <button
           type="button"
@@ -138,6 +139,8 @@
         <span>跳至</span>
         <input type="text" @change="goto($event)" class="goto" ref="pageTo" />
         <span>页</span>
+        
+        <span class="current">当前页：{{currentPage}}</span>
       </div>
     </div>
   </div>
@@ -166,6 +169,7 @@ export default {
       currentPage: 1,
       currentPageUsers: [],
       page: [],
+      pages: [],
       user: {
         sortID: "",
         loginID: "",
@@ -344,7 +348,7 @@ export default {
       this.$refs.modify_time1.value = ''
       this.$refs.select.value = ''
       this.modifierName = null
-    }
+    },
   },
 };
 </script>
@@ -452,6 +456,12 @@ input::-webkit-inner-spin-button {
   text-align: center;
 }
 #Noright {
+  margin-left: 10px;
+}
+.goto {
+  width: 70px;
+}
+.current {
   margin-left: 10px;
 }
 </style>
