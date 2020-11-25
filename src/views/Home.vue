@@ -40,7 +40,7 @@
             type="button"
             class="btn btn-default"
             @click="goToCreate"
-            v-if="!checkRole&&!isSuper"
+            :disabled="checkRole||isSuper"
           >
             创建新Issue
           </button>
@@ -48,7 +48,7 @@
             type="button"
             class="btn btn-default"
             @click="goToReport"
-            v-if="checkRole&&!isSuper"
+            :disabled="!checkRole||isSuper"
           >
             Issue 报表
           </button>
@@ -56,7 +56,7 @@
             type="button"
             class="btn btn-default"
             @click="goToManage"
-            v-if="isSuper"
+            :disabled="!isSuper"
           >
             账号管理
           </button>

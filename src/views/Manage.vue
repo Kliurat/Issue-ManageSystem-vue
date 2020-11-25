@@ -141,7 +141,7 @@ export default {
     return {
       users: [],
       total: 0,
-      amount: 1,
+      amount: 10,
       currentPage: 1,
       currentPageUsers: [],
       pages: [],
@@ -241,8 +241,9 @@ export default {
     },
     to(num) {
       this.currentPage = num;
-      console.log(this.currentPage);
+     
       this.getPageUsers();
+      this.getLocalPage(); 
     },
     goto(event) {
       this.currentPage = event.target.value;
@@ -299,10 +300,13 @@ export default {
     getLocalPage(){
       this.page=[];
       this.localPage=parseInt(this.currentPage/5)+1;
+      console.log(this.localPage);
       let j = 5*this.localPage;
       if((this.pages.length-j)>0){
         for(let i=0;i<5;i++){
           this.page[i]=this.pages[i+j-5];
+          
+          console.log(this.page[i]);
         }
       }else{
         for(let i=0;i<(this.pages.length-j+5);i++){
