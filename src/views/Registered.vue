@@ -225,7 +225,7 @@ p {
   margin-left: 500px;
 }
 .container {
-  margin-left: 130px;
+  margin: auto;
   margin-top: 100px;
 }
 .back {

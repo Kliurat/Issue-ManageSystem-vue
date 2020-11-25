@@ -121,7 +121,7 @@
         <br>
         <span class="kk">共{{total}}条</span>
         <span class="kk">当前页：{{currentPage}}</span>
-        <span class="kk">共{{page.length}}页</span>
+        <span class="kk">共{{pages.length}}页</span>
       </div>
       </div>
       
@@ -144,7 +144,9 @@ export default {
       amount: 20,
       currentPage: 1,
       currentPageUsers: [],
-      page: [],
+      pages: [],
+      page:[],
+      localPage:1,
       isNull:false,
       globalHttpUrl: this.COMMON.httpUrl,
       user: {
@@ -174,7 +176,7 @@ export default {
       })
         .then((list) => {
           this.users = [];
-          this.page = [];
+          this.pages = [];
           this.users = list.data;
           this.total = this.users.length;
           this.pageList();
@@ -196,7 +198,7 @@ export default {
       })
         .then((list) => {
           this.users = [];
-          this.page = [];
+          this.pages = [];
           this.users = list.data;
           this.total = this.users.length;
           this.pageList();
@@ -218,7 +220,7 @@ export default {
       })
         .then((list) => {
           this.users = [];
-          this.page = [];
+          this.pages = [];
           this.users = list.data;
           this.total = this.users.length;
           this.pageList();
@@ -266,8 +268,8 @@ export default {
     },
     getPageUsers() {
       this.currentPageUsers = [];
-      if (this.page.length != 0) {
-        if (this.currentPage != this.page.length)
+      if (this.pages.length != 0) {
+        if (this.currentPage != this.pages.length)
           for (let i = 0; i < this.amount; i++) {
             let j = (this.currentPage - 1) * this.amount;
             this.currentPageUsers[i] = this.users[i + j];
@@ -275,7 +277,7 @@ export default {
         else
           for (
             let i = 0;
-            i < this.total - this.amount * (this.page.length - 1);
+            i < this.total - this.amount * (this.pages.length - 1);
             i++
           ) {
             let j = (this.currentPage - 1) * this.amount;
@@ -284,10 +286,26 @@ export default {
       }
     },
     pageList() {
-      this.page = [];
+      this.pages = [];
       let j = this.total / this.amount;
-      for (let i = 0; i < j; i++) this.page[i] = i;
+      for (let i = 0; i < j; i++) this.pages[i] = i;
     },
+    getLocalPage(){
+      this.page=[];
+      let j = 5*this.localPage;
+      console.log(this.pages.length-j);
+      if((this.pages.length-j)>0){
+        for(let i=0;i<5;i++){
+          this.page[i]=this.pages[i+j-5];
+          console.log( this.page[i]);
+        }
+      }else{
+        for(let i=0;i<(this.pages.length-j+5);i++){
+          this.page[i]=this.pages[i+j-5];
+          console.log( this.page[i]);
+        }
+      }
+    }
   },
   created() {
     const url = this.globalHttpUrl + "selectUser";
@@ -299,6 +317,7 @@ export default {
         this.users = data.data;
         this.total = this.users.length;
         this.pageList();
+        this.getLocalPage();
         this.getPageUsers();
       })
       .catch((err) => {
