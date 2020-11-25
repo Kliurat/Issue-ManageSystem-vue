@@ -139,10 +139,35 @@ export default {
       let ensurePassword = this.$refs.ensurePassword.value;
       let name =this.$refs.name.value;
       let email =this.$refs.em.value;
-      if (ID==""||password == ""||ensurePassword == ""||name == ""||email == ""||this.passwordFormat||this.emailFormat||this.newPassword||this.IdFormat) {
-        alert("请正确填写完整");
-      } else {
+      if (ID=="") {
+        alert("请输入登陆ID");
+      }else if(password == ""){
+        alert("请输入密码");
         
+      }else if(ensurePassword == ""){
+        alert("请输入确认密码");
+        
+      }else if(name == ""){
+        alert("请输入姓名");
+        
+      }else if(email == ""){
+        alert("请输入邮箱");
+        
+      }else if(this.passwordFormat){
+        alert("密码格式错误");
+        
+      }else if(this.emailFormat){
+        alert("邮箱格式错误");
+        
+      }else if(this.newPassword){
+        alert("两次密码不一致");
+        
+      }else if(this.IdFormat){
+        alert("登陆ID格式有误");
+        
+      }
+      else{
+      alert("注册成功");
       axios({
       method: "post",
       url: url,
