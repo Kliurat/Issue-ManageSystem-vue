@@ -180,6 +180,7 @@
 
 <script>
 import axios from "axios";
+import { MessageBox } from 'element-ui';
 export default {
   name: "showDeatail", //创建新Issue
   props: {},
@@ -368,7 +369,12 @@ export default {
         });
     },
     shutDown() {
-      const url = this.globalHttpUrl + "issue/update";
+      MessageBox.confirm('将关闭该issue','提示',{
+        confirmButtonText:'确定',
+        cancelButtonText:'取消',
+        type:'warning'
+      }).then(()=>{
+        const url = this.globalHttpUrl + "issue/update";
           axios({
             method: "put",
             url: url,
@@ -388,6 +394,8 @@ export default {
             .catch((err) => {
               console.log(err);
             });
+      })
+      
     },
     showPriority(str) {
       if (str == 1) {
