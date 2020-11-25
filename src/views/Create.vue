@@ -83,7 +83,7 @@
           </td>
           <td>
             <input
-              type="date"
+              type="datetime-local"
               class="form-control"
               placeholder="请输入时间"
               ref="planModifyTime"
@@ -188,9 +188,7 @@ export default {
       globalHttpUrl: this.COMMON.httpUrl,
     };
   },
-  components:{
-    upload,
-  },
+
   methods: {
     fileClick(){
 		document.getElementById('upload_file').click()
@@ -247,7 +245,7 @@ export default {
     },
     checkTime(event) {
       if (this.createDate > event.target.value) {
-        alert("计划修改时间输入错误！！！");
+        alert("计划修改时间不得早于当前时间！！！");
         event.target.value = "";
       }
     },
@@ -283,7 +281,7 @@ export default {
             issueType: this.$refs.issueType.value,
             priority: this.$refs.priority.value,
             influentVersion: this.$refs.influentVersion.value,
-            planModifyTime: this.$refs.planModifyTime.value,
+            timeStr: this.$refs.planModifyTime.value,
             reStep: this.$refs.reStep.value,
             modifyPersonID: this.$refs.modifyPersonID.value,
           }),
@@ -300,19 +298,19 @@ export default {
           .catch((err) => {
             console.log(err);
           });
-        // axios({
-        //   method: "post",
-        //   url: url2,
-        //   // headers:{
-        //   //   "Content-Type":"multipart/form-data"
-        //   // },
-        //   data:files,
-        // })
-        //   .then((data) => {
-        //   })
-        //   .catch((err) => {
-        //     console.log(err);
-        //   });
+        axios({
+          method: "post",
+          url: url2,
+          // headers:{
+          //   "Content-Type":"multipart/form-data"
+          // },
+          data:files,
+        })
+          .then((data) => {
+          })
+          .catch((err) => {
+            console.log(err);
+          });
 
 
 

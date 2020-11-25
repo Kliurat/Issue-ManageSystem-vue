@@ -107,9 +107,9 @@
           class="btn btn-default btn2"
           v-for="(page, num) in page"
           :key="num"
-          @click="to(num + 1)"
+          @click="to(page + 1)"
         >
-          {{ num + 1 }}
+          {{ page + 1 }}
         </button>
         <button type="button" class="btn btn-default" @click="next()">
           <b-icon icon="caret-right-fill"></b-icon>
@@ -141,7 +141,7 @@ export default {
     return {
       users: [],
       total: 0,
-      amount: 10,
+      amount: 1,
       currentPage: 1,
       currentPageUsers: [],
       pages: [],

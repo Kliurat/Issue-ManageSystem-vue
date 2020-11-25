@@ -39,7 +39,7 @@ const routes = [{
         path: '/report',
         name: 'Report',
         meta: {
-            roles: ["1"],
+            // roles: ["1"],
             requireAuth: true,
         },
         component: () =>
