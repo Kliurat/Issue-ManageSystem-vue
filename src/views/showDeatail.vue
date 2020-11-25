@@ -167,7 +167,7 @@
               ref="shutDown"
               @click="shutDown()"
             >
-              关闭
+              关闭Issue
             </button>
           </div>
         </div>
@@ -479,7 +479,8 @@ h5 {
 .btn3 {
   margin-top: 20px;
   border-radius: 10px;
-  
+  background-color: #5BC0DE;
+  color: white;
 }
 .btn4 {
   text-align: center;
@@ -489,10 +490,12 @@ h5 {
 }
 .btn5{
   background-color: #F0AD4E;
+  width: 18%;
   color: white;
 }
 .btn6{
   background-color: #D9534F;
+  width: 18%;
   color: white;
 }
 .homeBody{

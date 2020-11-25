@@ -16,18 +16,19 @@
           <input type="text" class="form-control" id="name" placeholder="" ref="username" maxlength="30"/>
         </div>
         <div class="btn">
-          <button class="btn btn-default btn1" id="sub" type="button" @click="sub()">
+          <button class="btn btn-default btn1 btn7" id="sub" type="button" @click="sub()">
             查询
           </button>
-          <button class="btn btn-default btn1" id="reset" type="reset" @click="clear">
+          <button class="btn btn-default btn1 btn7" id="reset" type="reset" @click="clear">
             清空
           </button>
         </div>
       </form>
-      <a href="http://192.168.3.114:8888/excel" class="btn btn-default btn1 btn3">导出报表</a>
+      
       <br />
       <h2 class="head">统计报表</h2>
       <div class="link-top"></div>
+      <a href="http://192.168.3.114:8888/excel" class="btn btn-default btn1 btn3">导出报表</a>
       <div id="table_boay">
         <table class="table table-striped ">
           <thead>
@@ -57,6 +58,7 @@
         </table>
       </div>
       <div class="pageList">
+        <span class="sumpage">共{{total}}条</span>
         <button type="button" class="btn btn-default" @click="prev()">
           <b-icon icon="caret-left-fill"></b-icon>
         </button>
@@ -64,21 +66,27 @@
           class="btn btn-default btn2"
           v-for="(page, num) in page"
           :key="num"
-          @click="to(num + 1)"
+          @click="to(page + 1)"
         >
-          {{ num + 1 }}
+          {{ page + 1 }}
         </button>
-        <button type="button" class="btn btn-default" @click="next()">
+        <button
+          type="button"
+          class="btn btn-default"
+          @click="next()"
+          id="Noright"
+        >
           <b-icon icon="caret-right-fill"></b-icon>
         </button>
-        <button class="btn btn-default" id="pageNumber">{{ amount }}条/页</button>
-        <span>跳至</span>
+        <button class="btn btn-default" id="pageNumber">
+          {{ amount }}条/页
+        </button>
+        <span class="sumpage">跳至</span>
         <input type="text" @change="goto($event)" class="goto" ref="pageTo" />
-        <span>页</span>
-        <br>
-          <span class="kk">共{{total}}条</span>
-          <span class="kk">当前页：{{currentPage}}</span>
-          <span class="kk">共{{page.length}}页</span>
+        <span class="sumpage">页</span>
+        
+        <span class="current">当前页：{{currentPage}}</span>
+        <span class="sumpage">共{{pages.length}}页</span>
       </div>
     </div>
     </div>
@@ -99,6 +107,8 @@ export default {
       currentPage: 1,
       currentPageUsers: [],
       page: [],
+      pages: [],
+      localPage:1,
       globalHttpUrl: this.COMMON.httpUrl,
       user: {
         sortID: "",
@@ -172,6 +182,7 @@ export default {
           this.users = list.data.data;
           this.total = this.users.length;
           this.pageList();
+          this.getLocalPage();
           this.getPageUsers();
         })
         .catch((err) => {
@@ -182,24 +193,28 @@ export default {
       this.currentPage = num;
       console.log(this.currentPage);
       this.getPageUsers();
+      this.getLocalPage();
     },
     goto(event) {
       this.currentPage = event.target.value;
       this.getPageUsers();
+      this.getLocalPage();
       this.$refs.pageTo.value = "";
     },
     prev() {
       if (this.currentPage != 1) this.currentPage--;
       this.getPageUsers();
+      this.getLocalPage();
     },
     next() {
-      if (this.currentPage != this.page.length) this.currentPage++;
+      if (this.currentPage != this.pages.length) this.currentPage++;
       this.getPageUsers();
+      this.getLocalPage();
     },
     getPageUsers() {
       this.currentPageUsers = [];
-      if (this.page.length != 0) {
-        if (this.currentPage != this.page.length)
+      if (this.pages.length != 0) {
+        if (this.currentPage != this.pages.length)
           for (let i = 0; i < this.amount; i++) {
             let j = (this.currentPage - 1) * this.amount;
             this.currentPageUsers[i] = this.users[i + j];
@@ -207,7 +222,7 @@ export default {
         else
           for (
             let i = 0;
-            i < this.total - this.amount * (this.page.length - 1);
+            i < this.total - this.amount * (this.pages.length - 1);
             i++
           ) {
             let j = (this.currentPage - 1) * this.amount;
@@ -216,13 +231,36 @@ export default {
       }
     },
     pageList() {
-      this.page = [];
+      this.pages = [];
       let j = this.total / this.amount;
-      for (let i = 0; i < j; i++) this.page[i] = i;
+      for (let i = 0; i < j; i++) this.pages[i] = i;
     },
     back(){
         this.$router.replace("/");
-    }
+    },
+    getLocalPage(){
+      this.page=[];
+      if(parseInt(this.currentPage/5)==Math.ceil(this.currentPage/5)){
+         this.localPage=parseInt(this.currentPage/5);
+      }else{
+        this.localPage=parseInt(this.currentPage/5)+1;
+      }
+     
+      
+      let j = 5*this.localPage;
+      if((this.pages.length-j)>0){
+        for(let i=0;i<5;i++){
+          this.page[i]=this.pages[i+j-5];
+          
+          
+        }
+      }else{
+        for(let i=0;i<(this.pages.length-j+5);i++){
+          this.page[i]=this.pages[i+j-5];
+          
+        }
+      }
+    } 
   },
   created(){
       const url = this.globalHttpUrl+"issue/report";
@@ -250,6 +288,7 @@ export default {
         this.total = this.users.length;
         this.pageList();
         this.getPageUsers();
+        this.getLocalPage();
       })
       .catch((err) => {
         console.log(err);
@@ -262,9 +301,11 @@ export default {
 .head {
   margin-bottom: 20px;
   margin-left: 20px;
+  text-align: center;
 }
 #table_boay {
   margin: 50px;
+  margin-top: 70px;
   background-color: white;
   text-align: center;
 }
@@ -279,6 +320,7 @@ export default {
 }
 .btn-default {
   margin: 10px;
+  
 }
 
 #page {
@@ -314,6 +356,11 @@ export default {
     border-radius: 10px;
     border: 1px solid rgb(58, 184, 241);
     float: left;
+    background-color: #5BC0DE;
+    color: white;
+    width: 100px;
+    height: 50px;
+    font-size: 25px;
 }
 .pageList {
   text-align: center;
@@ -343,5 +390,18 @@ h1 {
   display: block;
   margin-top: 20px;
   float: right;
+  background-color: #5BC0DE;
+  color: white;
+}
+.current {
+  margin-left: 10px;
+}
+.sumpage{
+  margin-right: 10px;
+  margin-left: 10px;
+}
+.btn7{
+  width: 100px;
+  height: 50px;
 }
 </style>

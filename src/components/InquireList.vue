@@ -113,7 +113,7 @@
       </div>
 
       <div class="pageList">
-        <span class="kk">共{{total}}条</span>
+        <span class="sumpage">共{{total}}条</span>
         <button type="button" class="btn btn-default" @click="prev()">
           <b-icon icon="caret-left-fill"></b-icon>
         </button>
@@ -136,11 +136,12 @@
         <button class="btn btn-default" id="pageNumber">
           {{ amount }}条/页
         </button>
-        <span>跳至</span>
+        <span class="sumpage">跳至</span>
         <input type="text" @change="goto($event)" class="goto" ref="pageTo" />
-        <span>页</span>
+        <span class="sumpage">页</span>
         
         <span class="current">当前页：{{currentPage}}</span>
+        <span class="sumpage">共{{pages.length}}页</span>
       </div>
     </div>
   </div>
@@ -165,11 +166,12 @@ export default {
       globalHttpUrl: this.COMMON.httpUrl,
       users: [],
       total: 0,
-      amount: 20,
+      amount: 4,
       currentPage: 1,
       currentPageUsers: [],
       page: [],
       pages: [],
+      localPage:1,
       user: {
         sortID: "",
         loginID: "",
@@ -206,6 +208,7 @@ export default {
           this.isShow = false
         }
         this.pageList();
+        this.getLocalPage();
         this.getPageUsers();
       })
       .catch((err) => {
@@ -250,7 +253,7 @@ export default {
         .then((list) => {
           // console.log(list.data)
           this.users = [];
-          this.page = [];
+          this.pages = [];
           this.users = list.data.data;
           // console.log(this.users)
           this.total = this.users.length;
@@ -259,6 +262,7 @@ export default {
             alert("查询不到该条件的信息")
           }
           this.pageList();
+          this.getLocalPage();
           this.getPageUsers();
         })
         .catch((err) => {
@@ -278,24 +282,28 @@ export default {
       this.currentPage = num;
       console.log(this.currentPage);
       this.getPageUsers();
+      this.getLocalPage();
     },
     goto(event) {
       this.currentPage = event.target.value;
       this.getPageUsers();
+      this.getLocalPage();
       this.$refs.pageTo.value = "";
     },
     prev() {
       if (this.currentPage != 1) this.currentPage--;
       this.getPageUsers();
+      this.getLocalPage();
     },
     next() {
-      if (this.currentPage != this.page.length) this.currentPage++;
+      if (this.currentPage != this.pages.length) this.currentPage++;
       this.getPageUsers();
+      this.getLocalPage();
     },
     getPageUsers() {
       this.currentPageUsers = [];
-      if (this.page.length != 0) {
-        if (this.currentPage != this.page.length)
+      if (this.pages.length != 0) {
+        if (this.currentPage != this.pages.length)
           for (let i = 0; i < this.amount; i++) {
             let j = (this.currentPage - 1) * this.amount;
             this.currentPageUsers[i] = this.users[i + j];
@@ -303,7 +311,7 @@ export default {
         else
           for (
             let i = 0;
-            i < this.total - this.amount * (this.page.length - 1);
+            i < this.total - this.amount * (this.pages.length - 1);
             i++
           ) {
             let j = (this.currentPage - 1) * this.amount;
@@ -312,9 +320,9 @@ export default {
       }
     },
     pageList() {
-      this.page = [];
+      this.pages = [];
       let j = this.total / this.amount;
-      for (let i = 0; i < j; i++) this.page[i] = i;
+      for (let i = 0; i < j; i++) this.pages[i] = i;
     },
     gotoShow(data,status,create,modify,isShowDetail) {
       this.$router.push({
@@ -349,6 +357,29 @@ export default {
       this.$refs.select.value = ''
       this.modifierName = null
     },
+    getLocalPage(){
+      this.page=[];
+      if(parseInt(this.currentPage/5)==Math.ceil(this.currentPage/5)){
+         this.localPage=parseInt(this.currentPage/5);
+      }else{
+        this.localPage=parseInt(this.currentPage/5)+1;
+      }
+     
+      
+      let j = 5*this.localPage;
+      if((this.pages.length-j)>0){
+        for(let i=0;i<5;i++){
+          this.page[i]=this.pages[i+j-5];
+          
+          
+        }
+      }else{
+        for(let i=0;i<(this.pages.length-j+5);i++){
+          this.page[i]=this.pages[i+j-5];
+          
+        }
+      }
+    }
   },
 };
 </script>
@@ -462,6 +493,10 @@ input::-webkit-inner-spin-button {
   width: 70px;
 }
 .current {
+  margin-left: 10px;
+}
+.sumpage{
+  margin-right: 10px;
   margin-left: 10px;
 }
 </style>
