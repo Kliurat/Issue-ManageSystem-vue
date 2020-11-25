@@ -107,7 +107,7 @@
           class="btn btn-default btn2"
           v-for="(page, num) in page"
           :key="num"
-          @click="to(page + 1)"
+          @click="to(page+1)"
         >
           {{ page + 1 }}
         </button>
@@ -133,6 +133,7 @@
 
 <script>
 import axios from "axios";
+import { MessageBox } from 'element-ui';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 export default {
@@ -165,27 +166,37 @@ export default {
       this.$router.push("/");
     },
     logoff(loginID) {
-      const url = this.globalHttpUrl + "update/statusAndrole";
-      axios({
-        method: "post",
-        url: url,
-        data: this.$qs.stringify({
-          loginID: loginID,
-          status: 0,
-        }),
-      })
-        .then((list) => {
-          this.users = [];
-          this.pages = [];
-          this.users = list.data;
-          this.total = this.users.length;
-          this.pageList();
-          this.getLocalPage();
-          this.getPageUsers();
+      MessageBox.confirm('将注销该用户','提示',{
+        confirmButtonText:'确定',
+        cancelButtonText:'取消',
+        type:'warning'
+      }).then(()=>{
+        const url = this.globalHttpUrl + "update/statusAndrole";
+        axios({
+          method: "post",
+          url: url,
+          data: this.$qs.stringify({
+            loginID: loginID,
+            status: 0,
+          }),
         })
-        .catch((err) => {
+          .then((list) => {
+            this.users = [];
+            this.pages = [];
+            this.users = list.data;
+            this.total = this.users.length;
+            this.pageList();
+            this.getLocalPage();
+            this.getPageUsers();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+       
+      }).catch((err) => {
           console.log(err);
         });
+       
     },
     promotion(loginID,role) {
       const url = this.globalHttpUrl + "update/statusAndrole";
@@ -241,7 +252,6 @@ export default {
     },
     to(num) {
       this.currentPage = num;
-     
       this.getPageUsers();
       this.getLocalPage(); 
     },
@@ -299,14 +309,19 @@ export default {
     },
     getLocalPage(){
       this.page=[];
-      this.localPage=parseInt(this.currentPage/5)+1;
-      console.log(this.localPage);
+      if(parseInt(this.currentPage/5)==Math.ceil(this.currentPage/5)){
+         this.localPage=parseInt(this.currentPage/5);
+      }else{
+        this.localPage=parseInt(this.currentPage/5)+1;
+      }
+     
+      
       let j = 5*this.localPage;
       if((this.pages.length-j)>0){
         for(let i=0;i<5;i++){
           this.page[i]=this.pages[i+j-5];
           
-          console.log(this.page[i]);
+          
         }
       }else{
         for(let i=0;i<(this.pages.length-j+5);i++){

@@ -105,7 +105,7 @@
       </table>
       <h5><span class="star">*</span>重现步骤</h5>
       <textarea
-        class="form-control"
+        class="form-control reStep"
         rows="3"
         ref="reStep"
         maxlength="2000"
@@ -494,7 +494,7 @@ textarea {
 .upload {
 	border: 1px solid #2196F3;
 	background-color: #fff;
-	width: 800px;
+	width: 100%;
 	border-radius: 4px;
 }
 
@@ -525,5 +525,8 @@ h1 {
 }
 .star {
   color: red;
+}
+.reStep{
+  height: 180px;
 }
 </style>
