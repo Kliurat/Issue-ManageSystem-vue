@@ -107,7 +107,7 @@
           class="btn btn-default btn2"
           v-for="(page, num) in page"
           :key="num"
-          @click="to(page + 1)"
+          @click="to(page+1)"
         >
           {{ page + 1 }}
         </button>
@@ -241,7 +241,6 @@ export default {
     },
     to(num) {
       this.currentPage = num;
-     
       this.getPageUsers();
       this.getLocalPage(); 
     },
@@ -299,14 +298,19 @@ export default {
     },
     getLocalPage(){
       this.page=[];
-      this.localPage=parseInt(this.currentPage/5)+1;
-      console.log(this.localPage);
+      if(parseInt(this.currentPage/5)==Math.ceil(this.currentPage/5)){
+         this.localPage=parseInt(this.currentPage/5);
+      }else{
+        this.localPage=parseInt(this.currentPage/5)+1;
+      }
+     
+      
       let j = 5*this.localPage;
       if((this.pages.length-j)>0){
         for(let i=0;i<5;i++){
           this.page[i]=this.pages[i+j-5];
           
-          console.log(this.page[i]);
+          
         }
       }else{
         for(let i=0;i<(this.pages.length-j+5);i++){
