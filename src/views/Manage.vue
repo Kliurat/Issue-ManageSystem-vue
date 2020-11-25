@@ -141,7 +141,7 @@ export default {
     return {
       users: [],
       total: 0,
-      amount: 20,
+      amount: 1,
       currentPage: 1,
       currentPageUsers: [],
       pages: [],
@@ -180,6 +180,7 @@ export default {
           this.users = list.data;
           this.total = this.users.length;
           this.pageList();
+          this.getLocalPage();
           this.getPageUsers();
         })
         .catch((err) => {
@@ -202,6 +203,7 @@ export default {
           this.users = list.data;
           this.total = this.users.length;
           this.pageList();
+          this.getLocalPage();
           this.getPageUsers();
         })
         .catch((err) => {
@@ -224,6 +226,7 @@ export default {
           this.users = list.data;
           this.total = this.users.length;
           this.pageList();
+          this.getLocalPage();
           this.getPageUsers();
           if(this.total==0){
             location.reload(); 
@@ -244,15 +247,18 @@ export default {
     goto(event) {
       this.currentPage = event.target.value;
       this.getPageUsers();
+      this.getLocalPage();
       this.$refs.pageTo.value = "";
     },
     prev() {
       if (this.currentPage != 1) this.currentPage--;
-      this.getPageUsers();
+         this.getPageUsers();
+         this.getLocalPage(); 
     },
     next() {
-      if (this.currentPage != this.page.length) this.currentPage++;
+      if (this.currentPage != this.pages.length) this.currentPage++;
       this.getPageUsers();
+      this.getLocalPage();
     },
     changeRole(user) {
       let str;
@@ -292,17 +298,16 @@ export default {
     },
     getLocalPage(){
       this.page=[];
+      this.localPage=parseInt(this.currentPage/5)+1;
       let j = 5*this.localPage;
-      console.log(this.pages.length-j);
       if((this.pages.length-j)>0){
         for(let i=0;i<5;i++){
           this.page[i]=this.pages[i+j-5];
-          console.log( this.page[i]);
         }
       }else{
         for(let i=0;i<(this.pages.length-j+5);i++){
           this.page[i]=this.pages[i+j-5];
-          console.log( this.page[i]);
+          
         }
       }
     }

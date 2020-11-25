@@ -174,7 +174,7 @@
 
 <script src="js/vue.min.js"></script>
 <script>
-import upload from "@/components/upload.vue";
+
 import axios from "axios";
 export default {
   name: "Create", //创建新Issue

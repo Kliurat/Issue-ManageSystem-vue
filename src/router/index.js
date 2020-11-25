@@ -77,12 +77,6 @@ const routes = [{
             import ( /* webpackChunkName: "about" */ '../views/Manage.vue')
     },
     {
-        path: '/managecopy',
-        name: 'ManageCopy',
-        component: () =>
-            import ( /* webpackChunkName: "about" */ '../views/ManageCopy.vue')
-    },
-    {
         path: '/showDeatail',
         name: 'showDeatail',
         meta: {
