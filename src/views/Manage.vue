@@ -3,21 +3,21 @@
     <h1 class="home">GBA Issue管理系统</h1>
     <div class="homeBody">
       <img
-      src="/pic/issue.gif"
+      src="/pic/return.jpeg"
       alt="图片不存在"
       title="点我返回主页"
       class="return"
       @click="regain()"
     />
     <div class="manageform">
-      <h5>查询</h5>
+      <h2 >查询</h2>
       <hr />
       <form class="form-inline">
         <div class="form-group">
-          <label for="userId">用户ID</label>
+          <label for="userId"><b>用户ID</b></label>
           <input
             type="text"
-            class="form-control"
+            class="form-control select"
             id="userId"
             placeholder=""
             ref="loginID"
@@ -25,10 +25,10 @@
           />
         </div>
         <div class="form-group">
-          <label for="name">用户姓名</label>
+          <label for="name"><b>用户姓名</b></label>
           <input
             type="text"
-            class="form-control"
+            class="form-control select"
             id="name"
             placeholder=""
             ref="username"
@@ -50,18 +50,18 @@
         </div>
       </form>
       <div v-show="!isNull">
-      <h5>用户信息</h5>
+      <h2>用户信息</h2>
       <hr />
       <table class="table table-bordered">
         <tr>
-          <td>序号</td>
-          <td>用户ID</td>
-          <td>用户姓名</td>
-          <td>邮箱</td>
-          <td>注册时间</td>
-          <td>用户身份</td>
-          <td>账号状态</td>
-          <td>操作</td>
+          <th>序号</th>
+          <th>用户ID</th>
+          <th>用户姓名</th>
+          <th>邮箱</th>
+          <th>注册时间</th>
+          <th>用户身份</th>
+          <th>账号状态</th>
+          <th>操作</th>
         </tr>
         <tr v-for="(user, index) in currentPageUsers" :key="index">
           <td>{{user.sortID}}</td>
@@ -74,7 +74,8 @@
           <td>
             <button
               type="button"
-              class="btn btn-default btn2"
+              class="btn btn-danger btn2 "
+
               @click="logoff(user.loginID)"
               v-if="user.status"
             >
@@ -82,7 +83,7 @@
             </button>
             <button
               type="button"
-              class="btn btn-default btn2"
+              class="btn btn-success btn2 "
               @click="promotion(user.loginID,user.role)"
               v-if="!user.role && user.status"
             >
@@ -90,7 +91,7 @@
             </button>
             <button
               type="button"
-              class="btn btn-default btn2"
+              class="btn btn-warning btn2 "
               @click="promotion(user.loginID,user.role)"
               v-if="user.role && user.status"
             >
@@ -104,7 +105,7 @@
           <b-icon icon="caret-left-fill"></b-icon>
         </button>
         <button
-          class="btn btn-default btn2"
+          :class="[page+1 == currentPage? 'btn btn-default btn2 active':'btn btn-default btn2']"
           v-for="(page, num) in page"
           :key="num"
           @click="to(page+1)"
@@ -142,7 +143,7 @@ export default {
     return {
       users: [],
       total: 0,
-      amount: 1,
+      amount: 5,
       currentPage: 1,
       currentPageUsers: [],
       pages: [],
@@ -158,6 +159,7 @@ export default {
         registeDate: "",
         status: "",
         role: "",
+        active:'',
       },
     };
   },
@@ -196,7 +198,6 @@ export default {
       }).catch((err) => {
           console.log(err);
         });
-       
     },
     promotion(loginID,role) {
       const url = this.globalHttpUrl + "update/statusAndrole";
@@ -314,14 +315,10 @@ export default {
       }else{
         this.localPage=parseInt(this.currentPage/5)+1;
       }
-     
-      
       let j = 5*this.localPage;
       if((this.pages.length-j)>0){
         for(let i=0;i<5;i++){
           this.page[i]=this.pages[i+j-5];
-          
-          
         }
       }else{
         for(let i=0;i<(this.pages.length-j+5);i++){
@@ -353,17 +350,15 @@ export default {
 
 <style scoped>
 .manage .return {
-  margin: 0px 37%;
-  width: 20%;
-  height: 100px;
+  width: 5%;
   cursor: pointer;
 }
 .manageform {
   padding-top: 50px;
-  width: 80%;
+  width: 90%;
   margin: auto;
 }
-h5 {
+h2 {
   padding-top: 2%;
 }
 .form-inline {
@@ -376,13 +371,13 @@ h5 {
 }
 .btn1 {
   margin: 20px 100px 0px 100px;
+  
   padding-left: 12px;
   border-radius: 10px;
   border: 1px solid rgb(58, 184, 241);
 }
 .btn2 {
   padding-left: 12px;
-
   border-radius: 10px;
   border: 1px solid rgb(58, 184, 241);
   margin: 0;
@@ -393,6 +388,7 @@ tr {
   height: 65px;
 }
 .table {
+  background-color: rgb(255, 255, 255,0.6);
   text-align: center;
 }
 .pageList {
@@ -408,12 +404,13 @@ input {
   background-color: transparent;
 }
 .goto {
-  width: 100px;
+  width: 30px;
 }
 .kk{
   margin: auto 20px;
 }
 .homeBody{
+  
   margin-top: 70px;
 }
 h1 {
@@ -423,5 +420,16 @@ h1 {
   text-align: center;
   background-image: url(/pic/13.jpg);
   top: 0;
+}
+.active {
+   background: #fd7522;
+   border: 1px solid #fd7522;
+   color: #fff;
+ }
+.select{
+  margin-left: 10px;
+}
+#sub{
+  background-color: rgb(68, 226, 136);
 }
 </style>

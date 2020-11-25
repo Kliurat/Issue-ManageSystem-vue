@@ -167,7 +167,7 @@
               ref="shutDown"
               @click="shutDown()"
             >
-              关闭
+              关闭Issue
             </button>
           </div>
         </div>
