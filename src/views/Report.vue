@@ -25,6 +25,7 @@
         </div>
       </form>
       
+      <a :href="exportUrl" class="btn btn-default btn1 btn3">导出报表</a>
       <br />
       <h2 class="head">统计报表</h2>
       <div class="link-top"></div>
@@ -101,6 +102,7 @@ export default {
   name: "Report", //报表
   data() {
     return {
+      exportUrl:"http://192.168.3.18:8888/excel",
       users: [],
       total: 0,
       amount: 4,
