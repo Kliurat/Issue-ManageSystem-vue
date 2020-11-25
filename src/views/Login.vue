@@ -6,7 +6,7 @@
     <h1 class="home">GBA Issue管理系统</h1>
     <h2 class="head">登陆</h2>
     <div class="link-top"></div>
-    <button type="button" class="back" @click="gotoback" >返回</button>
+    <button type="button" class="back btn btn-default" @click="gotoback" >返回</button>
     <div class="login_container">
       <table class="tb">
         <tr>
@@ -107,6 +107,7 @@ export default {
 .head {
   margin-bottom: 20px;
   margin-left: 20px;
+  text-align: center;
 }
 .link-top {
   width: 100%;
@@ -123,12 +124,12 @@ export default {
 .back {
   margin-top: 20px;
   width: 70px;
-  height: 30px;
+  height: 40px;
   background: white;
   color: black;
   border-radius: 10px;
   text-align: center;
-  border: none;
+  border: 1px solid rgb(58, 184, 241);
 }
 
 .inputlength {
