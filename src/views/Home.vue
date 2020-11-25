@@ -40,7 +40,7 @@
             type="button"
             class="btn btn-default"
             @click="goToCreate"
-            v-if="!checkRole&&!isSuper"
+            :disabled="checkRole||isSuper"
           >
             创建新Issue
           </button>
@@ -48,7 +48,7 @@
             type="button"
             class="btn btn-default"
             @click="goToReport"
-            v-if="checkRole&&!isSuper"
+            :disabled="!checkRole||isSuper"
           >
             Issue 报表
           </button>
@@ -56,7 +56,7 @@
             type="button"
             class="btn btn-default"
             @click="goToManage"
-            v-if="isSuper"
+            :disabled="!isSuper"
           >
             账号管理
           </button>
@@ -67,7 +67,7 @@
       <br />
       <br />
       <div v-if="!isLogined||isSuper" class="group_msg">
-        <h2>第五组：佛</h2>
+        <h2>第五组：佛说</h2>
         <h4>
           赖炎林，蔡海锋，柯炜杰，梁悦荣，温津杰<br />
           李潮平，成明强，陈海兴，李荣浩，陈汉健

@@ -7,10 +7,10 @@
     <div class="container">
       <table class="tb">
         <tr>
-          <td class="td">登录ID：</td>
+          <td class="td"><span class="star">*</span>登录ID：</td>
 
-          <td><input type="text" name="" ref="ID" class="inputlength" /></td>
-          <td></td>
+          <td><input type="text" name="" ref="ID" class="inputlength" @change="FormatID($event)"/></td>
+          <td><span v-show="IdFormat" class="star">输入格式不正确</span></td>
         </tr>
         <tr>
           <td class="td"><span class="star">*</span>姓名：</td>
@@ -25,7 +25,7 @@
             <input type="email" name="" class="inputlength" ref="em" maxlength="30" @change="checkEmail($event)"/>
 
           </td>
-          <td><span class="err" v-show="emailFormat">邮箱格式错误</span></td>
+          <td><span class="err" v-show="emailFormat" >邮箱格式错误</span></td>
         </tr>
         <tr>
           <td class="td"><span class="star">*</span>输入密码：</td>
@@ -83,7 +83,7 @@ export default {
       passwordFormat: false,
       newPassword: false,
       emailFormat:false,
-      
+      IdFormat:false,
       globalHttpUrl: this.COMMON.httpUrl,
       user: {
             username: "",
@@ -94,6 +94,14 @@ export default {
     };
   },
   methods: {
+    FormatID(event){
+      let str = /[\s*]/;
+      if(str.test(event.target.value)){
+        this.IdFormat=true;
+      }else{
+        this.IdFormat=false;
+      }
+    },
     checkPassword(event) {
       let str = event.target.value;
       let az = /[a-z]/;
@@ -131,7 +139,7 @@ export default {
       let ensurePassword = this.$refs.ensurePassword.value;
       let name =this.$refs.name.value;
       let email =this.$refs.em.value;
-      if (ID==""||password == ""||ensurePassword == ""||name == ""||email == ""||this.passwordFormat||this.emailFormat||this.newPassword) {
+      if (ID==""||password == ""||ensurePassword == ""||name == ""||email == ""||this.passwordFormat||this.emailFormat||this.newPassword||this.IdFormat) {
         alert("请正确填写完整");
       } else {
         

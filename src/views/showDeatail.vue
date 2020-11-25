@@ -125,7 +125,7 @@
         disabled
       ></textarea>
       <div>
-      <img :src="imgSrc" alt="">
+      <img :src="imgSrc" alt="" class="reStepImg">
       </div>
       <div v-if="isSolve">
         <h5>解决方案</h5>
@@ -210,8 +210,8 @@ export default {
     created() {
         // alert("qweer"+this.$route.params)
         // console.log(this.data)
-        let list = this.globalHttpUrl + "file/download"
-         console.log(list.length);
+        this.imgSrc = this.globalHttpUrl + "file/download"
+        
         const url = this.globalHttpUrl + "issue/getIssueByIssueNo";
         axios({
         method: "post",
@@ -444,5 +444,8 @@ h5 {
 }
 .btn4 {
   text-align: center;
+}
+.reStepImg{
+  width: 30%;
 }
 </style>

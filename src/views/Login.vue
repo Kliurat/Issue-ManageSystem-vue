@@ -10,7 +10,7 @@
     <div class="login_container">
       <table class="tb">
         <tr>
-          <td class="world"><span class="star">*</span>输入ID：</td>
+          <td class="world"><span class="star">*</span>登录ID：</td>
           <td>
             <input
               type="text"
@@ -22,7 +22,7 @@
           </td>
         </tr>
         <tr>
-          <td class="world"><span class="star">*</span>输入密码：</td>
+          <td class="world"><span class="star">*</span>密码：</td>
           <td>
             <input
               type="password"

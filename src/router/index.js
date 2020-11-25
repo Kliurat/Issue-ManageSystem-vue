@@ -39,7 +39,7 @@ const routes = [{
         path: '/report',
         name: 'Report',
         meta: {
-            roles: ["1"],
+            // roles: ["1"],
             requireAuth: true,
         },
         component: () =>
@@ -75,12 +75,6 @@ const routes = [{
         },
         component: () =>
             import ( /* webpackChunkName: "about" */ '../views/Manage.vue')
-    },
-    {
-        path: '/managecopy',
-        name: 'ManageCopy',
-        component: () =>
-            import ( /* webpackChunkName: "about" */ '../views/ManageCopy.vue')
     },
     {
         path: '/showDeatail',
