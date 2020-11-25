@@ -133,6 +133,7 @@
 
 <script>
 import axios from "axios";
+import { MessageBox } from 'element-ui';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 export default {
@@ -165,27 +166,37 @@ export default {
       this.$router.push("/");
     },
     logoff(loginID) {
-      const url = this.globalHttpUrl + "update/statusAndrole";
-      axios({
-        method: "post",
-        url: url,
-        data: this.$qs.stringify({
-          loginID: loginID,
-          status: 0,
-        }),
-      })
-        .then((list) => {
-          this.users = [];
-          this.pages = [];
-          this.users = list.data;
-          this.total = this.users.length;
-          this.pageList();
-          this.getLocalPage();
-          this.getPageUsers();
+      MessageBox.confirm('将注销该用户','提示',{
+        confirmButtonText:'确定',
+        cancelButtonText:'取消',
+        type:'warning'
+      }).then(()=>{
+        const url = this.globalHttpUrl + "update/statusAndrole";
+        axios({
+          method: "post",
+          url: url,
+          data: this.$qs.stringify({
+            loginID: loginID,
+            status: 0,
+          }),
         })
-        .catch((err) => {
+          .then((list) => {
+            this.users = [];
+            this.pages = [];
+            this.users = list.data;
+            this.total = this.users.length;
+            this.pageList();
+            this.getLocalPage();
+            this.getPageUsers();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+       
+      }).catch((err) => {
           console.log(err);
         });
+       
     },
     promotion(loginID,role) {
       const url = this.globalHttpUrl + "update/statusAndrole";

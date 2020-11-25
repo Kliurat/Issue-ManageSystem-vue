@@ -104,7 +104,7 @@
       </table>
       <h5>重现步骤</h5>
       <textarea
-        class="form-control"
+        class="form-control reStep"
         rows="3"
         ref="reStep"
         maxlength="2000"
@@ -493,7 +493,7 @@ textarea {
 .upload {
 	border: 1px solid #2196F3;
 	background-color: #fff;
-	width: 800px;
+	width: 100%;
 	border-radius: 4px;
 }
 
@@ -516,5 +516,8 @@ h1 {
   text-align: center;
   background-image: url(/pic/13.jpg);
   top: 0;
+}
+.reStep{
+  height: 180px;
 }
 </style>

@@ -162,7 +162,7 @@ export default {
       globalHttpUrl: this.COMMON.httpUrl,
       users: [],
       total: 0,
-      amount: 5,
+      amount: 20,
       currentPage: 1,
       currentPageUsers: [],
       page: [],
