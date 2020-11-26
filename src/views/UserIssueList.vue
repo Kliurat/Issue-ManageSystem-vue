@@ -104,26 +104,23 @@ export default {
   name: "UserIssueList",
   data() {
     return {
-      modifyUser: this.$store.state.user.username,
-      isShowDetail: false,
-      isShowDetail2: true,
-      isShow: true,
-      isShowBtn: true,
+      modifyUser: this.$store.state.user.username,//登陆修改人名字
+      isShowDetail: false,//传参1
+      isShowDetail2: true,//传参2
       issueID: "",
-      issueList: [],
-      arrayList: [],
-      createName: "",
-      modifierName: "",
-      globalHttpUrl: this.COMMON.httpUrl,
-      users: [],
-      total: 0,
-      amount: 20,
-      currentPage: 1,
-      currentPageUsers: [],
-      page: [],
-      pages: [],
-      localPage: 1,
-      user: {
+      issueList: [],//issue列表
+      createName: "",//创建人名字
+      modifierName: "",//修改人名字
+      globalHttpUrl: this.COMMON.httpUrl,//连接地址
+      users: [],//用户名字
+      total: 0,//数据总数
+      amount: 20,//每页显示条数
+      currentPage: 1,//当前页
+      currentPageUsers: [],//当前页用户数据
+      page: [],//当前页按钮列表
+      pages: [],//页码按钮列表
+      localPage: 1,//按钮当前页
+      user: {//用户属性
         sortID: "",
         loginID: "",
         username: "",
@@ -133,15 +130,13 @@ export default {
         status: "",
         active: "",
       },
-      createPersonID: this.$route.params.createPersonID,
-      modifyPersonID: this.$route.params.modifyPersonID,
-      status: this.$route.params.flag,
+      createPersonID: this.$route.params.createPersonID,//获取report页面传来的创建人ID
+      modifyPersonID: this.$route.params.modifyPersonID,//获取report页面传来的修改人ID
+      status: this.$route.params.flag,//获取report页面传来的issue状态
     };
   },
   created() {
     const url = this.globalHttpUrl + "issue/query";
-    // const url = "/json/users.json";
-
     axios({
       method: "post",
       url: url,
@@ -155,11 +150,8 @@ export default {
       },
     })
       .then((data) => {
-        // console.log(data.data)
         this.users = data.data.data;
-        // console.log(this.users);
         this.total = this.users.length;
-        // console.log(this.users.length)
         if (this.users.length == 0) {
           this.isShow = false;
         }
@@ -178,40 +170,29 @@ export default {
       this.createName = this.issueList[1].role;
       this.modifierName = this.issueList[1].username;
     },
-    showBtn(data, id, id2) {
-      if (
-        data == -1 ||
-        (this.$store.state.user.loginID != id &&
-          this.$store.state.user.loginID != id2)
-      ) {
-        return false;
-      } else {
-        return true;
-      }
-    },
-    to(num) {
+    to(num) {//按钮跳转
       this.currentPage = num;
       console.log(this.currentPage);
       this.getPageUsers();
       this.getLocalPage();
     },
-    goto(event) {
+    goto(event) {//输入跳转
       this.currentPage = event.target.value;
       this.getPageUsers();
       this.getLocalPage();
       this.$refs.pageTo.value = "";
     },
-    prev() {
+    prev() {//上一页
       if (this.currentPage != 1) this.currentPage--;
       this.getPageUsers();
       this.getLocalPage();
     },
-    next() {
+    next() {//下一页
       if (this.currentPage != this.pages.length) this.currentPage++;
       this.getPageUsers();
       this.getLocalPage();
     },
-    getPageUsers() {
+    getPageUsers() {//获取当前页用户
       this.currentPageUsers = [];
       if (this.pages.length != 0) {
         if (this.currentPage != this.pages.length)
@@ -230,15 +211,15 @@ export default {
           }
       }
     },
-    pageList() {
+    pageList() {//页码数组
       this.pages = [];
       let j = this.total / this.amount;
       for (let i = 0; i < j; i++) this.pages[i] = i;
     },
-    back() {
+    back() {//返回主页
       this.$router.replace("/");
     },
-    getLocalPage() {
+    getLocalPage() {//获取当前按钮
       this.page = [];
       if (parseInt(this.currentPage / 5) == Math.ceil(this.currentPage / 5)) {
         this.localPage = parseInt(this.currentPage / 5);
@@ -257,7 +238,7 @@ export default {
         }
       }
     },
-    gotoShow(data, status, create, modify, isShowDetail) {
+    gotoShow(data, status, create, modify, isShowDetail) {//页面跳转
       this.$router.push({
         name: "showDeatail",
         params: {
@@ -269,7 +250,7 @@ export default {
         },
       });
     },
-    showStatus(str) {
+    showStatus(str) {//判断issue状态
       if (str == -1) {
         str = "已关闭";
       } else if (str == 0) {

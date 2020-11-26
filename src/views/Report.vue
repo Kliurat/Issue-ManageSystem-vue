@@ -1,98 +1,140 @@
 <template>
-  <div id="main" >
+  <div id="main">
     <h1 class="home">GBA Issue管理系统</h1>
     <div class="homeBody">
-      <div id="Report_body" v-if="isShow">
-      <h2 class="head">查询条件</h2>
-      <button class="btn btn-default btn4" @click="back">返回</button>
-      <div class="link-top"></div>
-      <form action="/json/users.json" method="post" class="form-inline">
-        <div class="form-group">
-          <label for="userId">用户ID</label>
-          <input type="text" class="form-control" id="userId" placeholder="" ref="loginID" maxlength="30"/>
+      <div id="Report_body">
+        <h2 class="head">查询条件</h2>
+        <button class="btn btn-default btn4" @click="back">返回</button>
+        <div class="link-top"></div>
+        <form action="/json/users.json" method="post" class="form-inline">
+          <div class="form-group">
+            <label for="userId">用户ID</label>
+            <input
+              type="text"
+              class="form-control"
+              id="userId"
+              placeholder=""
+              ref="loginID"
+              maxlength="30"
+            />
+          </div>
+          <div class="form-group">
+            <label for="name">用户姓名</label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              placeholder=""
+              ref="username"
+              maxlength="30"
+            />
+          </div>
+          <div class="btn">
+            <button
+              class="btn btn-default btn1 btn7"
+              id="sub"
+              type="button"
+              @click="sub()"
+            >
+              查询
+            </button>
+            <button
+              class="btn btn-default btn1 btn7"
+              id="reset"
+              type="reset"
+              @click="clear"
+            >
+              清空
+            </button>
+          </div>
+        </form>
+        <br />
+        <h2 class="head">统计报表</h2>
+        <div class="link-top"></div>
+        <a :href="exportUrl" class="btn btn-default btn1 btn3">导出报表</a>
+        <div id="table_boay">
+          <table class="table table-striped ">
+            <thead>
+              <tr>
+                <th><input type="checkbox" name="" id="" /></th>
+                <th>序号</th>
+                <th>用户ID</th>
+                <th>用户姓名</th>
+                <th>创建Issue数</th>
+                <th>收到Issue数</th>
+                <th>修改Issue数</th>
+                <th>完成率</th>
+              </tr>
+            </thead>
+            <tbody id="tbody">
+              <tr v-for="(user, index) in currentPageUsers" :key="index">
+                <td scope="row"><input type="checkbox" name="" /></td>
+                <td>{{ user.id }}</td>
+                <td>{{ user.loginID }}</td>
+                <td>{{ user.username }}</td>
+                <td>
+                  <span
+                    class="issueColor"
+                    @click="goToCreateCount(user.loginID, 1)"
+                    >{{ user.createCount }}</span
+                  >
+                </td>
+                <td>
+                  <span
+                    class="issueColor"
+                    @click="goToReceiveCount(user.loginID, 2)"
+                    >{{ user.receiveCount }}</span
+                  >
+                </td>
+                <td>
+                  <span
+                    class="issueColor"
+                    @click="goToModifyCount(user.loginID, 3)"
+                    >{{ user.modifyCount }}</span
+                  >
+                </td>
+                <td>{{ user.finishedPer }}%</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="form-group">
-          <label for="name">用户姓名</label>
-          <input type="text" class="form-control" id="name" placeholder="" ref="username" maxlength="30"/>
-        </div>
-        <div class="btn">
-          <button class="btn btn-default btn1 btn7" id="sub" type="button" @click="sub()">
-            查询
+        <div class="pageList">
+          <span class="sumpage">共{{ total }}条</span>
+          <button type="button" class="btn btn-default" @click="prev()">
+            <b-icon icon="caret-left-fill"></b-icon>
           </button>
-          <button class="btn btn-default btn1 btn7" id="reset" type="reset" @click="clear">
-            清空
+          <button
+            class="btn btn-default btn2"
+            :class="[
+              page + 1 == currentPage
+                ? 'btn btn-default btn2 active'
+                : 'btn btn-default btn2',
+            ]"
+            v-for="(page, num) in page"
+            :key="num"
+            @click="to(page + 1)"
+          >
+            {{ page + 1 }}
           </button>
+          <button
+            type="button"
+            class="btn btn-default"
+            @click="next()"
+            id="Noright"
+          >
+            <b-icon icon="caret-right-fill"></b-icon>
+          </button>
+          <button class="btn btn-default" id="pageNumber">
+            {{ amount }}条/页
+          </button>
+          <span class="sumpage">跳至</span>
+          <input type="text" @change="goto($event)" class="goto" ref="pageTo" />
+          <span class="sumpage">页</span>
+          <span class="current">当前页：{{ currentPage }}</span>
+          <span class="sumpage">共{{ pages.length }}页</span>
         </div>
-      </form>
-      
-      
-      <br />
-      <h2 class="head">统计报表</h2>
-      <div class="link-top"></div>
-      <a :href="exportUrl" class="btn btn-default btn1 btn3">导出报表</a>
-      <div id="table_boay">
-        <table class="table table-striped ">
-          <thead>
-            <tr>
-              <th><input type="checkbox" name="" id="" /></th>
-              <th>序号</th>
-              <th>用户ID</th>
-              <th>用户姓名</th>
-              <th>创建Issue数</th>
-              <th>收到Issue数</th>
-              <th>修改Issue数</th>
-              <th>完成率</th>
-            </tr>
-          </thead>
-          <tbody id="tbody">
-            <tr v-for="(user, index) in currentPageUsers" :key="index">
-              <td scope="row"><input type="checkbox" name="" /></td>
-              <td>{{ user.id }}</td>
-              <td>{{ user.loginID }}</td>
-              <td>{{ user.username }}</td>
-              <td><span class="issueColor" @click="goToCreateCount(user.loginID,1)">{{ user.createCount }}</span></td>
-              <td><span class="issueColor" @click="goToReceiveCount(user.loginID,2)">{{ user.receiveCount }}</span></td>
-              <td><span class="issueColor" @click="goToModifyCount(user.loginID,3)">{{ user.modifyCount }}</span></td>
-              <td>{{ user.finishedPer }}%</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="pageList">
-        <span class="sumpage">共{{total}}条</span>
-        <button type="button" class="btn btn-default" @click="prev()">
-          <b-icon icon="caret-left-fill"></b-icon>
-        </button>
-        <button
-          class="btn btn-default btn2"
-          :class="[page+1 == currentPage? 'btn btn-default btn2 active':'btn btn-default btn2']"
-          v-for="(page, num) in page"
-          :key="num"
-          @click="to(page + 1)"
-        >
-          {{ page + 1 }}
-        </button>
-        <button
-          type="button"
-          class="btn btn-default"
-          @click="next()"
-          id="Noright"
-        >
-          <b-icon icon="caret-right-fill"></b-icon>
-        </button>
-        <button class="btn btn-default" id="pageNumber">
-          {{ amount }}条/页
-        </button>
-        <span class="sumpage">跳至</span>
-        <input type="text" @change="goto($event)" class="goto" ref="pageTo" />
-        <span class="sumpage">页</span>
-        
-        <span class="current">当前页：{{currentPage}}</span>
-        <span class="sumpage">共{{pages.length}}页</span>
       </div>
     </div>
-    </div>
-    
   </div>
 </template>
 
@@ -103,17 +145,17 @@ export default {
   name: "Report", //报表
   data() {
     return {
-      exportUrl:"http://192.168.3.18:8888/excel",
-      users: [],
-      total: 0,
-      amount: 20,
-      currentPage: 1,
-      currentPageUsers: [],
-      page: [],
-      pages: [],
-      localPage:1,
-      globalHttpUrl: this.COMMON.httpUrl,
-      user: {
+      exportUrl: "http://192.168.3.18:8888/excel",//导出地址
+      users: [],//用户名字
+      total: 0,//数据总数
+      amount: 20,//每页显示条数
+      currentPage: 1,//当前页
+      currentPageUsers: [],//当前页用户数据
+      page: [],//当前页按钮列表
+      pages: [],//页码按钮列表
+      localPage: 1,//按钮当前页
+      globalHttpUrl: this.COMMON.httpUrl,//连接地址
+      user: {//用户属性
         sortID: "",
         loginID: "",
         username: "",
@@ -121,27 +163,23 @@ export default {
         registeDate: "",
         status: "",
         role: "",
-        active: ""
+        active: "",
       },
-      isShow: true
     };
   },
 
   methods: {
-    exportReport(){
-      
+    exportReport() {//导出报表
       axios({
-      method: "get",
-      url: this.globalHttpUrl + "/excel",
-    })
-      .then((data) => {
-        
+        method: "get",
+        url: this.globalHttpUrl + "/excel",
       })
-      .catch((err) => {
-        console.log(err);
-      });
+        .then((data) => {})
+        .catch((err) => {
+          console.log(err);
+        });
     },
-    goToCreateCount(data,flag){
+    goToCreateCount(data, flag) {//跳转创建数页面
       this.$router.push({
         name: "UserIssueList",
         params: {
@@ -149,29 +187,29 @@ export default {
         },
       });
     },
-    goToReceiveCount(data,flag){
-      this.$router.push({
-        name: "UserIssueList",
-        params: { 
-          modifyPersonID: data,
-        },
-      });
-    },
-    goToModifyCount(data,flag){
+    goToReceiveCount(data, flag) {//跳转收到数页面
       this.$router.push({
         name: "UserIssueList",
         params: {
           modifyPersonID: data,
-          flag: flag
         },
       });
     },
-    clear(){
-        this.$refs.loginID.value = null
-        this.$refs.username.value = null
+    goToModifyCount(data, flag) {//跳转修改数页面
+      this.$router.push({
+        name: "UserIssueList",
+        params: {
+          modifyPersonID: data,
+          flag: flag,
+        },
+      });
     },
-    sub() {
-      const url = this.globalHttpUrl+"issue/report";
+    clear() {//清空查询
+      this.$refs.loginID.value = null;
+      this.$refs.username.value = null;
+    },
+    sub() {//提交查询
+      const url = this.globalHttpUrl + "issue/report";
       let str1 = this.$refs.loginID.value;
       let str2 = this.$refs.username.value;
       let str3 = { loginID: str1, username: str2 };
@@ -193,29 +231,28 @@ export default {
           console.log(err);
         });
     },
-    to(num) {
+    to(num) {//按钮跳转
       this.currentPage = num;
-      console.log(this.currentPage);
       this.getPageUsers();
       this.getLocalPage();
     },
-    goto(event) {
+    goto(event) {//输入跳转
       this.currentPage = event.target.value;
       this.getPageUsers();
       this.getLocalPage();
       this.$refs.pageTo.value = "";
     },
-    prev() {
+    prev() {//上一页
       if (this.currentPage != 1) this.currentPage--;
       this.getPageUsers();
       this.getLocalPage();
     },
-    next() {
+    next() {//下一页
       if (this.currentPage != this.pages.length) this.currentPage++;
       this.getPageUsers();
       this.getLocalPage();
     },
-    getPageUsers() {
+    getPageUsers() {//获取当前页用户
       this.currentPageUsers = [];
       if (this.pages.length != 0) {
         if (this.currentPage != this.pages.length)
@@ -234,60 +271,40 @@ export default {
           }
       }
     },
-    pageList() {
+    pageList() {//页码数组
       this.pages = [];
       let j = this.total / this.amount;
       for (let i = 0; i < j; i++) this.pages[i] = i;
     },
-    back(){
-        this.$router.replace("/");
+    back() {//返回主页
+      this.$router.replace("/");
     },
-    getLocalPage(){
-      this.page=[];
-      if(parseInt(this.currentPage/5)==Math.ceil(this.currentPage/5)){
-         this.localPage=parseInt(this.currentPage/5);
-      }else{
-        this.localPage=parseInt(this.currentPage/5)+1;
+    getLocalPage() {//获取当前按钮
+      this.page = [];
+      if (parseInt(this.currentPage / 5) == Math.ceil(this.currentPage / 5)) {
+        this.localPage = parseInt(this.currentPage / 5);
+      } else {
+        this.localPage = parseInt(this.currentPage / 5) + 1;
       }
-     
-      
-      let j = 5*this.localPage;
-      if((this.pages.length-j)>0){
-        for(let i=0;i<5;i++){
-          this.page[i]=this.pages[i+j-5];
-          
-          
+      let j = 5 * this.localPage;
+      if (this.pages.length - j > 0) {
+        for (let i = 0; i < 5; i++) {
+          this.page[i] = this.pages[i + j - 5];
         }
-      }else{
-        for(let i=0;i<(this.pages.length-j+5);i++){
-          this.page[i]=this.pages[i+j-5];
-          
+      } else {
+        for (let i = 0; i < this.pages.length - j + 5; i++) {
+          this.page[i] = this.pages[i + j - 5];
         }
       }
-    } 
+    },
   },
-  created(){
-      const url = this.globalHttpUrl+"issue/report";
-    // axios({
-    //   method: "get",
-    //   url: url,
-    // })
-    //   .then((data) => {
-    //     this.users = data.data.data;
-    //     // console.log(this.users)
-    //     this.total = this.users.length;
-    //     this.getPageUsers();
-    //     this.pageList();
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+  created() {
+    const url = this.globalHttpUrl + "issue/report";
     axios({
       method: "get",
       url: url,
     })
       .then((data) => {
-        // console.log(data.data)
         this.users = data.data.data;
         this.total = this.users.length;
         this.pageList();
@@ -297,7 +314,7 @@ export default {
       .catch((err) => {
         console.log(err);
       });
-  }
+  },
 };
 </script>
 
@@ -309,7 +326,7 @@ export default {
   text-align: center;
 }
 #table_boay {
-  margin: 50px;
+  margin: 50px 0px 50px 0px;
   margin-top: 70px;
   background-color: white;
   text-align: center;
@@ -325,7 +342,6 @@ export default {
 }
 .btn-default {
   margin: 10px;
-  
 }
 
 #page {
@@ -357,30 +373,30 @@ export default {
   margin: 0;
   margin-left: 10px;
 }
-.btn4{
-    border-radius: 10px;
-    border: 1px solid rgb(58, 184, 241);
-    float: left;
-    background-color: #5BC0DE;
-    color: white;
-    width: 100px;
-    height: 50px;
-    font-size: 25px;
+.btn4 {
+  border-radius: 10px;
+  border: 1px solid rgb(58, 184, 241);
+  float: left;
+  background-color: #5bc0de;
+  color: white;
+  width: 100px;
+  height: 50px;
+  font-size: 25px;
 }
 .pageList {
   text-align: center;
 }
-.kk{
+.kk {
   margin: auto 20px;
 }
-.issueColor{
+.issueColor {
   color: rgb(90, 90, 238);
-  cursor:pointer;
+  cursor: pointer;
 }
-.issueColor:hover{
+.issueColor:hover {
   color: rgb(218, 30, 177);
 }
-.homeBody{
+.homeBody {
   margin-top: 70px;
   width: 90%;
   margin: auto;
@@ -397,17 +413,17 @@ h1 {
   display: block;
   margin-top: 20px;
   float: right;
-  background-color: #5BC0DE;
+  background-color: #5bc0de;
   color: white;
 }
 .current {
   margin-left: 10px;
 }
-.sumpage{
+.sumpage {
   margin-right: 10px;
   margin-left: 10px;
 }
-.btn7{
+.btn7 {
   width: 100px;
   height: 50px;
 }
@@ -416,7 +432,7 @@ h1 {
 }
 .active {
   background: #17a2b8;
-   border: 1px solid #17a2b8;
-   color: #fff;
- }
+  border: 1px solid #17a2b8;
+  color: #fff;
+}
 </style>

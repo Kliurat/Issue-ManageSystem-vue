@@ -74,17 +74,17 @@
           <h2>第五组：佛说</h2>
           <br />
           <h4>
-            <div>猪长：赖炎林</div>
+            <div>组长：赖炎林</div>
             <div>蔡海锋，柯炜杰，梁悦荣</div>
             <div>温津杰，陈海兴，李潮平</div>
             <div>李荣浩，成明强，陈汉健</div>
           </h4>
-          <br/>
+          <br />
           <h4>
             <div>指导老师：邓家平，朱婷婷，曹世雄，张秋杨</div>
             <div>刘长蒙，杜佳蔚，虞浩，王昊祁</div>
             <div>常超，陈金鸿，丁兆国，孔祥帅</div>
-          </h4>           
+          </h4>
         </div>
       </div>
       <div v-if="isLogined && !isSuper">
@@ -104,9 +104,9 @@ export default {
   data() {
     return {
       infos: [],
-      isLogined: false,
+      isLogined: false,//判断是否登陆
       checkRole: "",
-      isSuper: false,
+      isSuper: false,//判断是否超级用户
       user: {
         username: "",
         loginID: "",
