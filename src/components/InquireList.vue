@@ -119,6 +119,7 @@
         </button>
         <button
           class="btn btn-default btn2"
+          :class="[page+1 == currentPage? 'btn btn-default btn2 active':'btn btn-default btn2']"
           v-for="(page, num) in page"
           :key="num"
           @click="to(page + 1)"
@@ -166,7 +167,7 @@ export default {
       globalHttpUrl: this.COMMON.httpUrl,
       users: [],
       total: 0,
-      amount: 4,
+      amount: 20,
       currentPage: 1,
       currentPageUsers: [],
       page: [],
@@ -180,6 +181,7 @@ export default {
         registeDate: "",
         role: "",
         status: "",
+        active: ""
       },
     };
   },
@@ -499,4 +501,13 @@ input::-webkit-inner-spin-button {
   margin-right: 10px;
   margin-left: 10px;
 }
+.active {
+  background: #17a2b8;
+   border: 1px solid #17a2b8;
+   color: #fff;
+ }
+ #main{
+   width: 90%;
+   margin: auto;
+ }
 </style>

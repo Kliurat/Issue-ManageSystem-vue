@@ -25,11 +25,11 @@
         </div>
       </form>
       
-      <a :href="exportUrl" class="btn btn-default btn1 btn3">导出报表</a>
+      
       <br />
       <h2 class="head">统计报表</h2>
       <div class="link-top"></div>
-      <a href="http://192.168.3.114:8888/excel" class="btn btn-default btn1 btn3">导出报表</a>
+      <a :href="exportUrl" class="btn btn-default btn1 btn3">导出报表</a>
       <div id="table_boay">
         <table class="table table-striped ">
           <thead>
@@ -65,6 +65,7 @@
         </button>
         <button
           class="btn btn-default btn2"
+          :class="[page+1 == currentPage? 'btn btn-default btn2 active':'btn btn-default btn2']"
           v-for="(page, num) in page"
           :key="num"
           @click="to(page + 1)"
@@ -105,7 +106,7 @@ export default {
       exportUrl:"http://192.168.3.18:8888/excel",
       users: [],
       total: 0,
-      amount: 4,
+      amount: 20,
       currentPage: 1,
       currentPageUsers: [],
       page: [],
@@ -120,6 +121,7 @@ export default {
         registeDate: "",
         status: "",
         role: "",
+        active: ""
       },
       isShow: true
     };
@@ -303,6 +305,7 @@ export default {
 .head {
   margin-bottom: 20px;
   margin-left: 20px;
+  margin-top: 90px;
   text-align: center;
 }
 #table_boay {
@@ -379,6 +382,8 @@ export default {
 }
 .homeBody{
   margin-top: 70px;
+  width: 90%;
+  margin: auto;
 }
 h1 {
   height: 70px;
@@ -406,4 +411,12 @@ h1 {
   width: 100px;
   height: 50px;
 }
+.goto {
+  width: 70px;
+}
+.active {
+  background: #17a2b8;
+   border: 1px solid #17a2b8;
+   color: #fff;
+ }
 </style>

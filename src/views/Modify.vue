@@ -1,7 +1,8 @@
 <template>
   <div class="modify">
     <h1 class="home">GBA Issue管理系统</h1>
-    <h2 class="head">修改信息</h2>
+    <div id="widthBody">
+      <h2 class="head">修改信息</h2>
     <div class="link-top"></div>
     <button type="button" class="back" @click="gotoback">返回</button>
     <div class="container">
@@ -85,6 +86,8 @@
 
       <br />
     </div>
+    </div>
+    
   </div>
 </template>
 
@@ -214,8 +217,7 @@ p {
   margin-left: 500px;
 }
 .container {
-  margin-left: 130px;
-  margin-top: 100px;
+  margin-top: 5%;
 }
 .back {
   width: 70px;
@@ -260,6 +262,7 @@ button {
 .head {
   margin-bottom: 20px;
   margin-left: 20px;
+  
 }
 .link-top {
   width: 100%;
@@ -271,5 +274,9 @@ h1 {
   width: 100%;
   text-align: center;
   top: 0;
+}
+#widthBody{
+  width: 90%;
+  margin: auto;
 }
 </style>

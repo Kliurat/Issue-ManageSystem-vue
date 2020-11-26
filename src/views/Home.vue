@@ -164,6 +164,7 @@ export default {
 #username {
   font-size: 30px;
   color: blueviolet;
+  margin-left: 50px;
 }
 #btn3 {
   margin-left: 100px;

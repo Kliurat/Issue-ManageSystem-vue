@@ -422,8 +422,8 @@ h1 {
   top: 0;
 }
 .active {
-   background: #fd7522;
-   border: 1px solid #fd7522;
+   background: #17a2b8;
+   border: 1px solid #17a2b8;
    color: #fff;
  }
 .select{
