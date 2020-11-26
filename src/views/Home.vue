@@ -2,8 +2,8 @@
   <div id="main">
     <div class="homeNav">
       <h1 class="home">GBA Issue管理系统</h1>
-        <div class="homeBody">
-          <div>
+      <div class="homeBody">
+        <div>
           <button
             type="button"
             class="btn btn-default"
@@ -26,21 +26,27 @@
             type="button"
             class="btn btn-default"
             id="btn3"
-            v-if="isLogined&&!isSuper"
+            v-if="isLogined && !isSuper"
             @click="goToModify"
-            
           >
             修改个人信息
           </button>
-          <button id="logout" class="btn btn-default" v-if="isLogined" @click="logout">退出登录</button>
+          <button
+            id="logout"
+            class="btn btn-default"
+            v-if="isLogined"
+            @click="logout"
+          >
+            退出登录
+          </button>
         </div>
-      
+
         <div id="btn_issue" v-if="isLogined">
           <button
             type="button"
             class="btn btn-default"
             @click="goToCreate"
-            :disabled="checkRole||isSuper"
+            :disabled="checkRole || isSuper"
           >
             创建新Issue
           </button>
@@ -48,7 +54,7 @@
             type="button"
             class="btn btn-default"
             @click="goToReport"
-            :disabled="!checkRole||isSuper"
+            :disabled="!checkRole || isSuper"
           >
             Issue 报表
           </button>
@@ -62,28 +68,29 @@
           </button>
         </div>
       </div>
-      <div class="photo" v-if="!isLogined||isSuper">
-        </div>
-      <br />
-      <br />
-      <div v-if="!isLogined||isSuper" class="group_msg">
-        
+      <div class="photo" v-if="!isLogined || isSuper"></div>
+      <div v-if="!isLogined || isSuper" class="group_msg">
         <div id="groupName">
-        <h2>第五组：佛说</h2>
-        <br />
-        <br />
-        <h4>
-          <div>赖炎林</div>
-          <div>蔡海锋，柯炜杰，梁悦荣，温津杰<br /></div>
-          <div>陈海兴，李潮平，李荣浩，成明强，陈汉健<br /></div>
-        </h4></div>
-        
+          <h2>第五组：佛说</h2>
+          <br />
+          <h4>
+            <div>猪长：赖炎林</div>
+            <div>蔡海锋，柯炜杰，梁悦荣</div>
+            <div>温津杰，陈海兴，李潮平</div>
+            <div>李荣浩，成明强，陈汉健</div>
+          </h4>
+          <br/>
+          <h4>
+            <div>指导老师：邓家平，朱婷婷，曹世雄，张秋杨</div>
+            <div>刘长蒙，杜佳蔚,虞浩，王昊祁</div>
+            <div>常超，陈金鸿，丁兆国，孔祥帅</div>
+          </h4>           
+        </div>
       </div>
-      <div v-if="isLogined&&!isSuper">
+      <div v-if="isLogined && !isSuper">
         <InquireList></InquireList>
       </div>
-      </div>
-      
+    </div>
   </div>
 </template>
 
@@ -104,38 +111,37 @@ export default {
         username: "",
         loginID: "",
       },
-      user1:{
+      user1: {
         username: "",
-            loginID: "",
-            email: "",
-            role: "",
-      }
+        loginID: "",
+        email: "",
+        role: "",
+      },
     };
   },
   methods: {
-
-    goToCreate: function () {
+    goToCreate: function() {
       this.$router.push("/create");
     },
-    goToLogin: function () {
+    goToLogin: function() {
       this.$router.push("/login");
     },
-    goToManage: function () {
+    goToManage: function() {
       this.$router.push("/manage");
     },
-    goToLogin: function () {
+    goToLogin: function() {
       this.$router.push("/login");
     },
-    goToRegistered: function () {
+    goToRegistered: function() {
       this.$router.push("/registered");
     },
-    goToReport: function () {
+    goToReport: function() {
       this.$router.push("/report");
     },
-    goToModify: function () {
+    goToModify: function() {
       this.$router.push("/modify");
     },
-    logout(){
+    logout() {
       this.isLogined = false;
       console.log(this.isLogined);
       window.sessionStorage.clear();
@@ -143,7 +149,7 @@ export default {
     },
   },
   created() {
-    let logined=window.sessionStorage.getItem("logined");
+    let logined = window.sessionStorage.getItem("logined");
     if (logined) {
       this.isLogined = true;
       this.user = this.$store.state.user;
@@ -158,7 +164,6 @@ export default {
 </script>
 
 <style scoped>
-
 .btn-default {
   padding-left: 12px;
   border-radius: 10px;
@@ -175,7 +180,7 @@ export default {
 #btn3 {
   margin-left: 100px;
 }
-#btn_issue{
+#btn_issue {
   text-align: center;
 }
 #btn_issue .btn {
@@ -195,7 +200,7 @@ export default {
 #photo {
   height: 400px;
 }
-.homeBody{
+.homeBody {
   margin-top: 70px;
 }
 h1 {
@@ -206,12 +211,12 @@ h1 {
   background-image: url(/pic/13.jpg);
   top: 0;
 }
-#groupName{
-  margin:auto;
-  width: 500px;
+#groupName {
+  margin: auto;
+  width: 600px;
   text-align: center;
 }
-#groupName div{
+#groupName div {
   margin-top: 10px;
 }
 </style>
