@@ -67,11 +67,17 @@
       <br />
       <br />
       <div v-if="!isLogined||isSuper" class="group_msg">
+        
+        <div id="groupName">
         <h2>第五组：佛说</h2>
+        <br />
+        <br />
         <h4>
-          赖炎林，蔡海锋，柯炜杰，梁悦荣，温津杰<br />
-          李潮平，成明强，陈海兴，李荣浩，陈汉健
-        </h4>
+          <div>赖炎林</div>
+          <div>蔡海锋，柯炜杰，梁悦荣，温津杰<br /></div>
+          <div>陈海兴，李潮平，李荣浩，成明强，陈汉健<br /></div>
+        </h4></div>
+        
       </div>
       <div v-if="isLogined&&!isSuper">
         <InquireList></InquireList>
@@ -199,5 +205,13 @@ h1 {
   text-align: center;
   background-image: url(/pic/13.jpg);
   top: 0;
+}
+#groupName{
+  margin:auto;
+  width: 500px;
+  text-align: center;
+}
+#groupName div{
+  margin-top: 10px;
 }
 </style>
