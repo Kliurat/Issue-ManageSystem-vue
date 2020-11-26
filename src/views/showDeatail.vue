@@ -64,8 +64,8 @@
               type="text"
               class="form-control"
               ref="priority"
+              id="priority"
               v-model="priorityID"
-              maxlength="30"
               disabled
             />
           </td>
@@ -571,5 +571,8 @@ h1 {
 }
 .redColor{
   color: red;
+}
+#priority{
+  width: 100px;
 }
 </style>
