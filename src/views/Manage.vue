@@ -174,25 +174,34 @@ export default {
 
 
     importUsers(){
+       document.getElementById('fileComponent').value = null;
       $("#fileComponent").click();
     },
     fileChange(){
-      let form = document.getElementById("uploadForm");
-      let formData = new FormData(form);
-      const url = this.globalHttpUrl + "users/import";
-      axios({
-          method: "post",
-          url: url,
-          data:formData
-        })
-        .then((res) => {
-          alert(res.data.msg);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
+      MessageBox.confirm('您是否确定导入','提示ʾ',{
+        confirmButtonText:'确定',
+        cancelButtonText:'取消',
+        type:'warning'
+      }).then(()=>{
+        let form = document.getElementById("uploadForm");
+        let formData = new FormData(form);
+        const url = this.globalHttpUrl + "users/import";
+        axios({
+            method: "post",
+            url: url,
+            data:formData
+          })
+          .then((res) => {
+            alert(res.data.msg);
+          })
+          .catch((err) => {
+            console.log("错误" + err);
+          });
+      }).catch((err) => {
+        console.log(err);
+      });
 
+    },
     regain() {
       this.$router.push("/");
     },
