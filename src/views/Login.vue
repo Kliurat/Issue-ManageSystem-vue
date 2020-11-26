@@ -85,10 +85,16 @@ export default {
               window.sessionStorage.setItem("logined", true);
               this.$store.commit("setToken", "true");
               this.$store.commit("setUser", data.data.data);
+              this.$message("欢迎登录")
               this.$router.replace("/");
             } else {
-              alert(data.data.msg);
-            }
+                const h = this.$createElement;
+                this.$message({
+                  message: h('p', null, [
+                    h('i', { style: 'color: red' }, data.data.msg)
+                  ])
+                });
+            }  
           })
           .catch((err) => {
             console.log(err);

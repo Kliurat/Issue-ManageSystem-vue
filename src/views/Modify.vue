@@ -160,21 +160,36 @@ export default {
         })
           .then((data) => {
             if (data.data) {
-              alert("修改成功");
+              const h = this.$createElement;
+              this.$message({
+                message: h('p', null, [
+                  h('i', { style: 'color: blue' }, '修改成功')
+                ])
+              });
               this.user.loginID = this.$store.state.user.loginID;
               this.user.username = this.$refs.name.value;
               this.user.email = this.$refs.em.value;
               this.$store.commit("setUser", this.user);
               this.$router.push("/");
             } else {
-              alert("修改失败");
+              const h = this.$createElement;
+              this.$message({
+                message: h('p', null, [
+                  h('i', { style: 'color: red' }, '修改失败')
+                ])
+              });
             }
           })
           .catch((err) => {
             console.log(err);
           });
       } else {
-        alert("请正确填写所有字段");
+        const h = this.$createElement;
+        this.$message({
+          message: h('p', null, [
+            h('i', { style: 'color: red' }, '请正确填写所有字段')
+          ])
+        });
       }
     },
     gotoback: function() {//返回主页

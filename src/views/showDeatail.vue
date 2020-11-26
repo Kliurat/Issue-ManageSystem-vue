@@ -291,9 +291,6 @@ export default {
     };
   },
   created() {
-    // alert("qweer"+this.$route.params)
-    // console.log(this.data)
-    // this.imgSrc = this.globalHttpUrl + "file/download";
     const url2 = this.globalHttpUrl + "picture/getList";
     const imgUrl = this.globalHttpUrl + "file/download";
     const url = this.globalHttpUrl + "issue/getIssueByIssueNo";
@@ -303,10 +300,7 @@ export default {
       data: this.$qs.stringify({ issueNo: this.data, status: 1 }),
     })
       .then((data) => {
-        // console.log(data)s
-
         this.user = data.data;
-        // console.log(this.user)
         this.id = this.user.id;
         this.issueNo = this.user.issueNo;
         this.title = this.user.title;
@@ -488,7 +482,14 @@ export default {
                     console.log(err);
                   });
             this.$router.push("/");
-          } else alert("提交失败");
+          } else {
+                const h = this.$createElement;
+                this.$message({
+                  message: h('p', null, [
+                    h('i', { style: 'color: red' }, '提交失败')
+                  ])
+                });
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -510,7 +511,14 @@ export default {
           console.log(data.data.status);
           if (data.data.status == 200) {
             this.$router.push("/");
-          } else alert("提交失败");
+          } else{
+                const h = this.$createElement;
+                this.$message({
+                  message: h('p', null, [
+                    h('i', { style: 'color: red' }, '提交失败')
+                  ])
+                });
+          } 
         })
         .catch((err) => {
           console.log(err);
@@ -537,7 +545,14 @@ export default {
               console.log(data.data.status);
               if (data.data.status == 200) {
                 this.$router.push("/");
-              } else alert("提交失败");
+              } else{
+                    const h = this.$createElement;
+                    this.$message({
+                      message: h('p', null, [
+                        h('i', { style: 'color: red' }, '提交失败')
+                      ])
+                    });
+              }
             })
             .catch((err) => {
               console.log(err);

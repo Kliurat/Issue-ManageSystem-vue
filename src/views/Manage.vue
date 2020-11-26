@@ -208,7 +208,12 @@ export default {
             data: formData,
           })
             .then((res) => {
-              alert(res.data.msg);
+              const h = this.$createElement;
+              this.$message({
+                message: h('p', null, [
+                  h('i', { style: 'color: blue' }, res.data.msg)
+                ])
+              });
             })
             .catch((err) => {
               console.log("错误" + err);
@@ -297,7 +302,12 @@ export default {
           this.getPageUsers();
           if (this.total == 0) {
             location.reload();
-            alert("符合条件数据为零");
+            const h = this.$createElement;
+            this.$message({
+              message: h('p', null, [
+                h('i', { style: 'color: red' }, '符合条件数据为零')
+              ])
+            });
           } else {
           }
         })
