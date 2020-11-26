@@ -1,5 +1,4 @@
 <template>
-
   <router-view id="main"/>
 </template>
 
@@ -20,6 +19,5 @@ export default {
   body {
     background-image: url(/pic/13.jpg);
     background-size: cover;
-
   }
 </style>

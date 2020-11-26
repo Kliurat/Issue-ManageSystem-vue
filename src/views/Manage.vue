@@ -127,7 +127,7 @@
         <span>页</span>
         <br>
         <span class="kk">共{{total}}条</span>
-        <span class="kk">当前页：{{currentPage}}</span>
+        
         <span class="kk">共{{pages.length}}页</span>
       </div>
       </div>

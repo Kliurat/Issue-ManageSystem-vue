@@ -9,13 +9,13 @@
         <tr>
           <td class="td"><span class="star">*</span>登录ID：</td>
 
-          <td><input type="text" name="" ref="ID" class="inputlength" @change="FormatID($event)"/></td>
+          <td><input type="text" name="" ref="ID" maxlength="30" class="inputlength" @change="FormatID($event)"/></td>
           <td><span v-show="IdFormat" class="star">输入格式不正确</span></td>
         </tr>
         <tr>
           <td class="td"><span class="star">*</span>姓名：</td>
           <td>
-            <input type="text" name="" class="inputlength" ref="name" maxlength="30" />
+            <input type="text" name="" class="inputlength" ref="name" maxlength="20" />
           </td>
           <td></td>
         </tr>

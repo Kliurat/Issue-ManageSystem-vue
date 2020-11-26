@@ -141,7 +141,7 @@
         <input type="text" @change="goto($event)" class="goto" ref="pageTo" />
         <span class="sumpage">页</span>
         
-        <span class="current">当前页：{{currentPage}}</span>
+        
         <span class="sumpage">共{{pages.length}}页</span>
       </div>
     </div>

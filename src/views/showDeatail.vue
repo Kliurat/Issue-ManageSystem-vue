@@ -294,7 +294,7 @@ export default {
         this.isSolve = true;
         this.isShow = this.isShowDetail;
         this.reason = this.user.reason;
-        if(this.reason.length){
+        if(this.reason!=null){
           this.isReasonNull=true;
         }
         if (
