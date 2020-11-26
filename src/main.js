@@ -14,6 +14,13 @@ import global from './common.vue'
 import qs from 'qs';
 import Axios from 'axios'
 
+import Viewer from 'v-viewer'
+import 'viewerjs/dist/viewer.css'
+Vue.use(Viewer)
+Viewer.setDefaults({
+    Options: { 'inline': true, 'button': true, 'navbar': true, 'title': true, 'toolbar': true, 'tooltip': true, 'movable': true, 'zoomable': true, 'rotatable': true, 'scalable': true, 'transition': true, 'fullscreen': true, 'keyboard': true, 'url': 'data-source' }
+})
+
 Vue.prototype.$qs = qs;
 Vue.prototype.COMMON = global
 Vue.use(BootstrapVue)
