@@ -36,10 +36,11 @@
               ref="password"
               class="inputlength"
               maxlength="30"
+              
               @change="checkPassword($event)"
             />
           </td>
-          <td><span class="err" v-show="passwordFormat">密码格式错误</span></td>
+          <td><span class="err" v-show="passwordFormat">{{passwordPrompt}}</span></td>
         </tr>
         <tr>
           <td class="td"><span class="star">*</span>确认密码：</td>
@@ -80,6 +81,7 @@ export default {
 
   data() {
     return {
+      passwordPrompt:"",
       passwordFormat: false,
       newPassword: false,
       emailFormat:false,
@@ -106,13 +108,30 @@ export default {
       let str = event.target.value;
       let az = /[a-z]/;
       let AZ = /[A-Z]/;
-      
       let patrn = /[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘'，。、]/;
-      if (az.test(str) && AZ.test(str) && patrn.test(str)&&(event.target.value.length>=8)) {
-        this.passwordFormat = false;
-      } else {
+
+      if (az.test(str)) {
+        if (AZ.test(str)){
+          if (patrn.test(str)){
+            if ((event.target.value.length>=8)){
+              this.passwordFormat = false;
+            }else {
+              this.passwordPrompt="密码不足八位";
+              this.passwordFormat = true;
+            }
+          }else{
+            this.passwordPrompt="密码没包含特殊字符";
+            this.passwordFormat = true;
+          }
+        }else{
+          this.passwordPrompt="密码没包含大写字母";
+          this.passwordFormat = true;
+        }
+      } else{
+        this.passwordPrompt="密码没包含小写字母";
         this.passwordFormat = true;
       }
+      
     },
     checkEmail(event){
        let reg = new RegExp("^[a-z0-9A-Z]+[- | a-z0-9A-Z . _]+@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-z]{2,}$"); 
@@ -139,35 +158,10 @@ export default {
       let ensurePassword = this.$refs.ensurePassword.value;
       let name =this.$refs.name.value;
       let email =this.$refs.em.value;
-      if (ID=="") {
-        alert("请输入登陆ID");
-      }else if(password == ""){
-        alert("请输入密码");
+      if (ID==""||password == ""||ensurePassword == ""||name == ""||email == ""||this.passwordFormat||this.emailFormat||this.newPassword||this.IdFormat) {
+        alert("请正确填写完整");
+      } else {
         
-      }else if(ensurePassword == ""){
-        alert("请输入确认密码");
-        
-      }else if(name == ""){
-        alert("请输入姓名");
-        
-      }else if(email == ""){
-        alert("请输入邮箱");
-        
-      }else if(this.passwordFormat){
-        alert("密码格式错误");
-        
-      }else if(this.emailFormat){
-        alert("邮箱格式错误");
-        
-      }else if(this.newPassword){
-        alert("两次密码不一致");
-        
-      }else if(this.IdFormat){
-        alert("登陆ID格式有误");
-        
-      }
-      else{
-      alert("注册成功");
       axios({
       method: "post",
       url: url,

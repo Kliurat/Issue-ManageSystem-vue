@@ -181,6 +181,7 @@ export default {
   name: "Create", //创建新Issue
   data() {
     return {
+      issueNo:"",
       imgList: [],
 			size: 0,
       createDate: new Date(),
@@ -270,6 +271,7 @@ export default {
         let files=new FormData();
         for(let i=0;i<this.imgList.length;i++){
           files.append("files",this.imgList[i].file);
+
         }
         const url = this.globalHttpUrl + "issue";
         const url2 = this.globalHttpUrl + "file/upload";
@@ -290,7 +292,22 @@ export default {
           .then((data) => {
             let result = data.data;
             if (result.status == 200) {
-              alert(result.msg);
+              files.append("issueNo",result.msg);
+              console.log(result.msg);
+                axios({
+                  method: "post",
+                  url: url2,
+                  // headers:{
+                  //   "Content-Type":"multipart/form-data",
+                  //   // "boundary":"WebKitFormBoundaryXUIhYHlAmsiYAKUG"
+                  // },
+                  data:files,
+                })
+                  .then((data) => {
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
               this.regain();
             } else {
               alert(result.msg);
@@ -299,19 +316,8 @@ export default {
           .catch((err) => {
             console.log(err);
           });
-        axios({
-          method: "post",
-          url: url2,
-          // headers:{
-          //   "Content-Type":"multipart/form-data"
-          // },
-          data:files,
-        })
-          .then((data) => {
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+          
+
 
 
 
