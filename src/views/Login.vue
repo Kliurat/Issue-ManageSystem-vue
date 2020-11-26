@@ -58,7 +58,12 @@ export default {
       var a = this.$refs.password.value;
       var b = this.$refs.ID.value;
       if ((a == "") | (b == "")) {
-        alert("请填写完整");
+        const h = this.$createElement;
+        this.$message({
+          message: h('p', null, [
+            h('i', { style: 'color: red' }, '请填写完整')
+          ])
+        });
       } else {
         const url = this.globalHttpUrl + "login";
         axios({

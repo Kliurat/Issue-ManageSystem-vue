@@ -127,7 +127,6 @@
         <span>页</span>
         <br>
         <span class="kk">共{{total}}条</span>
-        
         <span class="kk">共{{pages.length}}页</span>
       </div>
       </div>
@@ -150,7 +149,7 @@ export default {
     return {
       users: [],
       total: 0,
-      amount: 5,
+      amount: 20,
       currentPage: 1,
       currentPageUsers: [],
       pages: [],
