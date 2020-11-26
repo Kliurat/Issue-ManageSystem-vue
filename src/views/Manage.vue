@@ -53,7 +53,7 @@
       <div v-show="!isNull">
       <h2>用户信息
         <form id="uploadForm" action="http://192.168.3.37:8888/users/import" enctype="multipart/form-data" method="post">
-	        <input type="file" name="file" id="fileComponent" style="display:none"  @change="fileChange"/>
+	        <input type="file" name="file" id="fileComponent" style="display:none" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" @change="fileChange"/>
 	        <el-button type="primary" style="float:right;margin-bottom:10px" @click="importUsers">批量注册<i class="el-icon-upload el-icon--right"></i></el-button>
 	      </form>
       </h2>

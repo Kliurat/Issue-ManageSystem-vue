@@ -127,9 +127,17 @@
         :placeholder="reStep"
         disabled
       ></textarea>
+      <!-- <div>
+          <viewer :images="imgSrc">
+              <img v-for="src in imgSrc" :src="src" :key="src" width="50">
+          </viewer>
+      </div> -->
       <div>
-        <img :src="imgSrc" alt="" class="reStepImg" />
+        <span v-for="(item, index) in imgSrc" :key="index">
+          <img :src="item" alt="" class="reStepImg" />
+        </span>
       </div>
+
       <div v-if="isSolve">
         <h5>解决方案</h5>
         <textarea
@@ -186,7 +194,9 @@ export default {
   props: {},
   data() {
     return {
-      imgSrc: "",
+      // src:this.globalHttpUrl + "file/download" + "?url=" + "F:/JMPX/1606357377622login.jpg",
+      imgSrc: [null],
+      imgUrl:[],
       user: [],
       visit: false,
       globalHttpUrl: this.COMMON.httpUrl,
@@ -219,8 +229,9 @@ export default {
   created() {
     // alert("qweer"+this.$route.params)
     // console.log(this.data)
-    this.imgSrc = this.globalHttpUrl + "file/download";
-
+    // this.imgSrc = this.globalHttpUrl + "file/download";
+    const url2 = this.globalHttpUrl + "picture/getList";
+    const imgUrl = this.globalHttpUrl + "file/download";
     const url = this.globalHttpUrl + "issue/getIssueByIssueNo";
     axios({
       method: "post",
@@ -302,25 +313,33 @@ export default {
           this.isShow = false; //不显示按钮
           this.isShowSolve = true; //无法修改
         }
+
+        this.imgUrl=this.user.issuePictures
+        for(let i=0;i<this.imgUrl.length;i++){
+              this.imgSrc[i]=this.globalHttpUrl + "file/download"+"?url="+this.imgUrl[i].imgUrl;
+              console.log(this.imgSrc[i]);
+            }
+        //   axios({
+        //   method: 'post',
+        //   url: url2 ,
+        //   data:this.$qs.stringify({
+        //     issueNo:this.issueNo,
+        //   })
+        // })
+        // .then(data=>{
+        //     this.imgUrl=data.data;
+        //     for(let i=0;i<this.imgUrl.length;i++){
+        //       this.imgSrc[i]=this.globalHttpUrl + "file/download"+"?url="+this.imgUrl[i].imgUrl;
+        //       console.log(this.imgSrc[i]);
+        //     }
+            
+        // });
       })
       .catch((err) => {
         console.log(err);
       });
-    // axios({
-    //    method: 'get',
-    //    url: imgUrl ,
-    //    headers: {
-    //      'Content-Type': 'application/x-www-form-urlencoded',
-    //      "token": this.token  // 必须添加的请求头
-    //    },
-    //    responseType: "arraybuffer", // 关键 设置 响应类型为二进制流
-    //  }).then(function (response) {  // 将后台的图片二进制流传华为base64
-    //    return 'data:image/png;base64,' + btoa(
-    //      new Uint8Array(response.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
-    //    );
-    //  }).then(data=>{
-    //    this.imgSrc=data; // data即为图片地址
-    //   });
+      window.setInterval(this.timer,1000);
+    
   },
   mounted() {},
   methods: {
@@ -494,7 +513,8 @@ h5 {
   text-align: center;
 }
 .reStepImg {
-  width: 30%;
+  width: 25%;
+  height: 180px;
 }
 .btn5{
   background-color: #F0AD4E;
