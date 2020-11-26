@@ -4,7 +4,7 @@
       <img src="/pic/10.jfif" width="100%" height="100%" alt="" />
     </div>
     <h1 class="home">GBA Issue管理系统</h1>
-    <h2 class="head">登陆</h2>
+    <h2 class="head">登录</h2>
     <div class="link-top"></div>
     <div class="login_container">
       <table class="tb">

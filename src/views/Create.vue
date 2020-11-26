@@ -50,13 +50,13 @@
             />
           </td>
           <td>
-            <input
-              type="text"
-              class="form-control"
-              placeholder=""
-              ref="issueType"
-              maxlength="30"
-            />
+              <select class="form-control" ref="issueType" >
+              <option value="New Feather">New Feather</option>
+              <option value="Story">Story</option>
+              <option value="Task">Task</option>
+              <option value="Sub-Task">Sub-Task</option>
+              <option value="Bug">Bug</option>
+            </select>
           </td>
           <td>
             <select class="form-control" ref="priority" id="sel">
