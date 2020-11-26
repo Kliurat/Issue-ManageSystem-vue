@@ -129,14 +129,18 @@
       ></textarea>
       <!-- <div>
           <viewer :images="imgSrc">
-              <img v-for="src in imgSrc" :src="src" :key="src" width="50">
+              <img v-for="src in imgSrc" :src="src" :key="src" class="reStepImg">
           </viewer>
       </div> -->
-      <div>
+      <el-row >
+          <el-image v-for="(item,index) in imgSrc" :key="index"  :src="imgSrc[index]" :preview-src-list="imgSrc" @click="aaa(index)" class="reStepImg">
+          </el-image>
+      </el-row>
+      <!-- <div>
         <span v-for="(item, index) in imgSrc" :key="index">
           <img :src="item" alt="" class="reStepImg" />
         </span>
-      </div>
+      </div> -->
 
       <div v-if="isSolve">
         <h5>解决方案</h5>
@@ -195,7 +199,7 @@ export default {
   data() {
     return {
       // src:this.globalHttpUrl + "file/download" + "?url=" + "F:/JMPX/1606357377622login.jpg",
-      imgSrc: [null],
+      imgSrc: [],
       imgUrl:[],
       user: [],
       visit: false,
@@ -239,7 +243,7 @@ export default {
       data: this.$qs.stringify({ issueNo: this.data, status: 1 }),
     })
       .then((data) => {
-        // console.log(data)
+        // console.log(data)s
 
         this.user = data.data;
         // console.log(this.user)
@@ -319,21 +323,6 @@ export default {
               this.imgSrc[i]=this.globalHttpUrl + "file/download"+"?url="+this.imgUrl[i].imgUrl;
               console.log(this.imgSrc[i]);
             }
-        //   axios({
-        //   method: 'post',
-        //   url: url2 ,
-        //   data:this.$qs.stringify({
-        //     issueNo:this.issueNo,
-        //   })
-        // })
-        // .then(data=>{
-        //     this.imgUrl=data.data;
-        //     for(let i=0;i<this.imgUrl.length;i++){
-        //       this.imgSrc[i]=this.globalHttpUrl + "file/download"+"?url="+this.imgUrl[i].imgUrl;
-        //       console.log(this.imgSrc[i]);
-        //     }
-            
-        // });
       })
       .catch((err) => {
         console.log(err);
@@ -341,8 +330,16 @@ export default {
       window.setInterval(this.timer,1000);
     
   },
-  mounted() {},
   methods: {
+    aaa:function (index) {
+                    var a1=[];
+                    var a2=[];
+                    if(index>0){
+                        a1=this.imgSrc.slice(index);
+                        a2=this.imgSrc.slice(0,index);
+                        this.imgSrc= a1.concat(a2)
+                    }
+                },
     regain() {
       this.$router.push("/");
     },
@@ -413,8 +410,7 @@ export default {
             .catch((err) => {
               console.log(err);
             });
-      })
-      
+      }) 
     },
     showPriority(str) {
       if (str == 1) {
