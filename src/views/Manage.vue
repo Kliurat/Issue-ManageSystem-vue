@@ -9,6 +9,7 @@
       class="return"
       @click="regain()"
     />
+    
     <div class="manageform">
       <h2 >查询</h2>
       <hr />
@@ -50,7 +51,12 @@
         </div>
       </form>
       <div v-show="!isNull">
-      <h2>用户信息</h2>
+      <h2>用户信息
+        <form id="uploadForm" action="http://192.168.3.37:8888/users/import" enctype="multipart/form-data" method="post">
+	        <input type="file" name="file" id="fileComponent" style="display:none"  @change="fileChange"/>
+	        <el-button type="primary" style="float:right;margin-bottom:10px" @click="importUsers">批量注册<i class="el-icon-upload el-icon--right"></i></el-button>
+	      </form>
+      </h2>
       <hr />
       <table class="table table-bordered">
         <tr>
@@ -134,6 +140,7 @@
 
 <script>
 import axios from "axios";
+import $ from 'jquery'
 import { MessageBox } from 'element-ui';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
@@ -164,6 +171,37 @@ export default {
     };
   },
   methods: {
+
+
+    importUsers(){
+       document.getElementById('fileComponent').value = null;
+      $("#fileComponent").click();
+    },
+    fileChange(){
+      MessageBox.confirm('您是否确定导入','提示ʾ',{
+        confirmButtonText:'确定',
+        cancelButtonText:'取消',
+        type:'warning'
+      }).then(()=>{
+        let form = document.getElementById("uploadForm");
+        let formData = new FormData(form);
+        const url = this.globalHttpUrl + "users/import";
+        axios({
+            method: "post",
+            url: url,
+            data:formData
+          })
+          .then((res) => {
+            alert(res.data.msg);
+          })
+          .catch((err) => {
+            console.log("错误" + err);
+          });
+      }).catch((err) => {
+        console.log(err);
+      });
+
+    },
     regain() {
       this.$router.push("/");
     },
