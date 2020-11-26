@@ -6,7 +6,6 @@
     <h1 class="home">GBA Issue管理系统</h1>
     <h2 class="head">登陆</h2>
     <div class="link-top"></div>
-    <button type="button" class="back btn btn-default" @click="gotoback" >返回</button>
     <div class="login_container">
       <table class="tb">
         <tr>
@@ -35,8 +34,12 @@
       </table>
     </div>
     <br />
-    <input type="button" v-on:click="login" class="submit" value="登录" />
-
+    <div id="btnBack">
+      <input type="button" v-on:click="login" class="submit" value="登录" />
+      <button type="button" class="back btn btn-default" @click="gotoback">
+        返回
+      </button>
+    </div>
     <br />
     <p>
       <router-link to="/registered">没有账号？马上注册</router-link>
@@ -54,7 +57,7 @@ export default {
     };
   },
   methods: {
-    login: function () {
+    login: function() {
       var a = this.$refs.password.value;
       var b = this.$refs.ID.value;
       if ((a == "") | (b == "")) {
@@ -79,7 +82,7 @@ export default {
         })
           .then((data) => {
             if (data.data.status == 200) {
-              window.sessionStorage.setItem("logined",true);
+              window.sessionStorage.setItem("logined", true);
               this.$store.commit("setToken", "true");
               this.$store.commit("setUser", data.data.data);
               this.$router.replace("/");
@@ -92,8 +95,7 @@ export default {
           });
       }
     },
-
-    gotoback: function () {
+    gotoback: function() {
       this.$router.replace("/");
     },
   },
@@ -127,13 +129,13 @@ export default {
 }
 
 .back {
-  margin-top: 20px;
+  margin-top: -45px;
+  float: right;
   width: 70px;
   height: 40px;
-  background: white;
-  color: black;
+  background: #17a2b8;
+  color: white;
   border-radius: 10px;
-  text-align: center;
   border: 1px solid rgb(58, 184, 241);
 }
 
@@ -146,31 +148,32 @@ export default {
 
 .tb {
   padding: 0;
-
   height: 120px;
   margin: 0px auto;
   width: 500px;
   border: none;
   text-align: center;
 }
-
 p {
   color: red;
   text-align: center;
 }
-
+#btnBack {
+  width: 30%;
+  margin: 10px auto;
+}
 .submit {
   display: block;
-  width: 250px;
+  width: 180px;
   height: 40px;
-  line-height: 40px;
+  line-height: 25px;
   border-radius: 20px;
   margin: 0 auto;
   border: none;
-  background-color: #2769f7;
-
+  background-color: #fff;
+  border: 1px solid rgb(58, 184, 241);
   color: black;
-  font-size: 16px;
+  font-size: 25px;
   margin-bottom: 5px;
 }
 
@@ -200,7 +203,3 @@ h1 {
   top: 0;
 }
 </style>
-
-
-
-

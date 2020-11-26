@@ -31,7 +31,6 @@
                 <td scope="row" id="create">
                   创建人 <input type="text" maxlength="30" ref="create" />
                 </td>
-
                 <td id="modify">
                   修改人
                   <input
@@ -50,14 +49,13 @@
           </table>
         </div>
       </form>
-      
-
       <div id="button">
         <button type="button" class="btn btn-info" @click="sub()">查询</button>
-        <button type="reset" class="btn btn-default" @click="clear()">清空</button>
+        <button type="reset" class="btn btn-default" @click="clear()">
+          清空
+        </button>
       </div>
     </div>
-
     <div id="IssuesList_body">
       <h2 class="head">Issue列表</h2>
       <div class="link-top"></div>
@@ -94,15 +92,37 @@
                 <button
                   type="button"
                   class="btn btn-default"
-                  @click="gotoShow(list.issueNo,list.status,list.createPersonID,list.modifyPersonID,isShowDetail)"
+                  @click="
+                    gotoShow(
+                      list.issueNo,
+                      list.status,
+                      list.createPersonID,
+                      list.modifyPersonID,
+                      isShowDetail
+                    )
+                  "
                 >
                   详情
                 </button>
                 <button
                   type="button"
                   class="btn btn-default"
-                  v-if="showBtn(list.status,list.createPersonID,list.modifyPersonID)"
-                  @click="gotoShow(list.issueNo,list.status,list.createPersonID,list.modifyPersonID,isShowDetail2)"
+                  v-if="
+                    showBtn(
+                      list.status,
+                      list.createPersonID,
+                      list.modifyPersonID
+                    )
+                  "
+                  @click="
+                    gotoShow(
+                      list.issueNo,
+                      list.status,
+                      list.createPersonID,
+                      list.modifyPersonID,
+                      isShowDetail2
+                    )
+                  "
                 >
                   修改
                 </button>
@@ -113,13 +133,17 @@
       </div>
 
       <div class="pageList">
-        <span class="sumpage">共{{total}}条</span>
+        <span class="sumpage">共{{ total }}条</span>
         <button type="button" class="btn btn-default" @click="prev()">
           <b-icon icon="caret-left-fill"></b-icon>
         </button>
         <button
           class="btn btn-default btn2"
-          :class="[page+1 == currentPage? 'btn btn-default btn2 active':'btn btn-default btn2']"
+          :class="[
+            page + 1 == currentPage
+              ? 'btn btn-default btn2 active'
+              : 'btn btn-default btn2',
+          ]"
           v-for="(page, num) in page"
           :key="num"
           @click="to(page + 1)"
@@ -140,8 +164,6 @@
         <span class="sumpage">跳至</span>
         <input type="text" @change="goto($event)" class="goto" ref="pageTo" />
         <span class="sumpage">页</span>
-        
-        
         <span class="sumpage">共{{pages.length}}页</span>
       </div>
     </div>
@@ -154,26 +176,23 @@ export default {
   name: "InquireList",
   data() {
     return {
-      modifyUser: this.$store.state.user.username,
-      isShowDetail: false,
-      isShowDetail2: true,
-      isShow: true,
-      isShowBtn: true,
+      modifyUser: this.$store.state.user.username,//登陆修改人名字
+      isShowDetail: false,//传参1
+      isShowDetail2: true,//传参2
       issueID: "",
-      issueList: [],
-      arrayList: [],
-      createName: "",
-      modifierName: "",
-      globalHttpUrl: this.COMMON.httpUrl,
-      users: [],
-      total: 0,
-      amount: 20,
-      currentPage: 1,
-      currentPageUsers: [],
-      page: [],
-      pages: [],
-      localPage:1,
-      user: {
+      issueList: [],//issue列表
+      createName: "",//创建人名字
+      modifierName: "",//修改人名字
+      globalHttpUrl: this.COMMON.httpUrl,//连接地址
+      users: [],//用户名字
+      total: 0,//数据总数
+      amount: 20,//每页显示条数
+      currentPage: 1,//当前页
+      currentPageUsers: [],//当前页用户数据
+      page: [],//当前页按钮列表
+      pages: [],//页码按钮列表
+      localPage: 1,//按钮当前页
+      user: {//用户属性
         sortID: "",
         loginID: "",
         username: "",
@@ -181,33 +200,28 @@ export default {
         registeDate: "",
         role: "",
         status: "",
-        active: ""
+        active: "",
       },
     };
   },
   created() {
     const url = this.globalHttpUrl + "issue/queryIssueByID";
-    // const url = "/json/users.json";
-
     axios({
       method: "post",
       url: url,
-      data:this.$qs.stringify({
-        modifyPersonID:this.$store.state.user.loginID,
-        createPersonID:this.$store.state.user.loginID,
+      data: this.$qs.stringify({
+        modifyPersonID: this.$store.state.user.loginID,
+        createPersonID: this.$store.state.user.loginID,
       }),
       xhrFields: {
         withCredentials: true,
       },
     })
       .then((data) => {
-        // console.log(data.data)
         this.users = data.data.data;
-        console.log(this.users);
         this.total = this.users.length;
-        // console.log(this.users.length)
-        if(this.users.length == 0){
-          this.isShow = false
+        if (this.users.length == 0) {
+          this.isShow = false;
         }
         this.pageList();
         this.getLocalPage();
@@ -224,85 +238,87 @@ export default {
       this.createName = this.issueList[1].role;
       this.modifierName = this.issueList[1].username;
     },
-
-    sub() {
-      if(this.$refs.create_time1.value == null){
-        this.$refs.create_time1.value = new Date()
+    sub() {//提交查询
+      if (this.$refs.create_time1.value == null) {
+        this.$refs.create_time1.value = new Date();
       }
-      if(this.$refs.modify_time1.value == null){
-        this.$refs.modify_time1.value = new Date()
+      if (this.$refs.modify_time1.value == null) {
+        this.$refs.modify_time1.value = new Date();
       }
-      if(this.$refs.create_time.value > this.$refs.create_time1.value){
-        alert("创建时间不符合条件")
-      }else if(this.$refs.modify_time.value > this.$refs.modify_time1.value){
-        alert("修改时间不符合条件")
-      }else{
+      if (this.$refs.create_time.value > this.$refs.create_time1.value) {
+        alert("创建时间不符合条件");
+      } else if (this.$refs.modify_time.value > this.$refs.modify_time1.value) {
+        alert("修改时间不符合条件");
+      } else {
         const url = this.globalHttpUrl + "issue/query";
         axios({
-        method: "post",
-        url: url,
-        data: this.$qs.stringify({
-          issueNo:this.$refs.Issue_NO.value,
-          status:this.$refs.select.value,
-          createStartDate:null,
-          createEndDate:this.$refs.create_time1.value==""?null:this.$refs.create_time1.value,
-          createPersonName:this.$refs.create.value,
-          modifyPersonName:this.$refs.modify.value,
-          modifyStartDate:this.$refs.modify_time.value==""?null:this.$refs.modify_time.value,
-          modifyEndDate:this.$refs.modify_time1.value==""?null:this.$refs.modify_time1.value,
-        }),
-      })
-        .then((list) => {
-          // console.log(list.data)
-          this.users = [];
-          this.pages = [];
-          this.users = list.data.data;
-          // console.log(this.users)
-          this.total = this.users.length;
-          if(this.users.length == 0){
-            location.reload() 
-            alert("查询不到该条件的信息")
-          }
-          this.pageList();
-          this.getLocalPage();
-          this.getPageUsers();
+
+          method: "post",
+          url: url,
+          data: this.$qs.stringify({
+            issueNo:this.$refs.Issue_NO.value,
+            status:this.$refs.select.value,
+            createStartDate:null,
+            createEndDate:this.$refs.create_time1.value==""?null:this.$refs.create_time1.value,
+            createPersonName:this.$refs.create.value,
+            modifyPersonName:this.$refs.modify.value,
+            modifyStartDate:this.$refs.modify_time.value==""?null:this.$refs.modify_time.value,
+            modifyEndDate:this.$refs.modify_time1.value==""?null:this.$refs.modify_time1.value,
+          }),
+
         })
-        .catch((err) => {
-          console.log(err);
-        });
+          .then((list) => {
+            this.users = [];
+            this.pages = [];
+            this.users = list.data.data;
+            this.total = this.users.length;
+            if (this.users.length == 0) {
+              location.reload();
+              alert("查询不到该条件的信息");
+            }
+            this.pageList();
+            this.getLocalPage();
+            this.getPageUsers();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
-      
     },
-    showBtn(data,id,id2){
-      if(data == -1 || (this.$store.state.user.loginID != id && this.$store.state.user.loginID != id2)){
-        return false
-      }else{
-        return true
+    showBtn(data, id, id2) {//判断修改按钮是否显示
+      if (
+        data == -1 ||
+        (this.$store.state.user.loginID != id &&
+          this.$store.state.user.loginID != id2)
+      ) {
+        return false;
+      } else {
+        return true;
       }
     },
-    to(num) {
+    to(num) {//按钮跳转
       this.currentPage = num;
       console.log(this.currentPage);
       this.getPageUsers();
       this.getLocalPage();
     },
-    goto(event) {
+    goto(event) {//输入跳转
       this.currentPage = event.target.value;
       this.getPageUsers();
       this.getLocalPage();
       this.$refs.pageTo.value = "";
     },
-    prev() {
+    prev() {//上一页
       if (this.currentPage != 1) this.currentPage--;
       this.getPageUsers();
       this.getLocalPage();
     },
-    next() {
+    next() {//下一页
       if (this.currentPage != this.pages.length) this.currentPage++;
       this.getPageUsers();
       this.getLocalPage();
     },
-    getPageUsers() {
+    getPageUsers() {//获取当前页用户
       this.currentPageUsers = [];
       if (this.pages.length != 0) {
         if (this.currentPage != this.pages.length)
@@ -321,12 +337,12 @@ export default {
           }
       }
     },
-    pageList() {
+    pageList() {//页码数组
       this.pages = [];
       let j = this.total / this.amount;
       for (let i = 0; i < j; i++) this.pages[i] = i;
     },
-    gotoShow(data,status,create,modify,isShowDetail) {
+    gotoShow(data, status, create, modify, isShowDetail) {//页面跳转
       this.$router.push({
         name: "showDeatail",
         params: {
@@ -334,11 +350,11 @@ export default {
           status: status,
           create: create,
           modify: modify,
-          isShowDetail: isShowDetail
+          isShowDetail: isShowDetail,
         },
       });
     },
-    showStatus(str) {
+    showStatus(str) {//判断issue状态
       if (str == -1) {
         str = "已关闭";
       } else if (str == 0) {
@@ -348,40 +364,35 @@ export default {
       }
       return str;
     },
-    clear() {
-      this.$refs.Issue_NO.value = ''
-      this.$refs.create.value = ''
-      this.$refs.modify.value = ''
-      this.$refs.create_time.value = ''
-      this.$refs.create_time1.value = ''
-      this.$refs.modify_time.value = ''
-      this.$refs.modify_time1.value = ''
-      this.$refs.select.value = ''
-      this.modifierName = null
+    clear() {//清空查询
+      this.$refs.Issue_NO.value = "";
+      this.$refs.create.value = "";
+      this.$refs.modify.value = "";
+      this.$refs.create_time.value = "";
+      this.$refs.create_time1.value = "";
+      this.$refs.modify_time.value = "";
+      this.$refs.modify_time1.value = "";
+      this.$refs.select.value = "";
+      this.modifierName = null;
     },
-    getLocalPage(){
-      this.page=[];
-      if(parseInt(this.currentPage/5)==Math.ceil(this.currentPage/5)){
-         this.localPage=parseInt(this.currentPage/5);
-      }else{
-        this.localPage=parseInt(this.currentPage/5)+1;
+    getLocalPage() {//获取当前按钮
+      this.page = [];
+      if (parseInt(this.currentPage / 5) == Math.ceil(this.currentPage / 5)) {
+        this.localPage = parseInt(this.currentPage / 5);
+      } else {
+        this.localPage = parseInt(this.currentPage / 5) + 1;
       }
-     
-      
-      let j = 5*this.localPage;
-      if((this.pages.length-j)>0){
-        for(let i=0;i<5;i++){
-          this.page[i]=this.pages[i+j-5];
-          
-          
+      let j = 5 * this.localPage;
+      if (this.pages.length - j > 0) {
+        for (let i = 0; i < 5; i++) {
+          this.page[i] = this.pages[i + j - 5];
         }
-      }else{
-        for(let i=0;i<(this.pages.length-j+5);i++){
-          this.page[i]=this.pages[i+j-5];
-          
+      } else {
+        for (let i = 0; i < this.pages.length - j + 5; i++) {
+          this.page[i] = this.pages[i + j - 5];
         }
       }
-    }
+    },
   },
 };
 </script>
@@ -400,7 +411,6 @@ input::-webkit-inner-spin-button {
 }
 .page-header {
   left: 50px;
-  
 }
 #create {
   padding-left: 28px;
@@ -439,7 +449,7 @@ input::-webkit-inner-spin-button {
   padding-left: 100px;
 }
 #table_boay {
-  margin: 50px;
+  margin: 50px 0px 50px 0px;
   background-color: white;
   text-align: center;
 }
@@ -497,17 +507,21 @@ input::-webkit-inner-spin-button {
 .current {
   margin-left: 10px;
 }
-.sumpage{
+.sumpage {
   margin-right: 10px;
   margin-left: 10px;
 }
 .active {
   background: #17a2b8;
-   border: 1px solid #17a2b8;
-   color: #fff;
- }
- #main{
-   width: 90%;
-   margin: auto;
- }
+  border: 1px solid #17a2b8;
+  color: #fff;
+}
+#main {
+  width: 90%;
+  margin: auto;
+}
+.table-striped{
+  width: 100%;
+  margin: 0;
+}
 </style>
