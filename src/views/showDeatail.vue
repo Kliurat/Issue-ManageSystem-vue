@@ -141,7 +141,16 @@
           <img :src="item" alt="" class="reStepImg" />
         </span>
       </div> -->
-
+      <div v-if="isReasonNull">
+        <h5><span class="redColor">*</span>退回原因<span class="redColor">*</span></h5>
+        <textarea
+        class="form-control redColor"
+        rows="3"
+        v-model="reason"
+        disabled
+      ></textarea>
+       
+      </div>
       <div v-if="isSolve">
         <h5>解决方案</h5>
         <textarea
@@ -168,10 +177,26 @@
               class="btn btn-default btn1 btn5"
               type="button"
               ref="cancel"
-              @click="cancel()"
+              @click="dialogVisible = true"
             >
               退回修改
             </button>
+            <el-dialog
+              title="退回原因"
+              :visible.sync="dialogVisible"
+              width="30%"
+              :before-close="handleClose">
+              <el-input
+                type="textarea"
+                :rows="2"
+                placeholder="请输入内容"
+                v-model="reason">
+              </el-input>
+              <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="cancel()">确 定</el-button>
+              </span>
+            </el-dialog>
             <button
               class="btn btn-default btn1 btn6"
               id="reset"
@@ -198,6 +223,11 @@ export default {
   props: {},
   data() {
     return {
+      isReasonNull:false,
+      reason:"",
+      handleClose:false,
+      dialogVisible:false,
+      reason:"",
       // src:this.globalHttpUrl + "file/download" + "?url=" + "F:/JMPX/1606357377622login.jpg",
       imgSrc: [],
       imgUrl:[],
@@ -263,6 +293,10 @@ export default {
         this.priorityID = this.showPriority(this.user.priority);
         this.isSolve = true;
         this.isShow = this.isShowDetail;
+        this.reason = this.user.reason;
+        if(this.reason.length){
+          this.isReasonNull=true;
+        }
         if (
           this.$store.state.user.loginID != this.user.createPersonID &&
           this.status == 0
@@ -370,6 +404,8 @@ export default {
         method: "put",
         url: url,
         data: this.$qs.stringify({
+          issueNo:this.issueNo,
+          reason:this.reason,
           id: this.id,
           status: 0,
         }),
@@ -532,5 +568,8 @@ h1 {
   text-align: center;
   background-image: url(/pic/13.jpg);
   top: 0;
+}
+.redColor{
+  color: red;
 }
 </style>
