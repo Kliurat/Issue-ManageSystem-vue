@@ -161,7 +161,7 @@
           :placeholder="solution"
           :disabled="isShowSolve"
         ></textarea>
-        <div class="hello" v-if="status!=-1?true:false">
+        <div class="hello" v-if="(status!=-1&&isShowNum!=1)">
           <div class="upload">
             <div class="upload_warp">
             <div class="upload_warp_left" @click="fileClick">
@@ -268,6 +268,7 @@ export default {
       create: this.$route.params.create,
       modify: this.$route.params.modify,
       isShowDetail: this.$route.params.isShowDetail,
+      isShowNum: this.$route.params.num,
       isShow: true,
       isShowBtn: true,
       isSolve: true,
@@ -373,6 +374,10 @@ export default {
           this.isSolve = true; //显示解决方案
           this.isShow = false; //不显示按钮
           this.isShowSolve = true; //无法修改
+        }
+        if(this.isShowNum == 1){
+          this.isShow = false
+          this.isShowSolve = true
         }
 
         this.imgUrl=this.user.issuePictures

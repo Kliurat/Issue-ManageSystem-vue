@@ -98,7 +98,8 @@
                       list.status,
                       list.createPersonID,
                       list.modifyPersonID,
-                      isShowDetail
+                      isShowDetail,
+                      1
                     )
                   "
                 >
@@ -120,7 +121,8 @@
                       list.status,
                       list.createPersonID,
                       list.modifyPersonID,
-                      isShowDetail2
+                      isShowDetail2,
+                      2
                     )
                   "
                 >
@@ -342,7 +344,7 @@ export default {
       let j = this.total / this.amount;
       for (let i = 0; i < j; i++) this.pages[i] = i;
     },
-    gotoShow(data, status, create, modify, isShowDetail) {//页面跳转
+    gotoShow(data, status, create, modify, isShowDetail,num) {//页面跳转
       this.$router.push({
         name: "showDeatail",
         params: {
@@ -351,6 +353,7 @@ export default {
           create: create,
           modify: modify,
           isShowDetail: isShowDetail,
+          num: num
         },
       });
     },
