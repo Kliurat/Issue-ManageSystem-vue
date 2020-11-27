@@ -259,11 +259,11 @@ export default {
             issueNo:this.$refs.Issue_NO.value,
             status:this.$refs.select.value,
             createStartDate:null,
-            createEndDate:this.$refs.create_time1.value==""?null:this.$refs.create_time1.value,
+            createEndDate:this.$refs.create_time1.value,
             createPersonName:this.$refs.create.value,
             modifyPersonName:this.$refs.modify.value,
-            modifyStartDate:this.$refs.modify_time.value==""?null:this.$refs.modify_time.value,
-            modifyEndDate:this.$refs.modify_time1.value==""?null:this.$refs.modify_time1.value,
+            modifyStartDate:this.$refs.modify_time.value,
+            modifyEndDate:this.$refs.modify_time1.value,
           }),
 
         })
