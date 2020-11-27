@@ -161,7 +161,7 @@
           :placeholder="solution"
           :disabled="isShowSolve"
         ></textarea>
-        <div class="hello">
+        <div class="hello" v-if="status!=-1?true:false">
           <div class="upload">
             <div class="upload_warp">
             <div class="upload_warp_left" @click="fileClick">
@@ -258,7 +258,6 @@ export default {
       handleClose:false,
       dialogVisible:false,
       reason:"",
-      // src:this.globalHttpUrl + "file/download" + "?url=" + "F:/JMPX/1606357377622login.jpg",
       imgSrc: [],
       imgUrl:[],
       user: [],
