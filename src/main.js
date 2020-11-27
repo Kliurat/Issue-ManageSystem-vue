@@ -40,12 +40,12 @@ router.beforeEach((to, from, next) => {
                     path: '/login',
                 })
                 alert("您没权限访问该网页，请重新登录");
-
             }
         } else {
             next({
                 path: '/login',
             })
+            alert("您未登录，请登录");
         }
     } else {
         next();
