@@ -224,10 +224,10 @@ export default {
           console.log(err);
         });
     },
-    regain() {
+    regain() {//返回主页
       this.$router.push("/");
     },
-    logoff(loginID) {
+    logoff(loginID) {//注销用户
       MessageBox.confirm("将注销该用户", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -260,7 +260,7 @@ export default {
           console.log(err);
         });
     },
-    promotion(loginID, role) {
+    promotion(loginID, role) {//升职或降职
       const url = this.globalHttpUrl + "update/statusAndrole";
       axios({
         method: "post",
@@ -283,7 +283,7 @@ export default {
           console.log(err);
         });
     },
-    sub() {
+    sub() {//查询
       const url = this.globalHttpUrl + "selectUser";
       let str1 = this.$refs.loginID.value;
       let str2 = this.$refs.username.value;
@@ -316,40 +316,40 @@ export default {
           console.log(err);
         });
     },
-    to(num) {
+    to(num) {//按钮跳转
       this.currentPage = num;
       this.getPageUsers();
       this.getLocalPage();
     },
-    goto(event) {
+    goto(event) {//输入跳转
       this.currentPage = event.target.value;
       this.getPageUsers();
       this.getLocalPage();
       this.$refs.pageTo.value = "";
     },
-    prev() {
+    prev() {//上一页
       if (this.currentPage != 1) this.currentPage--;
       this.getPageUsers();
       this.getLocalPage();
     },
-    next() {
+    next() {//下一页
       if (this.currentPage != this.pages.length) this.currentPage++;
       this.getPageUsers();
       this.getLocalPage();
     },
-    changeRole(user) {
+    changeRole(user) {//判断用户属性
       let str;
       if (user.role) str = "经理";
       else str = "普通用户";
       return str;
     },
-    changeStatus(user) {
+    changeStatus(user) {//判断用户是否激活
       let str;
       if (user.status) str = "激活";
       else str = "已注销";
       return str;
     },
-    getPageUsers() {
+    getPageUsers() {//获取当前页用户
       this.currentPageUsers = [];
       if (this.pages.length != 0) {
         if (this.currentPage != this.pages.length)
@@ -368,12 +368,12 @@ export default {
           }
       }
     },
-    pageList() {
+    pageList() {//页码数组
       this.pages = [];
       let j = this.total / this.amount;
       for (let i = 0; i < j; i++) this.pages[i] = i;
     },
-    getLocalPage() {
+    getLocalPage() {//获取当前按钮
       this.page = [];
       if (parseInt(this.currentPage / 5) == Math.ceil(this.currentPage / 5)) {
         this.localPage = parseInt(this.currentPage / 5);
