@@ -53,11 +53,11 @@ export default {
   name: "Login", //登陆
   data() {
     return {
-      globalHttpUrl: this.COMMON.httpUrl,
+      globalHttpUrl: this.COMMON.httpUrl,//连接地址
     };
   },
   methods: {
-    login: function() {
+    login: function() {//登陆
       var a = this.$refs.password.value;
       var b = this.$refs.ID.value;
       if ((a == "") | (b == "")) {
@@ -90,7 +90,7 @@ export default {
           });
       }
     },
-    gotoback: function() {
+    gotoback: function() {//返回主页
       this.$router.replace("/");
     },
   },

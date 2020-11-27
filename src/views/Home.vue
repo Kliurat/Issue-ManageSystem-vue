@@ -103,15 +103,14 @@ export default {
   },
   data() {
     return {
-      infos: [],
       isLogined: false,//判断是否登陆
-      checkRole: "",
+      checkRole: "",//判断角色
       isSuper: false,//判断是否超级用户
-      user: {
+      user: {//用户属性
         username: "",
         loginID: "",
       },
-      user1: {
+      user1: {//用户属性
         username: "",
         loginID: "",
         email: "",
@@ -120,28 +119,28 @@ export default {
     };
   },
   methods: {
-    goToCreate: function() {
+    goToCreate: function() {//创建页面
       this.$router.push("/create");
     },
-    goToLogin: function() {
+    goToLogin: function() {//登陆界面
       this.$router.push("/login");
     },
-    goToManage: function() {
+    goToManage: function() {//管理界面
       this.$router.push("/manage");
     },
-    goToLogin: function() {
+    goToLogin: function() {//登陆界面
       this.$router.push("/login");
     },
-    goToRegistered: function() {
+    goToRegistered: function() {//注册界面
       this.$router.push("/registered");
     },
-    goToReport: function() {
+    goToReport: function() {//报表界面
       this.$router.push("/report");
     },
-    goToModify: function() {
+    goToModify: function() {//修改个人信息界面
       this.$router.push("/modify");
     },
-    logout() {
+    logout() {//退出登陆
       this.isLogined = false;
       console.log(this.isLogined);
       window.sessionStorage.clear();
