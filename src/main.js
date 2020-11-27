@@ -26,20 +26,22 @@ Vue.prototype.COMMON = global
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(ElementUI)
-    // Vue.prototype.$msgbox = MessageBox;
-    // Vue.prototype.$confirm = MessageBox.confirm;
 router.beforeEach((to, from, next) => {
     if (to.meta.requireAuth) {
         if (store.state.token) {
             next();
-            // let role = store.state.user.role;
-            // if (to.meta.roles.includes(role)) {
-            //     next();
-            // } else {
-            //     next({
-            //         path: '/',
-            //     })
-            // }
+            let role = store.state.role;
+            debugger
+            if (to.meta.roles.includes(role)) {
+                next();
+            } else {
+                window.sessionStorage.clear();
+                next({
+                    path: '/login',
+                })
+                alert("您没权限访问该网页，请重新登录");
+
+            }
         } else {
             next({
                 path: '/login',

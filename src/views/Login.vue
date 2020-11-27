@@ -84,6 +84,15 @@ export default {
             if (data.data.status == 200) {
               window.sessionStorage.setItem("logined", true);
               this.$store.commit("setToken", "true");
+              if(data.data.data.role==0){
+                this.$store.commit("setRole", "user");
+              }
+              if(data.data.data.role==1){
+                this.$store.commit("setRole", "manage");
+              }
+              if(data.data.data.role==null){
+                this.$store.commit("setRole", "Admin");
+              }
               this.$store.commit("setUser", data.data.data);
               this.$message("欢迎登录")
               this.$router.replace("/");

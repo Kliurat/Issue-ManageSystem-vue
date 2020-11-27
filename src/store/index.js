@@ -6,6 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: sessionStorage.getItem('state') ? JSON.parse(sessionStorage.getItem('state')) : {
         token: false,
+        role: "",
         user: {
             username: "",
             loginID: "",
@@ -20,8 +21,9 @@ export default new Vuex.Store({
         setUser(state, user) {
             state.user = user;
         },
-
-
+        setRole(state, msg) {
+            state.role = msg
+        },
     },
     actions: {},
     modules: {}

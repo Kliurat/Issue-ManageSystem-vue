@@ -155,6 +155,7 @@ export default {
       this.user = this.$store.state.user;
       this.checkRole = this.user.role;
       if (this.user.loginID == "Admin") {
+        
         this.isSuper = true;
       }
     } else {

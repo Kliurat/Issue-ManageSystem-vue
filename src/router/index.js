@@ -9,6 +9,7 @@ const routes = [{
         path: '/create',
         name: 'Create',
         meta: {
+            roles: ["user"],
             requireAuth: true,
         },
         component: () =>
@@ -39,7 +40,7 @@ const routes = [{
         path: '/report',
         name: 'Report',
         meta: {
-            // roles: ["1"],
+            roles: ["manage"],
             requireAuth: true,
         },
         component: () =>
@@ -49,7 +50,7 @@ const routes = [{
         path: '/userIssueList',
         name: 'UserIssueList',
         meta: {
-
+            roles: ["manage"],
             requireAuth: true,
         },
         component: () =>
@@ -71,6 +72,7 @@ const routes = [{
         path: '/manage',
         name: 'Manage',
         meta: {
+            roles: ["Admin"],
             requireAuth: true,
         },
         component: () =>
