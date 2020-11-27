@@ -142,7 +142,7 @@ export default {
     },
     logout() {//退出登陆
       this.isLogined = false;
-      console.log(this.isLogined);
+      this.$store.commit("setToken",false);
       window.sessionStorage.clear();
       this.$router.push("/login");
     },
