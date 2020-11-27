@@ -4,7 +4,7 @@
       <img src="/pic/10.jfif" width="100%" height="100%" alt="" />
     </div>
     <h1 class="home">GBA Issue管理系统</h1>
-    <h2 class="head">登陆</h2>
+    <h2 class="head">登录</h2>
     <div class="link-top"></div>
     <div class="login_container">
       <table class="tb">
@@ -61,7 +61,12 @@ export default {
       var a = this.$refs.password.value;
       var b = this.$refs.ID.value;
       if ((a == "") | (b == "")) {
-        alert("请填写完整");
+        const h = this.$createElement;
+        this.$message({
+          message: h('p', null, [
+            h('i', { style: 'color: red' }, '请填写完整')
+          ])
+        });
       } else {
         const url = this.globalHttpUrl + "login";
         axios({
@@ -80,10 +85,16 @@ export default {
               window.sessionStorage.setItem("logined", true);
               this.$store.commit("setToken", "true");
               this.$store.commit("setUser", data.data.data);
+              this.$message("欢迎登录")
               this.$router.replace("/");
             } else {
-              alert(data.data.msg);
-            }
+                const h = this.$createElement;
+                this.$message({
+                  message: h('p', null, [
+                    h('i', { style: 'color: red' }, data.data.msg)
+                  ])
+                });
+            }  
           })
           .catch((err) => {
             console.log(err);

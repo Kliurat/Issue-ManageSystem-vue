@@ -50,13 +50,13 @@
             />
           </td>
           <td>
-            <input
-              type="text"
-              class="form-control"
-              placeholder=""
-              ref="issueType"
-              maxlength="30"
-            />
+              <select class="form-control" ref="issueType" >
+              <option value="New Feather">New Feather</option>
+              <option value="Story">Story</option>
+              <option value="Task">Task</option>
+              <option value="Sub-Task">Sub-Task</option>
+              <option value="Bug">Bug</option>
+            </select>
           </td>
           <td>
             <select class="form-control" ref="priority" id="sel">
@@ -79,6 +79,7 @@
               type="text"
               class="form-control"
               placeholder=""
+              maxlength="30"
               ref="influentVersion"
             />
           </td>
@@ -175,7 +176,6 @@
 
 <script src="js/vue.min.js"></script>
 <script>
-
 import axios from "axios";
 export default {
   name: "Create", //创建新Issue
@@ -247,8 +247,14 @@ export default {
     },
     checkTime(event) {
       if (this.createDate > event.target.value) {
-        alert("计划修改时间不得早于当前时间！！！");
+        const h = this.$createElement;
+        this.$message({
+          message: h('p', null, [
+            h('i', { style: 'color: red' }, '计划修改时间不得早于当前时间！！！')
+          ])
+        });
         event.target.value = "";
+        console.log(this.imgList[0].file);
       }
     },
     check(event) {
@@ -271,7 +277,6 @@ export default {
         let files=new FormData();
         for(let i=0;i<this.imgList.length;i++){
           files.append("files",this.imgList[i].file);
-
         }
         const url = this.globalHttpUrl + "issue";
         const url2 = this.globalHttpUrl + "file/upload";
@@ -297,10 +302,7 @@ export default {
                 axios({
                   method: "post",
                   url: url2,
-                  // headers:{
-                  //   "Content-Type":"multipart/form-data",
-                  //   // "boundary":"WebKitFormBoundaryXUIhYHlAmsiYAKUG"
-                  // },
+                 
                   data:files,
                 })
                   .then((data) => {
@@ -309,20 +311,32 @@ export default {
                     console.log(err);
                   });
               this.regain();
+              const h = this.$createElement;
+              this.$message({
+                message: h('p', null, [
+                  h('i', { style: 'color: blue' }, 'Issue创建成功')
+                ])
+              });
             } else {
-              alert(result.msg);
+              const h = this.$createElement;
+              this.$message({
+                message: h('p', null, [
+                  h('i', { style: 'color: red' }, result.msg)
+                ])
+              });
             }
           })
           .catch((err) => {
             console.log(err);
           });
-          
-
-
-
 
       } else {
-        alert("Issue信息输入不完整!!!!");
+          const h = this.$createElement;
+          this.$message({
+            message: h('p', null, [
+              h('i', { style: 'color: red' }, 'Issue信息输入不完整!!!!')
+            ])
+          });
       }
     },
     formatDate(val) {

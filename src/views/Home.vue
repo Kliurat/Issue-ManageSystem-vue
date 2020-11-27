@@ -18,7 +18,7 @@
             @click="goToLogin"
             v-show="!isLogined"
           >
-            登陆
+            登录
           </button>
 
           <span id="username">welcome {{ user.username }}</span>

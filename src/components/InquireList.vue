@@ -23,8 +23,8 @@
                   </select>
                 </td>
                 <td>
-                  创建时间<input type="date" ref="create_time" /> 至
-                  <input type="date" ref="create_time1" />
+                  创建时间<input type="datetime-local" ref="create_time" /> 至
+                  <input type="datetime-local" ref="create_time1" />
                 </td>
               </tr>
               <tr class="align">
@@ -41,8 +41,8 @@
                   />
                 </td>
                 <td>
-                  修改时间<input type="date" ref="modify_time" /> 至
-                  <input type="date" ref="modify_time1" />
+                  修改时间<input type="datetime-local" ref="modify_time" /> 至
+                  <input type="datetime-local" ref="modify_time1" />
                 </td>
               </tr>
             </tbody>
@@ -164,8 +164,7 @@
         <span class="sumpage">跳至</span>
         <input type="text" @change="goto($event)" class="goto" ref="pageTo" />
         <span class="sumpage">页</span>
-        <span class="current">当前页：{{ currentPage }}</span>
-        <span class="sumpage">共{{ pages.length }}页</span>
+        <span class="sumpage">共{{pages.length}}页</span>
       </div>
     </div>
   </div>
@@ -253,18 +252,20 @@ export default {
       } else {
         const url = this.globalHttpUrl + "issue/query";
         axios({
+
           method: "post",
           url: url,
           data: this.$qs.stringify({
-            issueNo: this.$refs.Issue_NO.value,
-            status: this.$refs.select.value,
-            createStartDate: this.$refs.create_time.value,
-            createEndDate: this.$refs.create_time1.value,
-            createPersonName: this.$refs.create.value,
-            modifyPersonName: this.$refs.modify.value,
-            modifyStartDate: this.$refs.modify_time.value,
-            modifyEndDate: this.$refs.modify_time1.value,
+            issueNo:this.$refs.Issue_NO.value,
+            status:this.$refs.select.value,
+            createStartDate:null,
+            createEndDate:this.$refs.create_time1.value==""?null:this.$refs.create_time1.value,
+            createPersonName:this.$refs.create.value,
+            modifyPersonName:this.$refs.modify.value,
+            modifyStartDate:this.$refs.modify_time.value==""?null:this.$refs.modify_time.value,
+            modifyEndDate:this.$refs.modify_time1.value==""?null:this.$refs.modify_time1.value,
           }),
+
         })
           .then((list) => {
             this.users = [];

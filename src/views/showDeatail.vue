@@ -161,6 +161,34 @@
           :placeholder="solution"
           :disabled="isShowSolve"
         ></textarea>
+        <div class="hello" v-if="status!=-1?true:false">
+          <div class="upload">
+            <div class="upload_warp">
+            <div class="upload_warp_left" @click="fileClick">
+              <img src="/pic/upload.png">
+            </div>
+            <div class="upload_warp_right" @drop="drop($event)" @dragenter="dragenter($event)" @dragover="dragover($event)">
+              或者将文件拖到此处
+            </div>
+            </div>
+            <div class="upload_warp_text">
+            选中{{imgList.length}}个文件，共{{bytesToSize(this.size)}}
+            <span class="ml20 c-red">[单个附件的最大尺寸为10MB]</span>
+            </div>
+            <input @change="fileChange($event)" type="file" id="upload_file" multiple style="display: none" ref="picList">
+            <div class="upload_warp_img" v-show="imgList.length!=0">
+            <div class="upload_warp_img_div" v-for="(item,index) in imgList" :key="index">
+              <div class="upload_warp_img_div_top">
+              <div class="upload_warp_img_div_text">
+                {{item.file.name}}
+              </div>
+              <img src="/pic/del.png" class="upload_warp_img_div_del" @click="fileDel(index)">
+              </div>
+              <img :src="item.file.src">
+            </div>
+            </div>
+          </div>
+        </div>
         <div v-show="isShow">
           <div class="btn4" v-show="isShowBtn">
             <button
@@ -223,12 +251,13 @@ export default {
   props: {},
   data() {
     return {
+      imgList: [],
+			size: 0,
       isReasonNull:false,
       reason:"",
       handleClose:false,
       dialogVisible:false,
       reason:"",
-      // src:this.globalHttpUrl + "file/download" + "?url=" + "F:/JMPX/1606357377622login.jpg",
       imgSrc: [],
       imgUrl:[],
       user: [],
@@ -261,9 +290,6 @@ export default {
     };
   },
   created() {
-    // alert("qweer"+this.$route.params)
-    // console.log(this.data)
-    // this.imgSrc = this.globalHttpUrl + "file/download";
     const url2 = this.globalHttpUrl + "picture/getList";
     const imgUrl = this.globalHttpUrl + "file/download";
     const url = this.globalHttpUrl + "issue/getIssueByIssueNo";
@@ -273,10 +299,7 @@ export default {
       data: this.$qs.stringify({ issueNo: this.data, status: 1 }),
     })
       .then((data) => {
-        // console.log(data)s
-
         this.user = data.data;
-        // console.log(this.user)
         this.id = this.user.id;
         this.issueNo = this.user.issueNo;
         this.title = this.user.title;
@@ -294,7 +317,7 @@ export default {
         this.isSolve = true;
         this.isShow = this.isShowDetail;
         this.reason = this.user.reason;
-        if(this.reason.length){
+        if(this.reason!=null){
           this.isReasonNull=true;
         }
         if (
@@ -365,20 +388,76 @@ export default {
     
   },
   methods: {
-    aaa:function (index) {
-                    var a1=[];
-                    var a2=[];
-                    if(index>0){
-                        a1=this.imgSrc.slice(index);
-                        a2=this.imgSrc.slice(0,index);
-                        this.imgSrc= a1.concat(a2)
-                    }
-                },
+    fileClick(){
+		document.getElementById('upload_file').click()
+		},
+		fileChange(el){
+		if (!el.target.files[0].size) return;
+		this.fileList(el.target.files);
+		el.target.value = ''
+		},
+		fileList(files){
+		for (let i = 0; i < files.length; i++) {
+			this.fileAdd(files[i]);
+		}
+		},
+		fileAdd(file){
+		this.size = this.size + file.size;//总大小
+		let reader = new FileReader();
+		reader.vue = this;
+		reader.readAsDataURL(file);
+		reader.onload = function () {
+			file.src = this.result;
+			this.vue.imgList.push({
+			file
+      });
+      this.imgList=this.vue.imgList;
+		}
+		},
+		fileDel(index){
+		this.size = this.size - this.imgList[index].file.size;//总大小
+		this.imgList.splice(index, 1);
+		},
+		bytesToSize(bytes){
+		if (bytes === 0) return '0 B';
+		let k = 1000, // or 1024
+			sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+			i = Math.floor(Math.log(bytes) / Math.log(k));
+		return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
+		},
+		dragenter(el){
+		el.stopPropagation();
+		el.preventDefault();
+		},
+		dragover(el){
+		el.stopPropagation();
+		el.preventDefault();
+		},
+		drop(el){
+		el.stopPropagation();
+		el.preventDefault();
+		this.fileList(el.dataTransfer.files);
+		},
+    aaa(index) {
+        var a1=[];
+        var a2=[];
+        if(index>0){
+            a1=this.imgSrc.slice(index);
+            a2=this.imgSrc.slice(0,index);
+            this.imgSrc= a1.concat(a2)
+        }
+    },
     regain() {
       this.$router.push("/");
     },
     verification() {
+      let files=new FormData();
+        for(let i=0;i<this.imgList.length;i++){
+          files.append("files",this.imgList[i].file);
+        }
+        files.append("issueNo",this.issueNo);
       const url = this.globalHttpUrl + "issue/update";
+      const url2 = this.globalHttpUrl + "file/upload";
       axios({
         method: "put",
         url: url,
@@ -391,8 +470,25 @@ export default {
         .then((data) => {
           console.log(data.data.status);
           if (data.data.status == 200) {
+                axios({
+                  method: "post",
+                  url: url2,
+                  data:files,
+                })
+                  .then((data) => {
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
             this.$router.push("/");
-          } else alert("提交失败");
+          } else {
+                const h = this.$createElement;
+                this.$message({
+                  message: h('p', null, [
+                    h('i', { style: 'color: red' }, '提交失败')
+                  ])
+                });
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -414,7 +510,14 @@ export default {
           console.log(data.data.status);
           if (data.data.status == 200) {
             this.$router.push("/");
-          } else alert("提交失败");
+          } else{
+                const h = this.$createElement;
+                this.$message({
+                  message: h('p', null, [
+                    h('i', { style: 'color: red' }, '提交失败')
+                  ])
+                });
+          } 
         })
         .catch((err) => {
           console.log(err);
@@ -441,7 +544,14 @@ export default {
               console.log(data.data.status);
               if (data.data.status == 200) {
                 this.$router.push("/");
-              } else alert("提交失败");
+              } else{
+                    const h = this.$createElement;
+                    this.$message({
+                      message: h('p', null, [
+                        h('i', { style: 'color: red' }, '提交失败')
+                      ])
+                    });
+              }
             })
             .catch((err) => {
               console.log(err);
@@ -574,5 +684,112 @@ h1 {
 }
 #priority{
   width: 100px;
+}
+.upload_warp_img_div_del {
+		  position: absolute;
+		  top: 6px;
+		  width: 16px;
+		  right: 4px;
+		}
+
+.upload_warp_img_div_top {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 30px;
+	background-color: rgba(0, 0, 0, 0.4);
+	line-height: 30px;
+	text-align: left;
+	color: #fff;
+	font-size: 12px;
+	text-indent: 4px;
+}
+
+.upload_warp_img_div_text {
+	white-space: nowrap;
+	width: 80%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.upload_warp_img_div img {
+	max-width: 100%;
+	max-height: 100%;
+	vertical-align: middle;
+}
+
+.upload_warp_img_div {
+	position: relative;
+	height: 100px;
+	width: 120px;
+	border: 1px solid #2196F3;
+	margin: 0px 30px 10px 0px;
+	float: left;
+	line-height: 100px;
+	display: table-cell;
+	text-align: center;
+	background-color: #eee;
+	cursor: pointer;
+}
+
+.upload_warp_img {
+	border-top: 1px solid #D2D2D2;
+	padding: 14px 0 0 14px;
+	overflow: hidden
+}
+
+.upload_warp_text {
+	text-align: left;
+	margin-bottom: 10px;
+	padding-top: 10px;
+	text-indent: 14px;
+	border-top: 1px solid #2196F3;
+	font-size: 14px;
+}
+
+.upload_warp_right {
+	float: left;
+	width: 56%;
+	margin-left: 2%;
+	height: 100%;
+	border: 2px dashed #2196F3;
+	border-radius: 4px;
+	line-height: 130px;
+	color: #2196F3;
+}
+
+.upload_warp_left img {
+	margin-top: 32px;
+}
+
+.upload_warp_left {
+	float: left;
+	width: 40%;
+	height: 100%;
+	border: 2px dashed #2196F3;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.upload_warp {
+	margin: 14px;
+	height: 130px;
+}
+
+.upload {
+	border: 1px solid #2196F3;
+	background-color: #fff;
+	width: 100%;
+	border-radius: 4px;
+}
+
+.hello {
+	text-align: center;
+}
+.ml20{
+	margin-left: 20px;
+}
+.c-red{
+	color: red;
 }
 </style>

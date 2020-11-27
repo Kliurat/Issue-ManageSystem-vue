@@ -8,41 +8,27 @@
         <tr>
           <td class="td"><span class="star">*</span>登录ID：</td>
 
-          <td>
-            <input
-              type="text"
-              name=""
-              ref="ID"
-              class="inputlength"
-              @change="FormatID($event)"
-            />
-          </td>
+
+          <td><input type="text" name="" ref="ID" maxlength="30" class="inputlength" @change="FormatID($event)" placeholder="登录ID"/></td>
+
           <td><span v-show="IdFormat" class="star">输入格式不正确</span></td>
         </tr>
         <tr>
           <td class="td"><span class="star">*</span>姓名：</td>
           <td>
-            <input
-              type="text"
-              name=""
-              class="inputlength"
-              ref="name"
-              maxlength="30"
-            />
+
+            <input type="text" name="" class="inputlength" ref="name" maxlength="20" placeholder="姓名"/>
+
           </td>
           <td></td>
         </tr>
         <tr>
           <td class="td"><span class="star">*</span>邮箱：</td>
           <td>
-            <input
-              type="email"
-              name=""
-              class="inputlength"
-              ref="em"
-              maxlength="30"
-              @change="checkEmail($event)"
-            />
+
+            <input type="email" name="" class="inputlength" ref="em" maxlength="30" @change="checkEmail($event)" placeholder="邮箱"/>
+
+
           </td>
           <td><span class="err" v-show="emailFormat">邮箱格式错误</span></td>
         </tr>
@@ -55,6 +41,7 @@
               ref="password"
               class="inputlength"
               maxlength="30"
+              placeholder="请包含大小写字母，特殊字符且不少于八位"
               @change="checkPassword($event)"
             />
           </td>
@@ -73,6 +60,7 @@
               ref="ensurePassword"
               class="inputlength"
               maxlength="30"
+              placeholder="请确保密码输入一致"
               @change="ensurePwd($event)"
             />
           </td>
@@ -190,7 +178,12 @@ export default {
         this.newPassword ||
         this.IdFormat
       ) {
-        alert("请正确填写完整");
+        const h = this.$createElement;
+        this.$message({
+          message: h('p', null, [
+            h('i', { style: 'color: red' }, '请正确填写完整')
+          ])
+        });
       } else {
         axios({
           method: "post",
@@ -214,10 +207,20 @@ export default {
               this.$router.push("/");
             }
             if (data.data == -1) {
-              alert("该登录ID已被注册");
+              const h = this.$createElement;
+              this.$message({
+                message: h('p', null, [
+                  h('i', { style: 'color: red' }, '该登录ID已被注册')
+                ])
+              });
             }
             if (data.data == 0) {
-              alert("注册失败");
+              const h = this.$createElement;
+              this.$message({
+                message: h('p', null, [
+                  h('i', { style: 'color: red' }, '注册失败')
+                ])
+              });
             }
           })
           .catch((err) => {

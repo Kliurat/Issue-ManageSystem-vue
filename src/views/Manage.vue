@@ -123,42 +123,34 @@
             </tr>
           </table>
 
-          <div class="pageList">
-            <button type="button" class="btn btn-default" @click="prev()">
-              <b-icon icon="caret-left-fill"></b-icon>
-            </button>
-            <button
-              :class="[
-                page + 1 == currentPage
-                  ? 'btn btn-default btn2 active'
-                  : 'btn btn-default btn2',
-              ]"
-              v-for="(page, num) in page"
-              :key="num"
-              @click="to(page + 1)"
-            >
-              {{ page + 1 }}
-            </button>
-            <button type="button" class="btn btn-default" @click="next()">
-              <b-icon icon="caret-right-fill"></b-icon>
-            </button>
-            <button class="btn btn-default">{{ amount }}条/页</button>
-            <span>跳至</span>
-            <input
-              type="text"
-              @change="goto($event)"
-              class="goto"
-              ref="pageTo"
-            />
-            <span>页</span>
-            <br />
-            <span class="kk">共{{ total }}条</span>
-            <span class="kk">当前页：{{ currentPage }}</span>
-            <span class="kk">共{{ pages.length }}页</span>
-          </div>
-        </div>
+
+      <div class="pageList">
+        <button type="button" class="btn btn-default" @click="prev()">
+          <b-icon icon="caret-left-fill"></b-icon>
+        </button>
+        <button
+          :class="[page+1 == currentPage? 'btn btn-default btn2 active':'btn btn-default btn2']"
+          v-for="(page, num) in page"
+          :key="num"
+          @click="to(page+1)"
+        >
+          {{ page + 1 }}
+        </button>
+        <button type="button" class="btn btn-default" @click="next()">
+          <b-icon icon="caret-right-fill"></b-icon>
+        </button>
+        <button class="btn btn-default">{{ amount }}条/页</button>
+        <span>跳至</span>
+        <input type="text" @change="goto($event)" class="goto" ref="pageTo" />
+        <span>页</span>
+        <br>
+        <span class="kk">共{{total}}条</span>
+        <span class="kk">共{{pages.length}}页</span>
+      </div>
+
       </div>
     </div>
+  </div>
   </div>
 </template>
 
@@ -172,9 +164,10 @@ export default {
   name: "Manage",
   data() {
     return {
+
       users: [],//用户名字
       total: 0,//数据总数
-      amount: 5,//每页显示条数
+      amount: 20,//每页显示条数
       currentPage: 1,//当前页
       currentPageUsers: [],//当前页用户数据
       page: [],//当前页按钮列表
@@ -183,6 +176,7 @@ export default {
       isNull: false,//判断是否显示按钮
       globalHttpUrl: this.COMMON.httpUrl,//连接地址
       user: {//用户属性
+
         sortID: "",
         loginID: "",
         username: "",
@@ -215,7 +209,12 @@ export default {
             data: formData,
           })
             .then((res) => {
-              alert(res.data.msg);
+              const h = this.$createElement;
+              this.$message({
+                message: h('p', null, [
+                  h('i', { style: 'color: blue' }, res.data.msg)
+                ])
+              });
             })
             .catch((err) => {
               console.log("错误" + err);
@@ -304,7 +303,12 @@ export default {
           this.getPageUsers();
           if (this.total == 0) {
             location.reload();
-            alert("符合条件数据为零");
+            const h = this.$createElement;
+            this.$message({
+              message: h('p', null, [
+                h('i', { style: 'color: red' }, '符合条件数据为零')
+              ])
+            });
           } else {
           }
         })
