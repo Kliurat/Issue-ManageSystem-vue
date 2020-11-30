@@ -1,5 +1,5 @@
 <script type="text/javascript">
-const httpUrl = "http://192.168.3.114:8888/";
+const httpUrl = "http://100.2.29.22:8888/";
 function commonFun() {}
 export default {
   httpUrl,

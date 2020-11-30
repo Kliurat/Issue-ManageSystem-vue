@@ -257,7 +257,6 @@ export default {
       reason:"",
       handleClose:false,
       dialogVisible:false,
-      reason:"",
       imgSrc: [],
       imgUrl:[],
       user: [],
@@ -285,7 +284,6 @@ export default {
       reStep: "",
       solution: "",
       priority: "",
-      modifyPersonID: "",
       priorityID: "",
       id: 0,
     };

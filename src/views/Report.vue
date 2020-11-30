@@ -145,7 +145,7 @@ export default {
   name: "Report", //报表
   data() {
     return {
-      exportUrl: "http://192.168.3.18:8888/excel",//导出地址
+      exportUrl: "http://100.2.29.22:8888/excel",//导出地址
       users: [],//用户名字
       total: 0,//数据总数
       amount: 20,//每页显示条数
