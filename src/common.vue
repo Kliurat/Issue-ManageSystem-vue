@@ -1,5 +1,5 @@
 <script type="text/javascript">
-const httpUrl = "http://100.2.29.22:8888/";
+const httpUrl = "http://本机ip地址:后端端口号/";
 function commonFun() {}
 export default {
   httpUrl,
