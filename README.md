@@ -1,29 +1,5 @@
 # vue
 
-## Project setup
-```
-npm install
-```
+## IssueManageSystem的前端项目
+1. 启动本项目：需要先将后端项目启动后，在src/common.vue文件中修改IP地址为自己的ip，端口号为后端项目的端口号
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
